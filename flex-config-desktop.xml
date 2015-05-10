@@ -1,0 +1,43 @@
+<flex-config xmlns="http://www.adobe.com/2006/flex-config">
+    <compiler>
+        <mobile>true</mobile>
+
+        <theme>
+            <filename>${flexlib}/themes/Mobile/mobile.swc</filename>
+        </theme>
+
+        <preloader>dittner.testmyself.deutsch.view.common.preloader.ClockPreloader</preloader>
+
+        <define>
+            <name>CONFIG::true</name>
+            <value>true</value>
+        </define>
+
+        <debug>true</debug>
+
+        <source-path append="true">
+            <path-element>/resources/icons</path-element>
+        </source-path>
+
+        <library-path>
+            <path-element>${flexlib}/libs</path-element>
+            <path-element>${flexlib}/libs/mobile</path-element>
+            <path-element>${flexlib}/libs/air/servicemonitor.swc</path-element>
+            <path-element>${flexlib}/locale/{locale}</path-element>
+            <path-element>libs</path-element>
+        </library-path>
+
+        <keep-as3-metadata append="true">
+            <name>Inject</name>
+        </keep-as3-metadata>
+
+        <external-library-path>
+            <path-element>${flexlib}/libs/air/airglobal.swc</path-element>
+        </external-library-path>
+
+        <locale>
+            <locale-element>ru_RU</locale-element>
+        </locale>
+    </compiler>
+
+</flex-config>

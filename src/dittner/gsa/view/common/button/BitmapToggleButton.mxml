@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<s:ToggleButton xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark">
+
+    <fx:Metadata>
+        [Style(name="upImage", type="Object")]
+        [Style(name="downImage", type="Object")]
+    </fx:Metadata>
+
+    <fx:Declarations>
+
+        <fx:Component className="BitmapToggleButtonSkin">
+
+            <s:SparkSkin>
+
+                <fx:Metadata>
+                    [HostComponent("spark.components.ToggleButton")]
+                </fx:Metadata>
+
+                <s:states>
+                    <s:State name="disabled" stateGroups="unselected"/>
+                    <s:State name="down" stateGroups="unselected"/>
+                    <s:State name="over" stateGroups="unselected"/>
+                    <s:State name="up" stateGroups="unselected"/>
+                    <s:State name="disabledAndSelected" stateGroups="selected"/>
+                    <s:State name="downAndSelected" stateGroups="selected"/>
+                    <s:State name="overAndSelected" stateGroups="selected"/>
+                    <s:State name="upAndSelected" stateGroups="selected"/>
+                </s:states>
+
+                <s:BitmapImage source.unselected="{getStyle('upImage')}" source.selected="{getStyle('downImage')}"/>
+
+            </s:SparkSkin>
+
+        </fx:Component>
+
+    </fx:Declarations>
+
+    <s:skinClass>{BitmapToggleButtonSkin}</s:skinClass>
+</s:ToggleButton>

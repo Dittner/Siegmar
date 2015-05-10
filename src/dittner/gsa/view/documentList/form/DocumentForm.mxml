@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         xmlns:input="dittner.gsa.view.common.input.*"
+         xmlns:button="dittner.gsa.view.common.button.*"
+         xmlns:mx="mx.core.*"
+         addedToStage="addedToStageHandler(event)">
+
+    <fx:Script><![CDATA[
+        import dittner.gsa.domain.fileSystem.FileType;
+        import dittner.gsa.domain.fileSystem.ISystemFile;
+        import dittner.gsa.view.common.utils.AppColors;
+        import dittner.gsa.view.common.utils.FontName;
+
+        [Embed(source="/form_bg.png")]
+        private var BgClass:Class;
+        private static var bg:DisplayObject;
+
+        //--------------------------------------
+        //  mode
+        //--------------------------------------
+        private var _mode:String = DokumentFormMode.ADD;
+        [Bindable("modeChanged")]
+        public function get mode():String {return _mode;}
+
+        [Bindable("modeChanged")]
+        public function get isAddMode():Boolean {return _mode == DokumentFormMode.ADD;}
+
+        private function setFileType(fileType:uint):void {
+            switch (fileType) {
+                case FileType.FOLDER :
+                    setCurrentState("folder");
+                    break;
+                case FileType.ARTICLE :
+                    setCurrentState("article");
+                    break;
+                case FileType.DICTIONARY :
+                    setCurrentState("dictionary");
+                    break;
+                case FileType.PHOTOALBUM :
+                    setCurrentState("album");
+                    break;
+                default :
+                    throw new Error("Unknown file type: " + fileType);
+            }
+        }
+
+        public function add():void {
+            _mode = DokumentFormMode.ADD;
+            dispatchEvent(new Event("modeChanged"));
+        }
+
+        public function edit(fse:ISystemFile):void {
+            _mode = DokumentFormMode.EDIT;
+            setFileType(fse.fileType);
+            dispatchEvent(new Event("modeChanged"));
+        }
+
+        public function remove(fse:ISystemFile):void {
+            _mode = DokumentFormMode.REMOVE;
+            dispatchEvent(new Event("modeChanged"));
+        }
+
+        public function clear():void {
+            subjectBtn.selected = true;
+            titleInput.text = "";
+            authorInput.text = "";
+            dateInput.text = "";
+            pwdInput.text = "";
+            setCurrentState("folder");
+        }
+
+        private function getTitle(formMode:String):String {
+            return mode == DokumentFormMode.ADD ? "NEUES DOKUMENT" : mode == DokumentFormMode.EDIT ? "AUFBEREITUNG" : "ENTFERNUNG";
+        }
+
+        private function applyBtnEnabled(docTitle:String):Boolean {
+            return docTitle != "";
+        }
+
+        private function radioBtnClickHandler(event:MouseEvent):void {
+            setFileType((event.target as RadioButton).value as uint);
+        }
+
+        private function addedToStageHandler(event:Event):void {
+            if (bg && bg.parent) {
+                bg.parent.removeChild(bg);
+            }
+            else if (!bg) {
+                bg = new BgClass();
+            }
+
+            bgCont.addChild(bg);
+        }
+        ]]></fx:Script>
+
+    <s:states>
+        <s:State name="folder"/>
+        <s:State name="article"/>
+        <s:State name="dictionary"/>
+        <s:State name="album"/>
+    </s:states>
+
+    <mx:UIComponent id="bgCont"/>
+
+    <s:VGroup width="600" horizontalCenter="0" top="10" bottom="10" gap="20">
+
+        <s:Label text="{getTitle(mode)}"
+                 width="100%"
+                 fontFamily="{FontName.ROBOTO_LIGHT}" fontSize="30"
+                 mouseChildren="false" mouseEnabled="false" paddingBottom="50"
+                 color="{AppColors.TEXT_WHITE}"/>
+
+        <s:Label text="Wählen Sie bitte den Typ des Dokuments aus:"
+                 visible="{isAddMode}" includeInLayout="{isAddMode}"
+                 width="100%" paddingBottom="-20"
+                 fontFamily="{FontName.ROBOTO}" fontSize="14"
+                 mouseChildren="false" mouseEnabled="false"
+                 color="{AppColors.TEXT_LIGHT}"/>
+
+        <s:Group width="100%" visible="{isAddMode}" includeInLayout="{isAddMode}">
+            <s:layout>
+                <s:TileLayout verticalGap="0" horizontalGap="10" paddingBottom="0" paddingTop="0"
+                              requestedColumnCount="3" rowHeight="50"
+                              columnWidth="200"/>
+            </s:layout>
+            <s:RadioButton id="subjectBtn"
+                           groupName="radioBar"
+                           width="200"
+                           value="{FileType.FOLDER}"
+                           selected="true"
+                           label="Fach"
+                           click="radioBtnClickHandler(event)"/>
+
+            <s:RadioButton id="folderBtn"
+                           groupName="radioBar"
+                           width="200"
+                           value="{FileType.FOLDER}"
+                           label="Direktory"
+                           click="radioBtnClickHandler(event)"/>
+
+            <s:RadioButton id="articleRadioBtn"
+                           groupName="radioBar"
+                           width="200"
+                           enabled="false"
+                           value="{FileType.ARTICLE}"
+                           label="Artikel"
+                           click="radioBtnClickHandler(event)"/>
+
+            <s:RadioButton id="dictionaryRadioBtn"
+                           groupName="radioBar"
+                           width="200"
+                           value="{FileType.DICTIONARY}"
+                           label="Wörterbuch"
+                           click="radioBtnClickHandler(event)"/>
+
+            <s:RadioButton id="albumRadioBtn"
+                           groupName="radioBar"
+                           enabled="false"
+                           width="200"
+                           value="{FileType.PHOTOALBUM}"
+                           label="Album"
+                           click="radioBtnClickHandler(event)"/>
+        </s:Group>
+
+        <input:TextInputForm id="titleInput" width="100%" title="Titel:"/>
+        <input:TextInputForm id="authorInput" width="100%" title="Autor:"
+                             visible.folder="false" includeInLayout.folder="false"/>
+        <input:TextInputForm id="dateInput" width="100%" title="Datum der Ausgabe:"
+                             visible.folder="false" includeInLayout.folder="false"/>
+        <input:TextInputForm id="pwdInput" width="100%" title="Parole:"/>
+
+        <s:Spacer height="50"/>
+
+        <s:HGroup width="100%" gap="10">
+            <button:GrayButton id="cancelBtn"
+                               width="100%"
+                               label="Abbrechen"/>
+
+            <button:BlackButton id="applyBtn"
+                                width="100%"
+                                label="Bestätigen"
+                                enabled="{applyBtnEnabled(titleInput.text)}"/>
+        </s:HGroup>
+    </s:VGroup>
+
+</s:Group>

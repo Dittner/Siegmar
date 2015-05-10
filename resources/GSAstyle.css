@@ -1,0 +1,176 @@
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace input "dittner.gsa.view.common.input.*";
+@namespace list "dittner.gsa.view.common.list.*";
+@namespace spinner "dittner.gsa.view.common.spinner.*";
+
+@font-face {
+    src: url("/fonts/georgia.ttf");
+    font-family: Georgia;
+    embedAsCFF: true;
+}
+
+@font-face {
+    src: url("/fonts/georgia-bold.ttf");
+    font-family: Georgia;
+    fontWeight: bold;
+    embedAsCFF: true;
+}
+
+@font-face {
+    src: url("/fonts/Roboto-Light.ttf");
+    font-family: RobotoLight;
+    embedAsCFF: true;
+}
+
+@font-face {
+    src: url("/fonts/Roboto-Regular.ttf");
+    font-family: Roboto;
+    embedAsCFF: true;
+}
+
+@font-face {
+    src: url("/fonts/Roboto-Bold.ttf");
+    font-family: Roboto;
+    fontWeight: bold;
+    embedAsCFF: true;
+}
+
+@font-face {
+    src: url("/fonts/RobotoCondensed.ttf");
+    font-family: RobotoCond;
+    embedAsCFF: true;
+}
+
+@font-face {
+    src: url("/fonts/RobotoCondensed-Bold.ttf");
+    font-family: RobotoCond;
+    font-weight: bold;
+    embedAsCFF: true;
+}
+
+/**************************** MX **************************/
+
+@font-face {
+    src: url("/fonts/georgia.ttf");
+    font-family: GeorgiaMX;
+    embedAsCFF: false;
+}
+
+@font-face {
+    src: url("/fonts/georgia-bold.ttf");
+    font-family: GeorgiaMX;
+    fontWeight: bold;
+    embedAsCFF: false;
+}
+
+@font-face {
+    src: url("/fonts/Roboto-Regular.ttf");
+    font-family: RobotoMX;
+    embedAsCFF: false;
+}
+
+@font-face {
+    src: url("/fonts/Roboto-Light.ttf");
+    font-family: RobotoLightMX;
+    embedAsCFF: false;
+}
+
+@font-face {
+    src: url("/fonts/Roboto-Bold.ttf");
+    font-family: RobotoMX;
+    fontWeight: bold;
+    embedAsCFF: false;
+}
+
+@font-face {
+    src: url("/fonts/RobotoCondensed.ttf");
+    font-family: RobotoCondMX;
+    embedAsCFF: false;
+}
+
+@font-face {
+    src: url("/fonts/RobotoCondensed-Bold.ttf");
+    font-family: RobotoCondMX;
+    font-weight: bold;
+    embedAsCFF: false;
+}
+
+/***********************************************************/
+
+global {
+    fontSize: 14px;
+    fontFamily: RobotoMX;
+    fontWeight: normal;
+    contentBackgroundAlpha: 0;
+    backgroundColor: 0;
+    backgroundAlpha: 0;
+}
+
+s|Button {
+    fontSize: 14px;
+    fontFamily: Roboto;
+    fontWeight: normal;
+}
+
+s|Label {
+    fontSize: 14px;
+    fontFamily: Roboto;
+    fontWeight: normal;
+}
+
+/************************** INPUT **************************/
+
+input|TextInputForm {
+    skinClass: ClassReference("dittner.gsa.view.common.input.TextInputFormSkin");
+    borderVisible: false;
+    focusSkin: ClassReference("mx.core.UIComponent");
+    fontFamily: RobotoMX;
+    fontSize: 14px;
+    color: #333333;
+}
+
+s|TextInput.loginInput {
+    fontSize: 30px;
+    color: #b2d2e6;
+    fontFamily: MyriadProRegMX;
+    fontWeight: normal;
+    borderVisible: false;
+    focusSkin: ClassReference("mx.core.UIComponent");
+    skinClass: ClassReference("dittner.gsa.view.common.input.LoginTextInputSkin");
+}
+
+s|TextArea.loginInput {
+    fontSize: 20px;
+    color: #050f25;
+    fontFamily: MyriadProRegMX;
+    fontWeight: normal;
+    borderVisible: false;
+    focusSkin: ClassReference("mx.core.UIComponent");
+    skinClass: ClassReference("dittner.gsa.view.common.input.LoginTextAreaSkin");
+}
+
+/************************** LIST **************************/
+list|ListForm {
+    skinClass: ClassReference("dittner.gsa.view.common.list.ListFormSkin");
+    borderVisible: false;
+    focusSkin: ClassReference("mx.core.UIComponent");
+    fontFamily: RobotoMX;
+    fontSize: 16px;
+    color: #333333;
+}
+
+/************************** OTHER COMPONENTS **************************/
+s|CheckBox {
+    skinClass: ClassReference("dittner.gsa.view.common.checkBox.CustomCheckBoxSkin");
+}
+
+s|RadioButton {
+    skinClass: ClassReference("dittner.gsa.view.common.radioButton.CustomRadioButtonSkin");
+}
+
+spinner|CustomSpinner {
+    skin-class: ClassReference("dittner.gsa.view.common.spinner.CustomSpinnerSkin");
+    fontSize: 14px;
+    color: #4e4f61;
+    fontFamily: Roboto;
+}

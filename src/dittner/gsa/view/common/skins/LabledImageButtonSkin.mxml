@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009"
+             xmlns:s="library://ns.adobe.com/flex/spark"
+        >
+    <fx:Metadata>
+        [HostComponent("spark.components.Button")]
+    </fx:Metadata>
+
+    <s:states>
+        <s:State name="disabled"/>
+        <s:State name="down"/>
+        <s:State name="over"/>
+        <s:State name="up"/>
+    </s:states>
+
+    <s:BitmapImage id="bg" width="100%"
+                   source.up="{getStyle('upIcon')}"
+                   source.down="{getStyle('downIcon')}"
+                   source.disabled="{getStyle('upIcon')}"/>
+
+    <s:Label id="labelDisplay"
+             width="100%"
+             paddingLeft="20" paddingRight="20"
+             textAlign="center"
+             verticalCenter="-1"
+             fontWeight="normal"
+             maxDisplayedLines="1"/>
+
+</s:SparkSkin>

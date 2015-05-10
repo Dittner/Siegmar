@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+               xmlns:s="library://ns.adobe.com/flex/spark"
+               frameRate="30"
+               usePreloader="true"
+               preloader="dittner.gsa.view.common.preloader.AppPreloader"
+               backgroundColor="0x3d3f4b"
+               creationComplete="creationCompleteHandler(event)"
+               uncaughtError="uncaughtErrorHandler(event)">
+
+    <fx:Script><![CDATA[
+        import dittner.gsa.view.common.utils.TextFieldFactory;
+
+        import mx.events.FlexEvent;
+        import mx.logging.Log;
+
+        public static var root:GSAapp;
+        private static var _gsaSystem:GSASystem;
+
+        private function creationCompleteHandler(event:FlexEvent):void {
+            GSAapp.root = this;
+            TextFieldFactory.useEmbedFonts = true;
+            _gsaSystem = new GSASystem();
+            _gsaSystem.start(this);
+        }
+
+        private function uncaughtErrorHandler(event:UncaughtErrorEvent):void {
+            var error:* = event.error;
+            if (error is Error) {
+                Log.getLogger("UnchaughtErrors").error((error as Error).getStackTrace().toString());
+            }
+            else {
+                Log.getLogger("UnchaughtErrors").error(error ? error.toString() : "unknown error");
+            }
+        }
+        ]]></fx:Script>
+
+    <fx:Style source="/GSAstyle.css"/>
+
+</s:Application>

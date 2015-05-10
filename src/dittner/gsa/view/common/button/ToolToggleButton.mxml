@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<s:ToggleButton xmlns:fx="http://ns.adobe.com/mxml/2009"
+                xmlns:s="library://ns.adobe.com/flex/spark">
+
+    <fx:Metadata>
+        [Style(name="image", type="Object")]
+        [Style(name="selectedImage", type="Object")]
+    </fx:Metadata>
+
+    <fx:Script><![CDATA[
+        private var _description:String = "";
+        [Bindable("descriptionChanged")]
+        public function get description():String {return _description;}
+        public function set description(value:String):void {
+            if (_description != value) {
+                _description = value;
+                dispatchEvent(new Event("descriptionChanged"));
+            }
+        }
+
+        //--------------------------------------
+        //  toolId
+        //--------------------------------------
+        private var _toolId:String = "";
+        [Bindable("toolIdChanged")]
+        public function get toolId():String {return _toolId;}
+        public function set toolId(value:String):void {
+            if (_toolId != value) {
+                _toolId = value;
+                dispatchEvent(new Event("toolIdChanged"));
+            }
+        }
+        ]]></fx:Script>
+
+    <fx:Declarations>
+
+        <fx:Component className="ToolBitmapToggleButtonSkin">
+
+            <s:SparkSkin alpha="1" alpha.disabled="0.5">
+
+                <fx:Metadata>
+                    [HostComponent("spark.components.ToggleButton")]
+                </fx:Metadata>
+
+                <s:states>
+                    <s:State name="disabled" stateGroups="unselected"/>
+                    <s:State name="down" stateGroups="unselected"/>
+                    <s:State name="over" stateGroups="unselected"/>
+                    <s:State name="up" stateGroups="unselected"/>
+                    <s:State name="disabledAndSelected" stateGroups="selected"/>
+                    <s:State name="downAndSelected" stateGroups="selected"/>
+                    <s:State name="overAndSelected" stateGroups="selected"/>
+                    <s:State name="upAndSelected" stateGroups="selected"/>
+                </s:states>
+
+                <s:BitmapImage source.unselected="{getStyle('image')}"
+                               source.selected="{getStyle('selectedImage')}"
+                               alpha.up="0.75" alpha.disabled=".25" alpha="1"
+                               alpha.upAndSelected="0.75" alpha.disabledAndSelected=".25"/>
+
+            </s:SparkSkin>
+
+        </fx:Component>
+
+    </fx:Declarations>
+
+    <s:skinClass>{ToolBitmapToggleButtonSkin}</s:skinClass>
+</s:ToggleButton>
