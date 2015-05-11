@@ -1,5 +1,5 @@
 package dittner.gsa.domain.user {
-import dittner.gsa.utils.async.IAsyncOperation;
+import dittner.gsa.bootstrap.async.IAsyncOperation;
 
 public interface IUser {
 	function get userName():String;

@@ -3,8 +3,8 @@ import dittner.gsa.bootstrap.navigator.ViewNavigator;
 import dittner.gsa.bootstrap.viewFactory.ViewID;
 import dittner.gsa.domain.user.IUser;
 import dittner.gsa.utils.AppInfo;
-import dittner.gsa.utils.async.AsyncOperationResult;
-import dittner.gsa.utils.async.IAsyncOperation;
+import dittner.gsa.bootstrap.async.AsyncOperationResult;
+import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.walter.WalterController;
 
 import flash.events.MouseEvent;
@@ -51,7 +51,6 @@ public class LoginController extends WalterController {
 		if (result.isSuccess) {
 			view.isInvalidPassword = false;
 			viewNavigator.navigate(ViewID.DOCUMENT_LIST);
-			view.clear();
 		}
 		else {
 			view.isInvalidPassword = true;
@@ -63,6 +62,7 @@ public class LoginController extends WalterController {
 		view.passwordInput.removeEventListener(FlexEvent.ENTER, completeHandler);
 		view.privacyLevelInput.removeEventListener(FlexEvent.ENTER, completeHandler);
 		view.userNameInput.removeEventListener(FlexEvent.ENTER, completeHandler);
+		view.clear();
 	}
 }
 }

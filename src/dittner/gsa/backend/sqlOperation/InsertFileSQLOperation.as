@@ -1,17 +1,17 @@
 package dittner.gsa.backend.sqlOperation {
-import dittner.gsa.backend.command.CommandResult;
 import dittner.gsa.backend.encryption.IEncryptionService;
 import dittner.gsa.backend.phaseOperation.PhaseRunner;
 import dittner.gsa.backend.sqlOperation.phase.FileBodyEncryptingPhase;
 import dittner.gsa.backend.sqlOperation.phase.FileBodyInsertOperationPhase;
 import dittner.gsa.backend.sqlOperation.phase.FileHeaderInsertOperationPhase;
+import dittner.gsa.bootstrap.async.AsyncOperationResult;
 import dittner.gsa.bootstrap.deferredOperation.DeferredOperation;
-import dittner.gsa.domain.fileSystem.ISystemFile;
+import dittner.gsa.domain.fileSystem.IGSAFile;
 import dittner.gsa.domain.store.FileStorage;
 
 public class InsertFileSQLOperation extends DeferredOperation {
 
-	public function InsertFileSQLOperation(storage:FileStorage, file:ISystemFile, encryptionService:IEncryptionService) {
+	public function InsertFileSQLOperation(storage:FileStorage, file:IGSAFile, encryptionService:IEncryptionService) {
 		suite = new SQLOperationSuite();
 		suite.sqlRunner = storage.sqlRunner;
 		suite.sqlFactory = storage.sqlFactory;
@@ -34,12 +34,12 @@ public class InsertFileSQLOperation extends DeferredOperation {
 		}
 		catch (exc:Error) {
 			phaseRunner.destroy();
-			dispatchComplete(new CommandResult(suite, exc.details, false));
+			dispatchComplete(new AsyncOperationResult(exc.message, false));
 		}
 	}
 
 	private function phaseRunnerCompleteSuccessHandler():void {
-		dispatchComplete(new CommandResult(suite));
+		dispatchComplete(new AsyncOperationResult(suite));
 		suite = null;
 	}
 }

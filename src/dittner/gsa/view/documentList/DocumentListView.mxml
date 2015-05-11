@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <view:ViewBase xmlns:fx="http://ns.adobe.com/mxml/2009"
                xmlns:s="library://ns.adobe.com/flex/spark"
-               xmlns:list="dittner.gsa.view.common.list.*"
                xmlns:view="dittner.gsa.view.common.view.*"
                xmlns:utils="dittner.gsa.view.common.utils.*"
                xmlns:toolbar="dittner.gsa.view.documentList.toolbar.*"
-               xmlns:form="dittner.gsa.view.documentList.form.*">
+               xmlns:form="dittner.gsa.view.documentList.form.*"
+               xmlns:list2="dittner.gsa.view.documentList.list.*">
     <fx:Script><![CDATA[
         import mx.collections.ArrayCollection;
 
@@ -23,30 +23,16 @@
         }
         ]]></fx:Script>
 
-    <s:Group id="leftPanel"
-             width="300" height="100%">
-        <utils:BG width="100%" height="100%" color="#0A0C28" alpha=".6"/>
+    <utils:BG width="100%" height="100%" color="#172141"/>
 
-        <toolbar:Toolbar id="toolbar" height="100%" left="0"/>
+    <s:HGroup width="100%" height="100%"
+              gap="0">
 
-        <s:Scroller height="100%" left="50" right="0">
-            <list:SelectableDataGroup id="subjectList"
-                                      width="100%"
-                                      dataProvider="{subjectListProvider}"
-                                      itemRenderer="dittner.gsa.view.documentList.FolderItemRenderer">
-                <list:layout>
-                    <s:VerticalLayout gap="0" useVirtualLayout="true" variableRowHeight="false"/>
-                </list:layout>
-            </list:SelectableDataGroup>
+        <toolbar:Toolbar id="toolbar" height="100%"/>
 
-        </s:Scroller>
-
-    </s:Group>
-
-    <s:Group left="300" right="0" height="100%">
+        <list2:FileList id="fileList" width="400" height="100%"/>
 
         <form:DocumentForm id="documentForm" width="100%" height="100%" visible="false"/>
-
-    </s:Group>
+    </s:HGroup>
 
 </view:ViewBase>

@@ -16,7 +16,7 @@ public class ViewNavigator extends WalterModel {
 	[Inject]
 	public var viewControllerFactory:IViewControllerFactory;
 
-	private var selectedMediator:WalterController;
+	private var selectedController:WalterController;
 
 	//--------------------------------------
 	//  selectedViewID
@@ -47,14 +47,14 @@ public class ViewNavigator extends WalterModel {
 	}
 
 	private function registerController():void {
-		var mediator:WalterController = viewControllerFactory.createViewMediator(selectedViewID);
-		walter.registerController(selectedView, mediator);
-		selectedMediator = mediator;
+		var controller:WalterController = viewControllerFactory.create(selectedViewID);
+		walter.registerController(selectedView, controller);
+		selectedController = controller;
 	}
 
 	private function unregisterController():void {
 		if (!selectedView) return;
-		walter.unregisterController(selectedMediator);
+		walter.unregisterController(selectedController);
 	}
 
 	override protected function activate():void {}

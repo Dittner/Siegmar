@@ -1,4 +1,4 @@
-package dittner.gsa.utils.async {
+package dittner.gsa.bootstrap.async {
 public class AsyncOperationResult {
 	public function AsyncOperationResult(data:Object = null, isSuccess:Boolean = true) {
 		this.data = data;

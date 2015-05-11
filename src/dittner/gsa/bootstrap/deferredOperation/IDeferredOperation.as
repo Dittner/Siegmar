@@ -1,7 +1,7 @@
 package dittner.gsa.bootstrap.deferredOperation {
+import dittner.gsa.bootstrap.async.IAsyncOperation;
 
-public interface IDeferredOperation {
-	function addCompleteCallback(handler:Function):void;
+public interface IDeferredOperation extends IAsyncOperation {
 	function process():void;
 }
 }

@@ -41,13 +41,20 @@ public class Injector implements IInjector {
 		}
 	}
 
-	public function injectModels(obj:Object):void {
+	public function inject(obj:Object):void {
 		var props:Array = getInjectedProps(obj);
 		for each (var prop:String in props) {
 			if (obj[prop] == null) {
 				if (walter.modelHash[prop]) obj[prop] = walter.modelHash[prop];
 				else if (walter.hasModel(prop)) obj[prop] = walter.getModel(prop);
 			}
+		}
+	}
+
+	public function uninject(obj:Object):void {
+		var props:Array = getInjectedProps(obj);
+		for each (var prop:String in props) {
+			obj[prop] = null;
 		}
 	}
 

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         xmlns:list="dittner.gsa.view.common.list.*"
+         xmlns:button="dittner.gsa.view.common.button.*"
+         xmlns:utils="dittner.gsa.view.common.utils.*">
+
+    <fx:Script><![CDATA[
+        import dittner.gsa.view.common.utils.FontName;
+        ]]></fx:Script>
+
+    <utils:BG width="100%" height="100%" color="#0b0e34"/>
+
+    <button:ColorButton id="backBtn"
+                        width="100%"
+                        height="50"
+                        bgColor="#39105f"
+                        textColor="#80879f"
+                        fontSize="12"
+                        fontFamily="{FontName.ROBOTO_COND_MX}"
+                        label="zurück"/>
+
+    <s:Scroller width="100%" top="50" bottom="0">
+        <list:SelectableDataGroup id="list"
+                                  width="100%"
+                                  itemRenderer="dittner.gsa.view.documentList.FileHeaderRenderer">
+            <list:layout>
+                <s:VerticalLayout gap="0" useVirtualLayout="true" variableRowHeight="false"/>
+            </list:layout>
+        </list:SelectableDataGroup>
+
+    </s:Scroller>
+
+</s:Group>

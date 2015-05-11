@@ -1,20 +1,6 @@
 package dittner.gsa.domain.fileSystem {
-import dittner.gsa.domain.store.FileStorage;
-import dittner.gsa.utils.async.IAsyncOperation;
-
-public class SystemFile implements ISystemFile {
-	public function SystemFile() {
-		super();
-	}
-
-	[Inject]
-	public var fileStorage:FileStorage;
-
-	//----------------------------------------------------------------------------------------------
-	//
-	//  Properties
-	//
-	//----------------------------------------------------------------------------------------------
+public class GSAFileHeader {
+	public function GSAFileHeader() {}
 
 	//--------------------------------------
 	//  id
@@ -56,7 +42,7 @@ public class SystemFile implements ISystemFile {
 	public function get title():String {return _title;}
 	public function set title(value:String):void {
 		if (_title != value) {
-			_title = value;
+			_title = value || "";
 		}
 	}
 
@@ -67,7 +53,7 @@ public class SystemFile implements ISystemFile {
 	public function get password():String {return _password;}
 	public function set password(value:String):void {
 		if (_password != value) {
-			_password = value;
+			_password = value || "";
 		}
 	}
 
@@ -80,39 +66,6 @@ public class SystemFile implements ISystemFile {
 		if (_options != value) {
 			_options = value;
 		}
-	}
-
-	//----------------------------------------------------------------------------------------------
-	//
-	//  Methods
-	//
-	//----------------------------------------------------------------------------------------------
-
-	public function store():IAsyncOperation {
-		return fileStorage.store(this);
-	}
-
-	public function remove():IAsyncOperation {
-		return fileStorage.remove(this);
-	}
-
-	public function getHeaderInfo():Object {
-		var res:Object = {};
-		res.parentID = parentID;
-		res.fileType = fileType;
-		res.title = title;
-		res.password = password;
-		res.options = options;
-		return res;
-	}
-
-	public function setFromHeaderInfo(data:Object):void {
-		id = data.id;
-		parentID = data.parentID;
-		fileType = data.fileType;
-		title = data.title || "";
-		password = data.password || "";
-		options = data.options;
 	}
 }
 }

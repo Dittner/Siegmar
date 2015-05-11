@@ -8,7 +8,7 @@
 
     <fx:Script><![CDATA[
         import dittner.gsa.domain.fileSystem.FileType;
-        import dittner.gsa.domain.fileSystem.ISystemFile;
+        import dittner.gsa.domain.fileSystem.IGSAFile;
         import dittner.gsa.view.common.utils.AppColors;
         import dittner.gsa.view.common.utils.FontName;
 
@@ -50,19 +50,18 @@
             dispatchEvent(new Event("modeChanged"));
         }
 
-        public function edit(fse:ISystemFile):void {
+        public function edit(fse:IGSAFile):void {
             _mode = DokumentFormMode.EDIT;
-            setFileType(fse.fileType);
+            setFileType(fse.header.fileType);
             dispatchEvent(new Event("modeChanged"));
         }
 
-        public function remove(fse:ISystemFile):void {
+        public function remove(fse:IGSAFile):void {
             _mode = DokumentFormMode.REMOVE;
             dispatchEvent(new Event("modeChanged"));
         }
 
         public function clear():void {
-            subjectBtn.selected = true;
             titleInput.text = "";
             authorInput.text = "";
             dateInput.text = "";
@@ -124,18 +123,12 @@
                               requestedColumnCount="3" rowHeight="50"
                               columnWidth="200"/>
             </s:layout>
-            <s:RadioButton id="subjectBtn"
-                           groupName="radioBar"
-                           width="200"
-                           value="{FileType.FOLDER}"
-                           selected="true"
-                           label="Fach"
-                           click="radioBtnClickHandler(event)"/>
 
             <s:RadioButton id="folderBtn"
                            groupName="radioBar"
                            width="200"
                            value="{FileType.FOLDER}"
+                           selected="true"
                            label="Direktory"
                            click="radioBtnClickHandler(event)"/>
 
@@ -149,6 +142,7 @@
 
             <s:RadioButton id="dictionaryRadioBtn"
                            groupName="radioBar"
+                           enabled="false"
                            width="200"
                            value="{FileType.DICTIONARY}"
                            label="Wörterbuch"

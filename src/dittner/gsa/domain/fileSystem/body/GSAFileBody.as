@@ -1,8 +1,8 @@
 package dittner.gsa.domain.fileSystem.body {
 import flash.utils.ByteArray;
 
-public class DocBody {
-	public function DocBody() {}
+public class GSAFileBody {
+	public function GSAFileBody() {}
 
 	public function serialize():ByteArray {
 		return null;

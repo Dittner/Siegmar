@@ -6,7 +6,8 @@ public class AppColors {
 	public static const TEXT_INVALID:uint = 0xaa2d2b;
 	public static const DARK_BLUE:uint = 0x050f25;
 	public static const BLACK:uint = 0;
-	public static const LILA:uint = 0x968FFF;
+	public static const LILA:uint = 0x9d97ec;
+	public static const BRAUN:uint = 0x725e76;
 
 	public static const BG:uint = 0xe0e0e6;
 	public static const EDITOR_CONTENT_BG:uint = 0xf0F0f5;

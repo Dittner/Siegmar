@@ -1,7 +1,6 @@
 package dittner.gsa.backend.sqlOperation.phase {
 import dittner.gsa.backend.phaseOperation.PhaseOperation;
 import dittner.gsa.backend.sqlOperation.*;
-import dittner.gsa.domain.fileSystem.IDocument;
 
 import flash.utils.ByteArray;
 
@@ -13,8 +12,8 @@ public class FileBodyEncryptingPhase extends PhaseOperation {
 	private var sqlSuite:SQLOperationSuite;
 
 	override public function execute():void {
-		if (sqlSuite.file is IDocument) {
-			var bytes:ByteArray = (sqlSuite.file as IDocument).body.serialize();
+		if (!sqlSuite.file.isFolder) {
+			var bytes:ByteArray = sqlSuite.file.body.serialize();
 			sqlSuite.encryptedFileBody = sqlSuite.encryptionService.encrypt(bytes);
 		}
 		else dispatchComplete();

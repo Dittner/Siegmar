@@ -2,7 +2,6 @@ package dittner.gsa.backend.sqlOperation {
 import com.probertson.data.QueuedStatement;
 import com.probertson.data.SQLRunner;
 
-import dittner.gsa.backend.command.CommandResult;
 import dittner.gsa.bootstrap.deferredOperation.DeferredOperation;
 import dittner.gsa.domain.store.FileStorage;
 import dittner.gsa.utils.AppInfo;
@@ -45,11 +44,11 @@ public class CreateDataBaseSQLOperation extends DeferredOperation {
 
 			storage.sqlRunner.executeModify(statements, executeComplete, executeError, null);
 		}
-		else dispatchComplete(CommandResult.OK);
+		else dispatchComplete();
 	}
 
 	private function executeComplete(results:Vector.<SQLResult>):void {
-		dispatchComplete(CommandResult.OK);
+		dispatchComplete();
 	}
 
 	private function executeError(error:SQLError):void {

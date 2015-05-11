@@ -15,7 +15,7 @@ import dittner.walter.Walter;
 
 import mx.core.IVisualElementContainer;
 
-public class GSASystem extends Walter {
+public class GSAConfig extends Walter {
 
 	public function start(root:IVisualElementContainer):void {
 		var viewNavigator:ViewNavigator = new ViewNavigator();

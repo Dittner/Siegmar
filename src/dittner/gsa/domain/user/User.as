@@ -2,9 +2,9 @@ package dittner.gsa.domain.user {
 import dittner.gsa.backend.SharedObjectStorage;
 import dittner.gsa.backend.encryption.IEncryptionService;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
-import dittner.gsa.utils.async.AsyncOperation;
-import dittner.gsa.utils.async.AsyncOperationResult;
-import dittner.gsa.utils.async.IAsyncOperation;
+import dittner.gsa.bootstrap.async.AsyncOperation;
+import dittner.gsa.bootstrap.async.AsyncOperationResult;
+import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.walter.WalterModel;
 
 public class User extends WalterModel implements IUser {

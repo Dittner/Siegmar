@@ -1,9 +1,9 @@
 package dittner.gsa.domain.fileSystem {
-import dittner.gsa.utils.async.AsyncOperation;
-import dittner.gsa.utils.async.AsyncOperationResult;
-import dittner.gsa.utils.async.IAsyncOperation;
+import dittner.gsa.bootstrap.async.AsyncOperation;
+import dittner.gsa.bootstrap.async.AsyncOperationResult;
+import dittner.gsa.bootstrap.async.IAsyncOperation;
 
-public class RootFolder extends Folder {
+public class RootFolder extends GSAFile {
 	public function RootFolder() {
 		super();
 	}

@@ -11,9 +11,11 @@ public class WalterComponent {
 
 	private var _uid:String;
 	walter_namespace function get uid():String {return _uid;}
-	walter_namespace var walter:Walter;
-	walter_namespace var modelMessageSender:IMessageSender;
 	walter_namespace var modelHandlersHash:Object = {};
+
+	walter_namespace static function get walter():Walter {return Walter.instance;}
+	walter_namespace static function get modelMessageSender():IMessageSender {return walter.modelMessageSender;}
+	walter_namespace static function get controllerMessageSender():IMessageSender {return walter.controllerMessageSender;}
 
 	public function listenModel(model:WalterModel, msgKey:String, handler:Function):void {
 		if (!modelHandlersHash[model.uid]) modelHandlersHash[model.uid] = {};
@@ -41,12 +43,10 @@ public class WalterComponent {
 		modelHandlersHash = {};
 	}
 
-	walter_namespace function activating():void {activate();}
-
-	walter_namespace function deactivating():void {
-		removeAllListeners();
-		deactivate();
-	}
+	//abstract
+	walter_namespace function activating():void {}
+	//abstract
+	walter_namespace function deactivating():void {}
 
 	//abstract
 	protected function activate():void {}

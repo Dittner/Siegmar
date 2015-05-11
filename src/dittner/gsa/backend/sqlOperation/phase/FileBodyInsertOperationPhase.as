@@ -3,7 +3,6 @@ import com.probertson.data.QueuedStatement;
 
 import dittner.gsa.backend.phaseOperation.PhaseOperation;
 import dittner.gsa.backend.sqlOperation.*;
-import dittner.gsa.domain.fileSystem.IDocument;
 
 import flash.data.SQLResult;
 import flash.errors.SQLError;
@@ -17,9 +16,9 @@ public class FileBodyInsertOperationPhase extends PhaseOperation {
 	private var sqlSuite:SQLOperationSuite;
 
 	override public function execute():void {
-		if (sqlSuite.file is IDocument && sqlSuite.encryptedFileBody) {
+		if (sqlSuite.file.isFolder && sqlSuite.encryptedFileBody) {
 			var sqlParams:Object = {};
-			sqlParams.fileID = sqlSuite.file.id;
+			sqlParams.fileID = sqlSuite.file.header.id;
 			sqlParams.bytes = sqlSuite.encryptedFileBody;
 			sqlSuite.sqlRunner.executeModify(Vector.<QueuedStatement>([new QueuedStatement(sqlSuite.sqlFactory.insertFileBody, sqlParams)]), executeComplete, executeError);
 		}

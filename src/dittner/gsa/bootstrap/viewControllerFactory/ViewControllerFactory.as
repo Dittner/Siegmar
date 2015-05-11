@@ -9,19 +9,19 @@ public class ViewControllerFactory extends WalterModel implements IViewControlle
 
 	public function ViewControllerFactory():void {}
 
-	public function createViewMediator(viewID:String):WalterController {
-		var mediator:WalterController;
+	public function create(viewID:String):WalterController {
+		var controller:WalterController;
 		switch (viewID) {
 			case ViewID.LOGIN :
-				mediator = new LoginController();
+				controller = new LoginController();
 				break;
 			case ViewID.DOCUMENT_LIST :
-				mediator = new DocumentListController();
+				controller = new DocumentListController();
 				break;
 			default :
 				throw new Error("Unknown view ID:" + viewID);
 		}
-		return mediator;
+		return controller;
 	}
 
 }

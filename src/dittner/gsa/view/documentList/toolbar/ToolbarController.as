@@ -16,8 +16,8 @@ public class ToolbarController extends WalterController {
 	public var user:IUser;
 
 	override protected function activate():void {
-		listenController(ControllerMsg.START_EDIT_NOTIFICATION, startEditing);
-		listenController(ControllerMsg.END_EDIT_NOTIFICATION, endEditing);
+		listenController(ControllerMsg.START_EDIT, startEditing);
+		listenController(ControllerMsg.END_EDIT, endEditing);
 		view.selectedOpCallBack = actionHandler;
 	}
 
@@ -33,7 +33,7 @@ public class ToolbarController extends WalterController {
 			case ToolAction.ADD:
 			case ToolAction.EDIT:
 			case ToolAction.REMOVE:
-				sendMessage(ControllerMsg.START_EDIT_NOTIFICATION, action);
+				sendMessage(ControllerMsg.START_EDIT, action);
 				break;
 			case ToolAction.LOGOUT:
 				user.logout();

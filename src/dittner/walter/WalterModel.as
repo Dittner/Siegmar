@@ -10,10 +10,15 @@ public class WalterModel extends WalterComponent {
 		modelMessageSender.sendMessage(uid, new WalterMessage(msgKey, data));
 	}
 
+	override walter_namespace function activating():void {
+		activate();
+	}
+
 	override walter_namespace function deactivating():void {
 		modelMessageSender.removeDispatcher(uid);
 		removeAllListeners();
 		deactivate();
+		walter.injector.uninject(this);
 	}
 }
 }

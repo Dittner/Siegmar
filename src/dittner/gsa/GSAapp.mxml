@@ -15,13 +15,12 @@
         import mx.logging.Log;
 
         public static var root:GSAapp;
-        private static var _gsaSystem:GSASystem;
 
         private function creationCompleteHandler(event:FlexEvent):void {
             GSAapp.root = this;
             TextFieldFactory.useEmbedFonts = true;
-            _gsaSystem = new GSASystem();
-            _gsaSystem.start(this);
+            var gsaConfig:GSAConfig = new GSAConfig();
+            gsaConfig.start(this);
         }
 
         private function uncaughtErrorHandler(event:UncaughtErrorEvent):void {
@@ -35,6 +34,6 @@
         }
         ]]></fx:Script>
 
-    <fx:Style source="/GSAstyle.css"/>
+    <fx:Style source="/gsaStyle.css"/>
 
 </s:Application>

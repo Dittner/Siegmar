@@ -1,24 +1,24 @@
 package dittner.gsa.domain.store {
 import com.probertson.data.SQLRunner;
 
-import dittner.gsa.backend.command.CommandResult;
 import dittner.gsa.backend.encryption.IEncryptionService;
 import dittner.gsa.backend.sqlOperation.CreateDataBaseSQLOperation;
 import dittner.gsa.backend.sqlOperation.InsertFileSQLOperation;
 import dittner.gsa.backend.sqlOperation.SQLFactory;
-import dittner.gsa.backend.sqlOperation.SelectFilesHeadersSQLOperation;
+import dittner.gsa.backend.sqlOperation.SelectFilesSQLOperation;
+import dittner.gsa.bootstrap.async.AsyncOperation;
+import dittner.gsa.bootstrap.async.AsyncOperationResult;
+import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.deferredOperation.DeferredOperationManager;
 import dittner.gsa.bootstrap.deferredOperation.IDeferredOperation;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
-import dittner.gsa.domain.fileSystem.IFolder;
-import dittner.gsa.domain.fileSystem.ISystemFile;
+import dittner.gsa.domain.fileSystem.IGSAFile;
 import dittner.gsa.domain.user.IUser;
-import dittner.gsa.utils.async.AsyncOperation;
-import dittner.gsa.utils.async.AsyncOperationResult;
-import dittner.gsa.utils.async.IAsyncOperation;
 import dittner.walter.WalterModel;
 
 public class FileStorage extends WalterModel {
+
+	public static const FILE_STORED:String = "stored";
 
 	public function FileStorage() {}
 
@@ -46,47 +46,35 @@ public class FileStorage extends WalterModel {
 		deferredOperationManager.add(op);
 	}
 
-	public function store(entity:ISystemFile):IAsyncOperation {
-		return entity.id == -1 ? insert(entity) : update(entity);
+	public function store(entity:IStoreEntity):IAsyncOperation {
+		var file:IGSAFile = entity as IGSAFile;
+		return file.header.id == -1 ? insert(file) : update(file);
 	}
 
-	private function insert(entity:ISystemFile):IAsyncOperation {
-		var asyncOp:IAsyncOperation = new AsyncOperation();
-		var op:IDeferredOperation = new InsertFileSQLOperation(this, entity, encryptionService);
-		//op.addCompleteCallback(notify);
-		requestHandler(asyncOp, op);
+	private function insert(entity:IStoreEntity):IAsyncOperation {
+		var file:IGSAFile = entity as IGSAFile;
+		var op:IDeferredOperation = new InsertFileSQLOperation(this, file, encryptionService);
+		op.addCompleteCallback(function (res:AsyncOperationResult):void { sendMessage(FILE_STORED); });
 		deferredOperationManager.add(op);
-		return asyncOp;
+		return op;
 	}
 
-	private function update(entity:ISystemFile):IAsyncOperation {
+	private function update(entity:IStoreEntity):IAsyncOperation {
+		var file:IGSAFile = entity as IGSAFile;
 		var op:IAsyncOperation = new AsyncOperation();
 		return op;
 	}
 
-	public function remove(entity:ISystemFile):IAsyncOperation {
+	public function remove(entity:IStoreEntity):IAsyncOperation {
+		var file:IGSAFile = entity as IGSAFile;
 		var op:IAsyncOperation = new AsyncOperation();
 		return op;
 	}
 
-	public function loadFilesHeaders(parentFolder:IFolder):IAsyncOperation {
-		var asyncOp:IAsyncOperation = new AsyncOperation();
-		var op:IDeferredOperation = new SelectFilesHeadersSQLOperation(this, parentFolder, system);
-		requestHandler(asyncOp, op);
+	public function loadFiles(parentFolderID:int):IAsyncOperation {
+		var op:IDeferredOperation = new SelectFilesSQLOperation(this, parentFolderID, system);
 		deferredOperationManager.add(op);
-		return asyncOp;
-	}
-
-	//----------------------------------------------------------------------------------------------
-	//
-	//  Handlers
-	//
-	//----------------------------------------------------------------------------------------------
-
-	private function requestHandler(asyncOp:IAsyncOperation, op:IDeferredOperation):void {
-		op.addCompleteCallback(function (res:CommandResult):void {
-			asyncOp.dispatchComplete(res.isSuccess ? new AsyncOperationResult(res.data) : new AsyncOperationResult(res.details, false));
-		});
+		return op;
 	}
 
 }

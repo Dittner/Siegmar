@@ -39,7 +39,7 @@ public class MainController extends WalterController {
 	}
 
 	override protected function deactivate():void {
-		throw new Error("Don't remove MainMediator, don't unregister MainView!");
+		throw new Error("Don't remove MainController, don't unregister MainView!");
 	}
 
 	private var lockRequestNum:int = 0;

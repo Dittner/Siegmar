@@ -1,9 +1,8 @@
-package dittner.gsa.utils.async {
+package dittner.gsa.bootstrap.async {
 import dittner.gsa.utils.pendingInvalidation.invalidateOf;
 
 public class AsyncOperation implements IAsyncOperation {
-	public function AsyncOperation() {
-	}
+	public function AsyncOperation() {}
 
 	private var completeCallbackQueue:Array = [];
 	public function addCompleteCallback(handler:Function):void {
@@ -20,8 +19,12 @@ public class AsyncOperation implements IAsyncOperation {
 		}
 	}
 
+	/*abstract*/
+	protected function destroy():void {}
+
 	private function completeExecute():void {
 		for each(var handler:Function in completeCallbackQueue) handler(asyncOpRes);
+		destroy();
 	}
 
 }
