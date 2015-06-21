@@ -1,4 +1,4 @@
-package dittner.walter.message {
+package dittner.gsa.bootstrap.walter.message {
 public interface IMessageSender {
 	function listen(dispatcherUID:String, msgKey:String, handler:Function):void;
 	function removeListener(dispatcherUID:String, msgKey:String, handler:Function):void;

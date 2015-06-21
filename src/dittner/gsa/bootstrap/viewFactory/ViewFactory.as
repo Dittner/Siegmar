@@ -1,10 +1,10 @@
 package dittner.gsa.bootstrap.viewFactory {
+import dittner.gsa.bootstrap.walter.WalterProxy;
 import dittner.gsa.view.common.view.ViewBase;
 import dittner.gsa.view.documentList.DocumentListView;
 import dittner.gsa.view.login.LoginView;
-import dittner.walter.WalterModel;
 
-public class ViewFactory extends WalterModel implements IViewFactory {
+public class ViewFactory extends WalterProxy implements IViewFactory {
 
 	public function ViewFactory():void {}
 

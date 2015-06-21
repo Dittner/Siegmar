@@ -1,22 +1,22 @@
 package dittner.gsa.bootstrap.navigator {
-import dittner.gsa.bootstrap.viewControllerFactory.IViewControllerFactory;
 import dittner.gsa.bootstrap.viewFactory.IViewFactory;
+import dittner.gsa.bootstrap.viewMediatorFactory.IViewMediatorFactory;
+import dittner.gsa.bootstrap.walter.WalterMediator;
+import dittner.gsa.bootstrap.walter.WalterProxy;
+import dittner.gsa.bootstrap.walter.walter_namespace;
 import dittner.gsa.view.common.view.ViewBase;
-import dittner.walter.WalterController;
-import dittner.walter.WalterModel;
-import dittner.walter.walter_namespace;
 
 use namespace walter_namespace;
 
-public class ViewNavigator extends WalterModel {
+public class ViewNavigator extends WalterProxy {
 	public static const SELECTED_VIEW_CHANGED_MSG:String = "selectedViewChangedMsg";
 
 	[Inject]
 	public var viewFactory:IViewFactory;
 	[Inject]
-	public var viewControllerFactory:IViewControllerFactory;
+	public var viewMediatorFactory:IViewMediatorFactory;
 
-	private var selectedController:WalterController;
+	private var selectedMediator:WalterMediator;
 
 	//--------------------------------------
 	//  selectedViewID
@@ -46,15 +46,15 @@ public class ViewNavigator extends WalterModel {
 		}
 	}
 
-	private function registerController():void {
-		var controller:WalterController = viewControllerFactory.create(selectedViewID);
-		walter.registerController(selectedView, controller);
-		selectedController = controller;
-	}
-
 	private function unregisterController():void {
 		if (!selectedView) return;
-		walter.unregisterController(selectedController);
+		walter.unregisterMediator(selectedMediator);
+	}
+
+	private function registerController():void {
+		var mediator:WalterMediator = viewMediatorFactory.create(selectedViewID);
+		walter.registerMediator(selectedView, mediator);
+		selectedMediator = mediator;
 	}
 
 	override protected function activate():void {}

@@ -3,12 +3,12 @@ package dittner.gsa.view.main {
 import dittner.gsa.backend.encryption.EncryptionService;
 import dittner.gsa.bootstrap.deferredOperation.DeferredOperationManager;
 import dittner.gsa.bootstrap.navigator.ViewNavigator;
+import dittner.gsa.bootstrap.walter.WalterMediator;
+import dittner.gsa.bootstrap.walter.message.WalterMessage;
 import dittner.gsa.message.ControllerMsg;
 import dittner.gsa.view.common.view.ViewBase;
-import dittner.walter.WalterController;
-import dittner.walter.message.WalterMessage;
 
-public class MainController extends WalterController {
+public class MainViewMediator extends WalterMediator {
 
 	[Inject]
 	public var view:MainView;
@@ -20,13 +20,13 @@ public class MainController extends WalterController {
 	public var viewNavigator:ViewNavigator;
 
 	override protected function activate():void {
-		listenModel(deferredOperationManager, DeferredOperationManager.START_EXECUTION_MSG, lockView);
-		listenModel(deferredOperationManager, DeferredOperationManager.END_EXECUTION_MSG, unlockView);
-		listenModel(encryptionService, EncryptionService.START_ENCRYPTING_MSG, lockView);
-		listenModel(encryptionService, EncryptionService.END_ENCRYPTING_MSG, unlockView);
-		listenModel(viewNavigator, ViewNavigator.SELECTED_VIEW_CHANGED_MSG, selectedViewChanged);
-		listenController(ControllerMsg.LOCK, lockView);
-		listenController(ControllerMsg.UNLOCK, unlockView);
+		listenProxy(deferredOperationManager, DeferredOperationManager.START_EXECUTION_MSG, lockView);
+		listenProxy(deferredOperationManager, DeferredOperationManager.END_EXECUTION_MSG, unlockView);
+		listenProxy(encryptionService, EncryptionService.START_ENCRYPTING_MSG, lockView);
+		listenProxy(encryptionService, EncryptionService.END_ENCRYPTING_MSG, unlockView);
+		listenProxy(viewNavigator, ViewNavigator.SELECTED_VIEW_CHANGED_MSG, selectedViewChanged);
+		listenMediator(ControllerMsg.LOCK, lockView);
+		listenMediator(ControllerMsg.UNLOCK, unlockView);
 	}
 
 	private function selectedViewChanged(msg:WalterMessage):void {

@@ -11,12 +11,12 @@ import dittner.gsa.bootstrap.async.AsyncOperationResult;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.deferredOperation.DeferredOperationManager;
 import dittner.gsa.bootstrap.deferredOperation.IDeferredOperation;
+import dittner.gsa.bootstrap.walter.WalterProxy;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.domain.fileSystem.IGSAFile;
 import dittner.gsa.domain.user.IUser;
-import dittner.walter.WalterModel;
 
-public class FileStorage extends WalterModel {
+public class FileStorage extends WalterProxy {
 
 	public static const FILE_STORED:String = "stored";
 

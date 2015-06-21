@@ -1,7 +1,7 @@
 package dittner.gsa.domain.store {
 import dittner.gsa.bootstrap.async.IAsyncOperation;
-import dittner.walter.Walter;
-import dittner.walter.walter_namespace;
+import dittner.gsa.bootstrap.walter.Walter;
+import dittner.gsa.bootstrap.walter.walter_namespace;
 
 use namespace walter_namespace;
 

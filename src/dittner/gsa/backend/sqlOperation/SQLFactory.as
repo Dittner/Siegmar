@@ -1,7 +1,7 @@
 package dittner.gsa.backend.sqlOperation {
-import dittner.walter.WalterModel;
+import dittner.gsa.bootstrap.walter.WalterProxy;
 
-public class SQLFactory extends WalterModel {
+public class SQLFactory extends WalterProxy {
 	public function SQLFactory() {}
 
 	//--------------------------------------

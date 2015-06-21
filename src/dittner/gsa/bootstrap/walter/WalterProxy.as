@@ -1,13 +1,13 @@
-package dittner.walter {
-import dittner.walter.message.WalterMessage;
+package dittner.gsa.bootstrap.walter {
+import dittner.gsa.bootstrap.walter.message.WalterMessage;
 
 use namespace walter_namespace;
 
-public class WalterModel extends WalterComponent {
-	public function WalterModel() {}
+public class WalterProxy extends WalterComponent {
+	public function WalterProxy() {}
 
 	public function sendMessage(msgKey:String, data:Object = null):void {
-		modelMessageSender.sendMessage(uid, new WalterMessage(msgKey, data));
+		proxyMessageSender.sendMessage(uid, new WalterMessage(msgKey, data));
 	}
 
 	override walter_namespace function activating():void {
@@ -15,7 +15,7 @@ public class WalterModel extends WalterComponent {
 	}
 
 	override walter_namespace function deactivating():void {
-		modelMessageSender.removeDispatcher(uid);
+		proxyMessageSender.removeDispatcher(uid);
 		removeAllListeners();
 		deactivate();
 		walter.injector.uninject(this);

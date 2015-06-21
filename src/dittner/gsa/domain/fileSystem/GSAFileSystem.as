@@ -1,12 +1,12 @@
 package dittner.gsa.domain.fileSystem {
+import dittner.gsa.bootstrap.walter.WalterProxy;
+import dittner.gsa.bootstrap.walter.walter_namespace;
 import dittner.gsa.domain.fileSystem.body.DictionaryBody;
 import dittner.gsa.domain.store.FileStorage;
-import dittner.walter.WalterModel;
-import dittner.walter.walter_namespace;
 
 use namespace walter_namespace;
 
-public class GSAFileSystem extends WalterModel {
+public class GSAFileSystem extends WalterProxy {
 
 	public static const FILE_SELECTED:String = "fileSelected";
 	public static const FOLDER_OPENED:String = "folderOpened";

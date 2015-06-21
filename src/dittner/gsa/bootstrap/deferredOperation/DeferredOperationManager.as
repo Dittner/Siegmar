@@ -1,11 +1,11 @@
 package dittner.gsa.bootstrap.deferredOperation {
+import dittner.gsa.bootstrap.walter.WalterProxy;
 import dittner.gsa.utils.pendingInvoke.clearDelay;
 import dittner.gsa.utils.pendingInvoke.doLaterInMSec;
-import dittner.walter.WalterModel;
 
 import flash.utils.getQualifiedClassName;
 
-public class DeferredOperationManager extends WalterModel implements IDeferredOperationManager {
+public class DeferredOperationManager extends WalterProxy implements IDeferredOperationManager {
 	public static const START_EXECUTION_MSG:String = "startExecutionMsg";
 	public static const END_EXECUTION_MSG:String = "endExecutionMsg";
 

@@ -1,15 +1,15 @@
 package dittner.gsa.view.documentList.form {
+import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.domain.fileSystem.FileOptionKeys;
 import dittner.gsa.domain.fileSystem.FileType;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.domain.fileSystem.IGSAFile;
 import dittner.gsa.message.ControllerMsg;
 import dittner.gsa.view.documentList.toolbar.ToolAction;
-import dittner.walter.WalterController;
 
 import flash.events.MouseEvent;
 
-public class DocumentFormController extends WalterController {
+public class DocumentFormMediator extends WalterMediator {
 
 	[Inject]
 	public var view:DocumentForm;
@@ -17,8 +17,8 @@ public class DocumentFormController extends WalterController {
 	public var system:GSAFileSystem;
 
 	override protected function activate():void {
-		listenController(ControllerMsg.START_EDIT, startEdit);
-		listenController(ControllerMsg.END_EDIT, endEdit);
+		listenMediator(ControllerMsg.START_EDIT, startEdit);
+		listenMediator(ControllerMsg.END_EDIT, endEdit);
 		view.cancelBtn.addEventListener(MouseEvent.CLICK, cancelHandler);
 		view.applyBtn.addEventListener(MouseEvent.CLICK, applyHandler);
 	}

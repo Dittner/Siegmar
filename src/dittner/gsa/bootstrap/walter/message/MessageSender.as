@@ -1,4 +1,4 @@
-package dittner.walter.message {
+package dittner.gsa.bootstrap.walter.message {
 
 public class MessageSender implements IMessageSender {
 	public function MessageSender() {

@@ -1,13 +1,13 @@
 package dittner.gsa.domain.user {
 import dittner.gsa.backend.SharedObjectStorage;
 import dittner.gsa.backend.encryption.IEncryptionService;
-import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.bootstrap.async.AsyncOperation;
 import dittner.gsa.bootstrap.async.AsyncOperationResult;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
-import dittner.walter.WalterModel;
+import dittner.gsa.bootstrap.walter.WalterProxy;
+import dittner.gsa.domain.fileSystem.GSAFileSystem;
 
-public class User extends WalterModel implements IUser {
+public class User extends WalterProxy implements IUser {
 	public function User() {
 		localStorage = new SharedObjectStorage();
 		localStorage.init("userCredentials");

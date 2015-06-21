@@ -8,13 +8,13 @@ import com.hurlant.crypto.symmetric.NullPad;
 import com.hurlant.util.Base64;
 import com.hurlant.util.Hex;
 
-import dittner.walter.WalterModel;
+import dittner.gsa.bootstrap.walter.WalterProxy;
 
 import flash.events.TimerEvent;
 import flash.utils.ByteArray;
 import flash.utils.Timer;
 
-public class EncryptionService extends WalterModel implements IEncryptionService {
+public class EncryptionService extends WalterProxy implements IEncryptionService {
 
 	public static const START_ENCRYPTING_MSG:String = "startEncryptingMsg";
 	public static const END_ENCRYPTING_MSG:String = "startEncryptingMsg";

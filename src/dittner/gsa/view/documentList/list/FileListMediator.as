@@ -1,17 +1,17 @@
 package dittner.gsa.view.documentList.list {
-import dittner.gsa.domain.fileSystem.GSAFileSystem;
-import dittner.gsa.domain.store.FileStorage;
 import dittner.gsa.bootstrap.async.AsyncOperationResult;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
+import dittner.gsa.bootstrap.walter.WalterMediator;
+import dittner.gsa.bootstrap.walter.message.WalterMessage;
+import dittner.gsa.domain.fileSystem.GSAFileSystem;
+import dittner.gsa.domain.store.FileStorage;
 import dittner.gsa.view.common.list.SelectableDataGroup;
-import dittner.walter.WalterController;
-import dittner.walter.message.WalterMessage;
 
 import flash.events.Event;
 
 import mx.collections.ArrayCollection;
 
-public class FileListController extends WalterController {
+public class FileListMediator extends WalterMediator {
 
 	[Inject]
 	public var view:FileList;
@@ -21,7 +21,7 @@ public class FileListController extends WalterController {
 	public var fileStorage:FileStorage;
 
 	override protected function activate():void {
-		listenModel(fileStorage, FileStorage.FILE_STORED, loadFiles);
+		listenProxy(fileStorage, FileStorage.FILE_STORED, loadFiles);
 		view.list.addEventListener(SelectableDataGroup.SELECTED, viewListItemSelectedHandler);
 		loadFiles();
 	}

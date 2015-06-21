@@ -1,4 +1,4 @@
-package dittner.walter.message {
+package dittner.gsa.bootstrap.walter.message {
 public class WalterMessage {
 	public function WalterMessage(key:String, data:Object):void {
 		this.key = key;

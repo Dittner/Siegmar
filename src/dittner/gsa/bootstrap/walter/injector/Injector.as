@@ -1,7 +1,7 @@
-package dittner.walter.injector {
-import dittner.walter.Walter;
-import dittner.walter.WalterModel;
-import dittner.walter.walter_namespace;
+package dittner.gsa.bootstrap.walter.injector {
+import dittner.gsa.bootstrap.walter.Walter;
+import dittner.gsa.bootstrap.walter.WalterProxy;
+import dittner.gsa.bootstrap.walter.walter_namespace;
 
 import flash.utils.describeType;
 import flash.utils.getDefinitionByName;
@@ -17,16 +17,16 @@ public class Injector implements IInjector {
 	private var walter:Walter;
 	private static const classInjectionPropHash:Object = {};
 
-	public function injectPendingModels():void {
+	public function injectPendingProxies():void {
 		var injectionComplete:Boolean;
-		for (var i:int = 0; i < walter.pendingInjectModels.length; i++) {
-			var model:WalterModel = walter.pendingInjectModels[i];
+		for (var i:int = 0; i < walter.pendingInjectProxies.length; i++) {
+			var proxy:WalterProxy = walter.pendingInjectProxies[i];
 			injectionComplete = true;
-			var props:Array = getInjectedProps(model);
+			var props:Array = getInjectedProps(proxy);
 			for each (var prop:String in props) {
-				if (model[prop] == null) {
-					if (walter.modelHash[prop]) model[prop] = walter.modelHash[prop];
-					else if (walter.hasModel(prop)) model[prop] = walter.getModel(prop);
+				if (proxy[prop] == null) {
+					if (walter.proxyHash[prop]) proxy[prop] = walter.proxyHash[prop];
+					else if (walter.hasProxy(prop)) proxy[prop] = walter.getProxy(prop);
 					else {
 						injectionComplete = false;
 						break;
@@ -34,9 +34,9 @@ public class Injector implements IInjector {
 				}
 			}
 			if (injectionComplete) {
-				walter.pendingInjectModels.splice(i, 1);
+				walter.pendingInjectProxies.splice(i, 1);
 				i--;
-				model.activating();
+				proxy.activating();
 			}
 		}
 	}
@@ -45,8 +45,8 @@ public class Injector implements IInjector {
 		var props:Array = getInjectedProps(obj);
 		for each (var prop:String in props) {
 			if (obj[prop] == null) {
-				if (walter.modelHash[prop]) obj[prop] = walter.modelHash[prop];
-				else if (walter.hasModel(prop)) obj[prop] = walter.getModel(prop);
+				if (walter.proxyHash[prop]) obj[prop] = walter.proxyHash[prop];
+				else if (walter.hasProxy(prop)) obj[prop] = walter.getProxy(prop);
 			}
 		}
 	}

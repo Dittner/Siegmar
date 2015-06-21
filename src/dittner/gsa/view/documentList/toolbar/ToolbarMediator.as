@@ -1,12 +1,12 @@
 package dittner.gsa.view.documentList.toolbar {
 import dittner.gsa.bootstrap.navigator.ViewNavigator;
 import dittner.gsa.bootstrap.viewFactory.ViewID;
+import dittner.gsa.bootstrap.walter.WalterMediator;
+import dittner.gsa.bootstrap.walter.message.WalterMessage;
 import dittner.gsa.domain.user.IUser;
 import dittner.gsa.message.ControllerMsg;
-import dittner.walter.WalterController;
-import dittner.walter.message.WalterMessage;
 
-public class ToolbarController extends WalterController {
+public class ToolbarMediator extends WalterMediator {
 
 	[Inject]
 	public var view:Toolbar;
@@ -16,8 +16,8 @@ public class ToolbarController extends WalterController {
 	public var user:IUser;
 
 	override protected function activate():void {
-		listenController(ControllerMsg.START_EDIT, startEditing);
-		listenController(ControllerMsg.END_EDIT, endEditing);
+		listenMediator(ControllerMsg.START_EDIT, startEditing);
+		listenMediator(ControllerMsg.END_EDIT, endEditing);
 		view.selectedOpCallBack = actionHandler;
 	}
 

@@ -1,17 +1,17 @@
 package dittner.gsa.view.login {
-import dittner.gsa.bootstrap.navigator.ViewNavigator;
-import dittner.gsa.bootstrap.viewFactory.ViewID;
-import dittner.gsa.domain.user.IUser;
-import dittner.gsa.utils.AppInfo;
 import dittner.gsa.bootstrap.async.AsyncOperationResult;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
-import dittner.walter.WalterController;
+import dittner.gsa.bootstrap.navigator.ViewNavigator;
+import dittner.gsa.bootstrap.viewFactory.ViewID;
+import dittner.gsa.bootstrap.walter.WalterMediator;
+import dittner.gsa.domain.user.IUser;
+import dittner.gsa.utils.AppInfo;
 
 import flash.events.MouseEvent;
 
 import mx.events.FlexEvent;
 
-public class LoginController extends WalterController {
+public class LoginMediator extends WalterMediator {
 
 	[Inject]
 	public var view:LoginView;
