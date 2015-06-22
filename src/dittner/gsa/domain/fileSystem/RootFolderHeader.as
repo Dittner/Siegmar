@@ -3,9 +3,10 @@ import dittner.gsa.bootstrap.async.AsyncOperation;
 import dittner.gsa.bootstrap.async.AsyncOperationResult;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 
-public class RootFolder extends GSAFile {
-	public function RootFolder() {
+public class RootFolderHeader extends FileHeader {
+	public function RootFolderHeader() {
 		super();
+		title = "..."
 	}
 
 	override public function store():IAsyncOperation {

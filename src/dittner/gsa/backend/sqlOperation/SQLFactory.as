@@ -44,6 +44,20 @@ public class SQLFactory extends WalterProxy {
 	//  update
 	//--------------------------------------
 
+	[Embed(source="/dittner/gsa/backend/sqlOperation/sql/UpdateFileHeader.sql", mimeType="application/octet-stream")]
+	private static const UpdateFileHeaderClass:Class;
+	private static const UPDATE_FILE_HEADER_SQL:String = new UpdateFileHeaderClass();
+	public function get updateFileHeader():String {
+		return UPDATE_FILE_HEADER_SQL;
+	}
+
+	[Embed(source="/dittner/gsa/backend/sqlOperation/sql/UpdateFileBody.sql", mimeType="application/octet-stream")]
+	private static const UpdateFileBodyClass:Class;
+	private static const UPDATE_FILE_BODY_SQL:String = new UpdateFileBodyClass();
+	public function get updateFileBody():String {
+		return UPDATE_FILE_BODY_SQL;
+	}
+
 	//--------------------------------------
 	//  delete
 	//--------------------------------------

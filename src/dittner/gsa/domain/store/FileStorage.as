@@ -3,17 +3,20 @@ import com.probertson.data.SQLRunner;
 
 import dittner.gsa.backend.encryption.IEncryptionService;
 import dittner.gsa.backend.sqlOperation.CreateDataBaseSQLOperation;
-import dittner.gsa.backend.sqlOperation.InsertFileSQLOperation;
+import dittner.gsa.backend.sqlOperation.FileSQLWrapper;
 import dittner.gsa.backend.sqlOperation.SQLFactory;
-import dittner.gsa.backend.sqlOperation.SelectFilesSQLOperation;
+import dittner.gsa.backend.sqlOperation.SelectFileHeadersSQLOperation;
+import dittner.gsa.backend.sqlOperation.StoreFileBodySQLOperation;
+import dittner.gsa.backend.sqlOperation.StoreFileHeaderSQLOperation;
 import dittner.gsa.bootstrap.async.AsyncOperation;
 import dittner.gsa.bootstrap.async.AsyncOperationResult;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.deferredOperation.DeferredOperationManager;
 import dittner.gsa.bootstrap.deferredOperation.IDeferredOperation;
 import dittner.gsa.bootstrap.walter.WalterProxy;
+import dittner.gsa.domain.fileSystem.FileHeader;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
-import dittner.gsa.domain.fileSystem.IGSAFile;
+import dittner.gsa.domain.fileSystem.body.FileBody;
 import dittner.gsa.domain.user.IUser;
 
 public class FileStorage extends WalterProxy {
@@ -46,36 +49,63 @@ public class FileStorage extends WalterProxy {
 		deferredOperationManager.add(op);
 	}
 
-	public function store(entity:IStoreEntity):IAsyncOperation {
-		var file:IGSAFile = entity as IGSAFile;
-		return file.header.id == -1 ? insert(file) : update(file);
-	}
+	//--------------------------------------
+	//  header
+	//--------------------------------------
 
-	private function insert(entity:IStoreEntity):IAsyncOperation {
-		var file:IGSAFile = entity as IGSAFile;
-		var op:IDeferredOperation = new InsertFileSQLOperation(this, file, encryptionService);
-		op.addCompleteCallback(function (res:AsyncOperationResult):void { sendMessage(FILE_STORED); });
+	public function storeHeader(header:FileHeader):IAsyncOperation {
+		var op:IDeferredOperation = new StoreFileHeaderSQLOperation(wrapFileHeader(header));
+		op.addCompleteCallback(notifyFileStored);
 		deferredOperationManager.add(op);
 		return op;
 	}
 
-	private function update(entity:IStoreEntity):IAsyncOperation {
-		var file:IGSAFile = entity as IGSAFile;
+	public function removeHeader(header:FileHeader):IAsyncOperation {
 		var op:IAsyncOperation = new AsyncOperation();
 		return op;
 	}
 
-	public function remove(entity:IStoreEntity):IAsyncOperation {
-		var file:IGSAFile = entity as IGSAFile;
-		var op:IAsyncOperation = new AsyncOperation();
-		return op;
-	}
+	//--------------------------------------
+	//  body
+	//--------------------------------------
 
-	public function loadFiles(parentFolderID:int):IAsyncOperation {
-		var op:IDeferredOperation = new SelectFilesSQLOperation(this, parentFolderID, system);
+	public function storeBody(body:FileBody):IAsyncOperation {
+		var op:IDeferredOperation = new StoreFileBodySQLOperation(wrapFileBody(body));
 		deferredOperationManager.add(op);
 		return op;
 	}
 
+	public function removeBody(body:FileBody):IAsyncOperation {
+		var op:IAsyncOperation = new AsyncOperation();
+		return op;
+	}
+
+	public function loadFileHeaders(parentFolderID:int):IAsyncOperation {
+		var op:IDeferredOperation = new SelectFileHeadersSQLOperation(this, parentFolderID, system);
+		deferredOperationManager.add(op);
+		return op;
+	}
+
+	private function wrapFileHeader(header:FileHeader):FileSQLWrapper {
+		var wrapper:FileSQLWrapper = new FileSQLWrapper();
+		wrapper.header = header;
+		wrapper.sqlRunner = sqlRunner;
+		wrapper.sqlFactory = sqlFactory;
+		wrapper.encryptionService = encryptionService;
+		return wrapper;
+	}
+
+	private function wrapFileBody(body:FileBody):FileSQLWrapper {
+		var wrapper:FileSQLWrapper = new FileSQLWrapper();
+		wrapper.body = body;
+		wrapper.sqlRunner = sqlRunner;
+		wrapper.sqlFactory = sqlFactory;
+		wrapper.encryptionService = encryptionService;
+		return wrapper;
+	}
+
+	private function notifyFileStored(res:AsyncOperationResult):void {
+		if (res.isSuccess) sendMessage(FILE_STORED);
+	}
 }
 }

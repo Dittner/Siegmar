@@ -20,12 +20,12 @@ public class GSAConfig extends Walter {
 	public function start(root:IVisualElementContainer):void {
 		var viewNavigator:ViewNavigator = new ViewNavigator();
 		registerProxy("deferredOperationManager", new DeferredOperationManager());
+		registerProxy("fileStorage", new FileStorage);
 		registerProxy("viewFactory", new ViewFactory());
 		registerProxy("viewMediatorFactory", new ViewMediatorFactory());
 		registerProxy("viewNavigator", viewNavigator);
 		registerProxy("sqlFactory", new SQLFactory);
 		registerProxy("encryptionService", new EncryptionService);
-		registerProxy("fileStorage", new FileStorage);
 		registerProxy("system", new GSAFileSystem());
 		registerProxy("user", new User());
 

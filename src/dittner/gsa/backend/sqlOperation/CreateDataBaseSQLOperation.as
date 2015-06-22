@@ -16,12 +16,7 @@ public class CreateDataBaseSQLOperation extends DeferredOperation {
 		super();
 		this.storage = storage;
 		this.sqlFactory = sqlFactory;
-	}
 
-	private var storage:FileStorage;
-	private var sqlFactory:SQLFactory;
-
-	override public function process():void {
 		var dbRootFile:File = File.documentsDirectory.resolvePath(AppInfo.dbRootPath);
 		if (!dbRootFile.exists) {
 			var appDBDir:File = File.applicationDirectory.resolvePath(AppInfo.applicationDBPath);
@@ -34,9 +29,15 @@ public class CreateDataBaseSQLOperation extends DeferredOperation {
 			}
 		}
 
-		var dbFile:File = File.documentsDirectory.resolvePath(AppInfo.dbRootPath + "user.db");
+		dbFile = File.documentsDirectory.resolvePath(AppInfo.dbRootPath + "user.db");
 		storage.sqlRunner = new SQLRunner(dbFile);
+	}
 
+	private var dbFile:File;
+	private var storage:FileStorage;
+	private var sqlFactory:SQLFactory;
+
+	override public function process():void {
 		if (!dbFile.exists) {
 			var statements:Vector.<QueuedStatement> = new Vector.<QueuedStatement>();
 			statements.push(new QueuedStatement(sqlFactory.createFileHeaderTbl));

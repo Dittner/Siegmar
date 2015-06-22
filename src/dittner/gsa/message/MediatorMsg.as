@@ -1,5 +1,5 @@
 package dittner.gsa.message {
-public class ControllerMsg {
+public class MediatorMsg {
 
 	public static const LOCK:String = "lock";
 	public static const UNLOCK:String = "unlock";

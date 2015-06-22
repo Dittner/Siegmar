@@ -1,15 +1,24 @@
 package dittner.gsa.domain.fileSystem {
-public class GSAFileHeader {
-	public function GSAFileHeader() {}
+import dittner.gsa.bootstrap.async.IAsyncOperation;
+import dittner.gsa.bootstrap.walter.Walter;
+import dittner.gsa.bootstrap.walter.walter_namespace;
+import dittner.gsa.domain.store.FileStorage;
 
-	//--------------------------------------
-	//  id
-	//--------------------------------------
-	private var _id:int = -1;
-	public function get id():int {return _id;}
-	public function set id(value:int):void {
-		if (_id != value) {
-			_id = value;
+use namespace walter_namespace;
+
+public class FileHeader {
+	public function FileHeader() {
+		Walter.instance.injector.inject(this);
+	}
+
+	[Inject]
+	public var fileStorage:FileStorage;
+
+	private var _fileID:int = -1;
+	public function get fileID():int {return _fileID;}
+	public function set fileID(value:int):void {
+		if (_fileID != value) {
+			_fileID = value;
 		}
 	}
 
@@ -66,6 +75,14 @@ public class GSAFileHeader {
 		if (_options != value) {
 			_options = value;
 		}
+	}
+
+	public function store():IAsyncOperation {
+		return fileStorage.storeHeader(this);
+	}
+
+	public function remove():IAsyncOperation {
+		return fileStorage.removeHeader(this);
 	}
 }
 }

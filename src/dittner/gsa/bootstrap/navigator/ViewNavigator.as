@@ -38,20 +38,20 @@ public class ViewNavigator extends WalterProxy {
 
 	public function navigate(viewID:String):void {
 		if (_selectedViewID != viewID) {
-			unregisterController();
+			unregisterMediator();
 			_selectedViewID = viewID;
 			_selectedView = viewFactory.createView(selectedViewID);
-			registerController();
+			registerMediator();
 			sendMessage(SELECTED_VIEW_CHANGED_MSG, selectedView);
 		}
 	}
 
-	private function unregisterController():void {
+	private function unregisterMediator():void {
 		if (!selectedView) return;
 		walter.unregisterMediator(selectedMediator);
 	}
 
-	private function registerController():void {
+	private function registerMediator():void {
 		var mediator:WalterMediator = viewMediatorFactory.create(selectedViewID);
 		walter.registerMediator(selectedView, mediator);
 		selectedMediator = mediator;

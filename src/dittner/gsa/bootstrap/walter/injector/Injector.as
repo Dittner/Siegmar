@@ -2,6 +2,7 @@ package dittner.gsa.bootstrap.walter.injector {
 import dittner.gsa.bootstrap.walter.Walter;
 import dittner.gsa.bootstrap.walter.WalterProxy;
 import dittner.gsa.bootstrap.walter.walter_namespace;
+import dittner.gsa.utils.pendingInvalidation.invalidateOf;
 
 import flash.utils.describeType;
 import flash.utils.getDefinitionByName;
@@ -36,7 +37,7 @@ public class Injector implements IInjector {
 			if (injectionComplete) {
 				walter.pendingInjectProxies.splice(i, 1);
 				i--;
-				proxy.activating();
+				invalidateOf(proxy.activating);
 			}
 		}
 	}
