@@ -79,7 +79,7 @@
                           verticalAlign="middle"/>
     </core:layout>
 
-    <s:Label fontFamily="{FontName.Georgia}"
+    <s:Label fontFamily="{FontName.GEORGIA}"
              color="{AppColors.HELL_TÜRKIS}"
              fontSize="38" width="100%" textAlign="center"
              paddingBottom="60"
@@ -88,7 +88,7 @@
 
     <s:HGroup width="100%" gap="10" verticalAlign="middle"
               visible.authorization="false" includeInLayout.authorization="false">
-        <s:Label fontFamily="{FontName.Georgia}"
+        <s:Label fontFamily="{FontName.GEORGIA}"
                  color="{AppColors.TEXT_RED}"
                  width="{width/2 - 260}"
                  fontSize="30"
@@ -99,7 +99,7 @@
     </s:HGroup>
 
     <s:HGroup width="100%" gap="10" verticalAlign="middle">
-        <s:Label fontFamily="{FontName.Georgia}"
+        <s:Label fontFamily="{FontName.GEORGIA}"
                  color="{AppColors.TEXT_RED}"
                  width="{width/2 - 260}"
                  fontSize="30"
@@ -110,7 +110,7 @@
     </s:HGroup>
 
     <s:HGroup width="100%" gap="10" verticalAlign="middle">
-        <s:Label fontFamily="{FontName.Georgia}"
+        <s:Label fontFamily="{FontName.GEORGIA}"
                  color="{AppColors.TEXT_RED}"
                  width="{width/2 - 260}"
                  fontSize="30"
@@ -127,7 +127,7 @@
                         label.registration="Bestätigen"
                         label.authorization="Einloggen"/>
 
-    <s:Label fontFamily="{FontName.Georgia}"
+    <s:Label fontFamily="{FontName.GEORGIA}"
              fontWeight="bold"
              visible="{isInvalidPassword}"
              color="{AppColors.TEXT_INVALID}"

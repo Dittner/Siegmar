@@ -74,14 +74,14 @@
              visible="{showTitle}"
              includeInLayout="{showTitle}"
              color="{AppColors.TEXT_DARK}"
-             fontFamily="{FontName.ROBOTO}"/>
+             fontFamily="{FontName.TAHOMA}"/>
 
     <s:TextArea width="100%" height="100%"
                 skinClass="{TextAreaFormSkin}"
                 text="@{text}"
                 fontSize="14"
                 color="#333333"
-                fontFamily="{FontName.ROBOTO_MX}"
+                fontFamily="{FontName.TAHOMA_MX}"
                 focusSkin="{UIComponent}"
                 borderVisible="false"/>
 </s:VGroup>

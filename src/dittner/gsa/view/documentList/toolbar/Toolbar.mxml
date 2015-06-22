@@ -24,13 +24,16 @@
 
         <s:Spacer height="100%"/>
 
-        <button:ToolButton toolId="{ToolAction.ADD}"
+        <button:ToolButton id="addBtn"
+                           toolId="{ToolAction.ADD}"
                            image="@Embed(source='/assets/btn/add_btn.png')"
                            click="btnClickHandler(event)"/>
-        <button:ToolButton toolId="{ToolAction.EDIT}"
+        <button:ToolButton id="editBtn"
+                           toolId="{ToolAction.EDIT}"
                            image="@Embed(source='/assets/btn/edit_btn.png')"
                            click="btnClickHandler(event)"/>
-        <button:ToolButton toolId="{ToolAction.REMOVE}"
+        <button:ToolButton id="removeBtn"
+                           toolId="{ToolAction.REMOVE}"
                            image="@Embed(source='/assets/btn/delete_btn.png')"
                            click="btnClickHandler(event)"/>
 

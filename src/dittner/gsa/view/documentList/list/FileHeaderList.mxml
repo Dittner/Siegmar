@@ -14,13 +14,13 @@
     <button:ColorButton id="backBtn"
                         width="100%"
                         height="50"
-                        bgColor="#39105f"
-                        textColor="#80879f"
+                        bgColor="#bec2f5"
+                        textColor="#ffFFff"
                         fontSize="12"
-                        fontFamily="{FontName.ROBOTO_COND_MX}"
+                        fontFamily="{FontName.TAHOMA_MX}"
                         label="zurück"/>
 
-    <s:Scroller width="100%" top="50" bottom="0">
+    <s:Scroller width="100%" top="50" bottom="50">
         <list:SelectableDataGroup id="list"
                                   width="100%"
                                   itemRenderer="dittner.gsa.view.documentList.FileHeaderRenderer">
@@ -31,4 +31,9 @@
 
     </s:Scroller>
 
+    <utils:BG width="100%" height="50" bottom="0" color="#0A0C28"/>
+    <s:Label id="pathLbl" verticalAlign="middle"
+             paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"
+             width="100%" height="50" bottom="0" fontSize="14"
+             color="#8591bd"/>
 </s:Group>

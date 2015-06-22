@@ -3,8 +3,9 @@ import dittner.gsa.bootstrap.navigator.ViewNavigator;
 import dittner.gsa.bootstrap.viewFactory.ViewID;
 import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.bootstrap.walter.message.WalterMessage;
+import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.domain.user.IUser;
-import dittner.gsa.message.ControllerMsg;
+import dittner.gsa.message.MediatorMsg;
 
 public class ToolbarMediator extends WalterMediator {
 
@@ -14,11 +15,18 @@ public class ToolbarMediator extends WalterMediator {
 	public var viewNavigator:ViewNavigator;
 	[Inject]
 	public var user:IUser;
+	[Inject]
+	public var system:GSAFileSystem;
 
 	override protected function activate():void {
-		listenMediator(ControllerMsg.START_EDIT, startEditing);
-		listenMediator(ControllerMsg.END_EDIT, endEditing);
+		listenProxy(system, GSAFileSystem.FILE_SELECTED, fileSelected);
+		listenMediator(MediatorMsg.START_EDIT, startEditing);
+		listenMediator(MediatorMsg.END_EDIT, endEditing);
 		view.selectedOpCallBack = actionHandler;
+	}
+
+	private function fileSelected(msg:WalterMessage):void {
+		view.editBtn.enabled = view.removeBtn.enabled = system.selectedFileHeader != null;
 	}
 
 	private function startEditing(msg:WalterMessage):void {
@@ -33,7 +41,7 @@ public class ToolbarMediator extends WalterMediator {
 			case ToolAction.ADD:
 			case ToolAction.EDIT:
 			case ToolAction.REMOVE:
-				sendMessage(ControllerMsg.START_EDIT, action);
+				sendMessage(MediatorMsg.START_EDIT, action);
 				break;
 			case ToolAction.LOGOUT:
 				user.logout();

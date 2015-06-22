@@ -5,7 +5,7 @@ import dittner.gsa.bootstrap.deferredOperation.DeferredOperationManager;
 import dittner.gsa.bootstrap.navigator.ViewNavigator;
 import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.bootstrap.walter.message.WalterMessage;
-import dittner.gsa.message.ControllerMsg;
+import dittner.gsa.message.MediatorMsg;
 import dittner.gsa.view.common.view.ViewBase;
 
 public class MainViewMediator extends WalterMediator {
@@ -25,8 +25,8 @@ public class MainViewMediator extends WalterMediator {
 		listenProxy(encryptionService, EncryptionService.START_ENCRYPTING_MSG, lockView);
 		listenProxy(encryptionService, EncryptionService.END_ENCRYPTING_MSG, unlockView);
 		listenProxy(viewNavigator, ViewNavigator.SELECTED_VIEW_CHANGED_MSG, selectedViewChanged);
-		listenMediator(ControllerMsg.LOCK, lockView);
-		listenMediator(ControllerMsg.UNLOCK, unlockView);
+		listenMediator(MediatorMsg.LOCK, lockView);
+		listenMediator(MediatorMsg.UNLOCK, unlockView);
 	}
 
 	private function selectedViewChanged(msg:WalterMessage):void {
@@ -39,7 +39,7 @@ public class MainViewMediator extends WalterMediator {
 	}
 
 	override protected function deactivate():void {
-		throw new Error("Don't remove MainController, don't unregister MainView!");
+		throw new Error("Don't remove MainMediator, don't unregister MainView!");
 	}
 
 	private var lockRequestNum:int = 0;

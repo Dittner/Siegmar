@@ -11,7 +11,7 @@ import flash.events.MouseEvent;
 
 import mx.events.FlexEvent;
 
-public class LoginMediator extends WalterMediator {
+public class LoginViewMediator extends WalterMediator {
 
 	[Inject]
 	public var view:LoginView;

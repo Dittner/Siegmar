@@ -13,10 +13,9 @@ import spark.events.RendererExistenceEvent;
 [Event(name="selectedItemChange", type="flash.events.Event")]
 public class SelectableDataGroup extends DataGroup {
 
-	public static const SELECTED:String = "selectedItemChange";
-
 	public function SelectableDataGroup() {
 		super();
+		doubleClickEnabled = true;
 		addEventListener(RendererExistenceEvent.RENDERER_ADD, rendererAddHandler);
 		addEventListener(RendererExistenceEvent.RENDERER_REMOVE, rendererRemoveHandler);
 	}
@@ -32,7 +31,7 @@ public class SelectableDataGroup extends DataGroup {
 	//--------------------------------------------------------------------------------
 	//  selectedIndex
 	//--------------------------------------------------------------------------------
-	[Bindable("selectedItemChange")]
+	[Bindable("selected")]
 	public function get selectedIndex():int {
 		if (!_selectedItem || !dataProvider) return -1;
 		return dataProvider.getItemIndex(_selectedItem);
@@ -45,13 +44,14 @@ public class SelectableDataGroup extends DataGroup {
 	//  selectedItem
 	//--------------------------------------------------------------------------------
 	private var _selectedItem:Object;
-	[Bindable("selectedItemChange")]
+	[Bindable("selected")]
 	public function get selectedItem():Object {
 		return _selectedItem;
 	}
 	public function set selectedItem(value:Object):void {
 		if (value == _selectedItem) {
-			if (allowSelectLastItem) dispatchEvent(new Event("selectedItemChange"));
+			if (allowSelectLastItem)
+				dispatchEvent(new SelectableDataGroupEvent(SelectableDataGroupEvent.SELECTED, selectedItem));
 			return;
 		}
 
@@ -61,7 +61,7 @@ public class SelectableDataGroup extends DataGroup {
 			var renderer:IItemRenderer = getElementAt(i) as IItemRenderer;
 			if (renderer) renderer.selected = (renderer.data == value);
 		}
-		dispatchEvent(new Event("selectedItemChange"));
+		dispatchEvent(new SelectableDataGroupEvent(SelectableDataGroupEvent.SELECTED, selectedItem));
 	}
 
 	//--------------------------------------------------------------------------------
@@ -187,6 +187,7 @@ public class SelectableDataGroup extends DataGroup {
 	protected function rendererAddHandler(event:RendererExistenceEvent):void {
 		renderers.push(event.renderer);
 		event.renderer.addEventListener(MouseEvent.CLICK, renderer_clickHandler);
+		event.renderer.addEventListener(MouseEvent.DOUBLE_CLICK, renderer_double_clickHandler);
 	}
 
 	//--------------------------------------------------------------------------------
@@ -207,6 +208,14 @@ public class SelectableDataGroup extends DataGroup {
 		var selectedData:Object = dataRenderer ? dataRenderer.data : null;
 		if (deselectEnabled && selectedData && selectedData == selectedItem) selectedItem = null;
 		else selectedItem = selectedData;
+	}
+
+	//--------------------------------------------------------------------------------
+	//  renderer_double_clickHandler
+	//--------------------------------------------------------------------------------
+	protected function renderer_double_clickHandler(event:MouseEvent):void {
+		var dataRenderer:IDataRenderer = event.currentTarget as IDataRenderer;
+		dispatchEvent(new SelectableDataGroupEvent(SelectableDataGroupEvent.DOUBLE_CLICKED, dataRenderer.data));
 	}
 }
 }

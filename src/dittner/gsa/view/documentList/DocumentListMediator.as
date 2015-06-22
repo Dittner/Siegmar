@@ -1,7 +1,7 @@
 package dittner.gsa.view.documentList {
 import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.view.documentList.form.DocumentFormMediator;
-import dittner.gsa.view.documentList.list.FileListMediator;
+import dittner.gsa.view.documentList.list.FileHeaderListMediator;
 import dittner.gsa.view.documentList.toolbar.ToolbarMediator;
 
 public class DocumentListMediator extends WalterMediator {
@@ -10,7 +10,7 @@ public class DocumentListMediator extends WalterMediator {
 	public var view:DocumentListView;
 
 	override protected function activate():void {
-		registerMediator(view.fileList, new FileListMediator());
+		registerMediator(view.fileHeaderList, new FileHeaderListMediator());
 		registerMediator(view.toolbar, new ToolbarMediator());
 		registerMediator(view.documentForm, new DocumentFormMediator());
 	}

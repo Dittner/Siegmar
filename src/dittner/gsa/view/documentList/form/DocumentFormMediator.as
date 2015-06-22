@@ -1,10 +1,11 @@
 package dittner.gsa.view.documentList.form {
 import dittner.gsa.bootstrap.walter.WalterMediator;
+import dittner.gsa.bootstrap.walter.message.WalterMessage;
+import dittner.gsa.domain.fileSystem.FileHeader;
 import dittner.gsa.domain.fileSystem.FileOptionKeys;
 import dittner.gsa.domain.fileSystem.FileType;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
-import dittner.gsa.domain.fileSystem.IGSAFile;
-import dittner.gsa.message.ControllerMsg;
+import dittner.gsa.message.MediatorMsg;
 import dittner.gsa.view.documentList.toolbar.ToolAction;
 
 import flash.events.MouseEvent;
@@ -17,19 +18,19 @@ public class DocumentFormMediator extends WalterMediator {
 	public var system:GSAFileSystem;
 
 	override protected function activate():void {
-		listenMediator(ControllerMsg.START_EDIT, startEdit);
-		listenMediator(ControllerMsg.END_EDIT, endEdit);
+		listenMediator(MediatorMsg.START_EDIT, startEdit);
+		listenMediator(MediatorMsg.END_EDIT, endEdit);
 		view.cancelBtn.addEventListener(MouseEvent.CLICK, cancelHandler);
 		view.applyBtn.addEventListener(MouseEvent.CLICK, applyHandler);
 	}
 
-	private function startEdit(action:String):void {
-		switch (action) {
+	private function startEdit(msg:WalterMessage):void {
+		switch (msg.data) {
 			case ToolAction.ADD:
 				view.add();
 				break;
 			case ToolAction.EDIT:
-				view.edit(null);
+				if (system.selectedFileHeader) view.edit(system.selectedFileHeader);
 				break;
 			case ToolAction.REMOVE:
 				view.remove(null);
@@ -44,28 +45,44 @@ public class DocumentFormMediator extends WalterMediator {
 	}
 
 	private function cancelHandler(event:MouseEvent):void {
-		sendMessage(ControllerMsg.END_EDIT);
+		sendMessage(MediatorMsg.END_EDIT);
 	}
 
 	private function applyHandler(event:MouseEvent):void {
-		createAndSaveFile();
-		sendMessage(ControllerMsg.END_EDIT);
+		if (view.mode == DocumentFormMode.ADD) createAndSaveNewFile();
+		else if (view.mode == DocumentFormMode.EDIT) updateAndSaveFile();
+		sendMessage(MediatorMsg.END_EDIT);
 	}
 
-	private function createAndSaveFile():void {
-		var file:IGSAFile;
-		if (view.folderBtn.selected) file = system.createFolder();
-		else if (view.dictionaryRadioBtn.selected) file = system.createDocument(FileType.DICTIONARY);
-		else if (view.articleRadioBtn.selected) file = system.createDocument(FileType.ARTICLE);
-		else if (view.albumRadioBtn.selected) file = system.createDocument(FileType.PHOTOALBUM);
+	private function createAndSaveNewFile():void {
+		var fileHeader:FileHeader = createFileHeader();
+		setData(fileHeader);
+		fileHeader.store();
+	}
+
+	private function createFileHeader():FileHeader {
+		var fileHeader:FileHeader;
+		if (view.folderBtn.selected) fileHeader = system.createFileHeader(FileType.FOLDER);
+		else if (view.dictionaryRadioBtn.selected) fileHeader = system.createFileHeader(FileType.DICTIONARY);
+		else if (view.articleRadioBtn.selected) fileHeader = system.createFileHeader(FileType.ARTICLE);
+		else if (view.albumRadioBtn.selected) fileHeader = system.createFileHeader(FileType.PHOTOALBUM);
 		else throw new Error("Unknown file type selected!");
+		return fileHeader;
+	}
 
-		file.header.title = view.titleInput.text;
-		file.header.password = view.pwdInput.text;
+	private function setData(header:FileHeader):void {
+		header.title = view.titleInput.text;
+		header.password = view.pwdInput.text;
 
-		if (view.authorInput.text) file.header.options[FileOptionKeys.AUTHOR] = view.authorInput.text;
-		if (view.dateInput.text) file.header.options[FileOptionKeys.DATE_CREATED] = view.dateInput.text;
-		file.store();
+		if (view.authorInput.text) header.options[FileOptionKeys.AUTHOR] = view.authorInput.text;
+		if (view.dateInput.text) header.options[FileOptionKeys.DATE_CREATED] = view.dateInput.text;
+	}
+
+	private function updateAndSaveFile():void {
+		if (system.selectedFileHeader) {
+			setData(system.selectedFileHeader);
+			system.selectedFileHeader.store();
+		}
 	}
 
 	override protected function deactivate():void {

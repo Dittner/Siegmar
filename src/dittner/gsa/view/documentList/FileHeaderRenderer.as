@@ -1,6 +1,6 @@
 package dittner.gsa.view.documentList {
-import dittner.gsa.domain.fileSystem.GSAFileHeader;
-import dittner.gsa.domain.fileSystem.IGSAFile;
+import dittner.gsa.domain.fileSystem.FileHeader;
+import dittner.gsa.domain.fileSystem.FileType;
 import dittner.gsa.view.common.renderer.ItemRendererBase;
 import dittner.gsa.view.common.utils.AppColors;
 import dittner.gsa.view.common.utils.FontName;
@@ -12,7 +12,7 @@ import flash.text.TextFormat;
 
 public class FileHeaderRenderer extends ItemRendererBase {
 
-	private static const TITLE_FORMAT:TextFormat = new TextFormat(FontName.GeorgiaMX, 18, AppColors.LILA);
+	private static const TITLE_FORMAT:TextFormat = new TextFormat(FontName.TAHOMA_MX, 18, AppColors.LILA);
 
 	private static const HGAP:Number = 10;
 
@@ -22,14 +22,19 @@ public class FileHeaderRenderer extends ItemRendererBase {
 	[Embed(source='/folder_icon.png')]
 	protected static var FolderIconClass:Class;
 
+	[Embed(source='/dic_icon.png')]
+	protected static var DicIconClass:Class;
+
 	[Embed(source='/locked_folder_icon.png')]
 	protected static var LockedFolderIconClass:Class;
 
 	public function FileHeaderRenderer() {
 		super();
+		doubleClickEnabled = true;
 	}
 
 	private var lockedFolderIcon:DisplayObject;
+	private var dicIcon:DisplayObject;
 	private var folderIcon:DisplayObject;
 	private var lockIcon:DisplayObject;
 	private var tf:TextField;
@@ -40,12 +45,12 @@ public class FileHeaderRenderer extends ItemRendererBase {
 	//
 	//----------------------------------------------------------------------------------------------
 
-	private function get file():IGSAFile {
-		return data as IGSAFile;
+	private function get fileHeader():FileHeader {
+		return data as FileHeader;
 	}
 
-	private function get fileHeader():GSAFileHeader {
-		return file ? file.header : null;
+	private function get isFolder():Boolean {
+		return fileHeader && fileHeader.fileType == FileType.FOLDER;
 	}
 
 	override public function set data(value:Object):void {
@@ -66,6 +71,9 @@ public class FileHeaderRenderer extends ItemRendererBase {
 		super.createChildren();
 		folderIcon = new FolderIconClass();
 		addChild(folderIcon);
+
+		dicIcon = new DicIconClass();
+		addChild(dicIcon);
 
 		lockIcon = new LockIconClass();
 		addChild(lockIcon);
@@ -92,26 +100,34 @@ public class FileHeaderRenderer extends ItemRendererBase {
 	}
 
 	override protected function updateDisplayList(w:Number, h:Number):void {
-		if (w == 0 || h == 0 || !file) return;
+		if (w == 0 || h == 0 || !fileHeader) return;
 
 		super.updateDisplayList(w, h);
 		var g:Graphics = graphics;
 		g.clear();
-		g.beginFill(file.isFolder ? AppColors.BRAUN : AppColors.LILA, selected ? 0.2 : 0.0001);
+		g.beginFill(isFolder ? AppColors.BRAUN : AppColors.LILA, selected ? 0.2 : 0.0001);
 		g.drawRect(0, 0, w, h);
 		g.endFill();
 
-		lockedFolderIcon.x = folderIcon.x = HGAP;
-		lockedFolderIcon.y = folderIcon.y = (h - folderIcon.height) / 2;
-		lockedFolderIcon.visible = file.isFolder && fileHeader.password;
-		folderIcon.visible = !lockedFolderIcon.visible;
+		lockedFolderIcon.x = folderIcon.x = dicIcon.x = HGAP;
+		lockedFolderIcon.y = folderIcon.y = dicIcon.y = (h - folderIcon.height) / 2;
+		if (isFolder) {
+			dicIcon.visible = false;
+			lockedFolderIcon.visible = fileHeader.password;
+			folderIcon.visible = !lockedFolderIcon.visible;
+		}
+		else {
+			dicIcon.visible = true;
+			lockedFolderIcon.visible = false;
+			folderIcon.visible = false;
+		}
 
 		lockIcon.x = folderIcon.width + 2 * HGAP;
 		lockIcon.y = (h - lockIcon.height) / 2;
-		lockIcon.visible = !file.isFolder && fileHeader.password;
+		lockIcon.visible = !isFolder && fileHeader.password;
 
 		tf.x = folderIcon.x + folderIcon.width + HGAP;
-		tf.textColor = file.isFolder ? AppColors.BRAUN : AppColors.LILA;
+		tf.textColor = isFolder ? AppColors.BRAUN : AppColors.LILA;
 		tf.y = (h - tf.textHeight) / 2 - 2;
 		tf.width = w - HGAP - tf.x;
 	}

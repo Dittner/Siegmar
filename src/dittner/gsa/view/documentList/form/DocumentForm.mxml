@@ -7,8 +7,9 @@
          addedToStage="addedToStageHandler(event)">
 
     <fx:Script><![CDATA[
+        import dittner.gsa.domain.fileSystem.FileHeader;
+        import dittner.gsa.domain.fileSystem.FileOptionKeys;
         import dittner.gsa.domain.fileSystem.FileType;
-        import dittner.gsa.domain.fileSystem.IGSAFile;
         import dittner.gsa.view.common.utils.AppColors;
         import dittner.gsa.view.common.utils.FontName;
 
@@ -19,12 +20,12 @@
         //--------------------------------------
         //  mode
         //--------------------------------------
-        private var _mode:String = DokumentFormMode.ADD;
+        private var _mode:String = DocumentFormMode.ADD;
         [Bindable("modeChanged")]
         public function get mode():String {return _mode;}
 
         [Bindable("modeChanged")]
-        public function get isAddMode():Boolean {return _mode == DokumentFormMode.ADD;}
+        public function get isAddMode():Boolean {return _mode == DocumentFormMode.ADD;}
 
         private function setFileType(fileType:uint):void {
             switch (fileType) {
@@ -46,18 +47,22 @@
         }
 
         public function add():void {
-            _mode = DokumentFormMode.ADD;
+            _mode = DocumentFormMode.ADD;
             dispatchEvent(new Event("modeChanged"));
         }
 
-        public function edit(fse:IGSAFile):void {
-            _mode = DokumentFormMode.EDIT;
-            setFileType(fse.header.fileType);
+        public function edit(fileHeader:FileHeader):void {
+            _mode = DocumentFormMode.EDIT;
+            titleInput.text = fileHeader.title;
+            pwdInput.text = fileHeader.password;
+            authorInput.text = fileHeader.options[FileOptionKeys.AUTHOR] || "";
+            dateInput.text = fileHeader.options[FileOptionKeys.DATE_CREATED] || "";
+            setFileType(fileHeader.fileType);
             dispatchEvent(new Event("modeChanged"));
         }
 
-        public function remove(fse:IGSAFile):void {
-            _mode = DokumentFormMode.REMOVE;
+        public function remove(fileHeader:FileHeader):void {
+            _mode = DocumentFormMode.REMOVE;
             dispatchEvent(new Event("modeChanged"));
         }
 
@@ -70,7 +75,7 @@
         }
 
         private function getTitle(formMode:String):String {
-            return mode == DokumentFormMode.ADD ? "NEUES DOKUMENT" : mode == DokumentFormMode.EDIT ? "AUFBEREITUNG" : "ENTFERNUNG";
+            return formMode == DocumentFormMode.ADD ? "NEUES DOKUMENT" : formMode == DocumentFormMode.EDIT ? "AUFBEREITUNG" : "ENTFERNUNG";
         }
 
         private function applyBtnEnabled(docTitle:String):Boolean {
@@ -106,14 +111,14 @@
 
         <s:Label text="{getTitle(mode)}"
                  width="100%"
-                 fontFamily="{FontName.ROBOTO_LIGHT}" fontSize="30"
+                 fontFamily="{FontName.TAHOMA}" fontSize="30"
                  mouseChildren="false" mouseEnabled="false" paddingBottom="50"
                  color="{AppColors.TEXT_WHITE}"/>
 
         <s:Label text="Wählen Sie bitte den Typ des Dokuments aus:"
                  visible="{isAddMode}" includeInLayout="{isAddMode}"
                  width="100%" paddingBottom="-20"
-                 fontFamily="{FontName.ROBOTO}" fontSize="14"
+                 fontFamily="{FontName.TAHOMA}" fontSize="14"
                  mouseChildren="false" mouseEnabled="false"
                  color="{AppColors.TEXT_LIGHT}"/>
 
@@ -142,7 +147,6 @@
 
             <s:RadioButton id="dictionaryRadioBtn"
                            groupName="radioBar"
-                           enabled="false"
                            width="200"
                            value="{FileType.DICTIONARY}"
                            label="Wörterbuch"
