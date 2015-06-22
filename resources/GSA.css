@@ -17,34 +17,15 @@
 }
 
 @font-face {
-    src: url("/fonts/Roboto-Light.ttf");
-    font-family: RobotoLight;
+    src: url("/fonts/tahoma.ttf");
+    font-family: Tahoma;
     embedAsCFF: true;
 }
 
 @font-face {
-    src: url("/fonts/Roboto-Regular.ttf");
-    font-family: Roboto;
-    embedAsCFF: true;
-}
-
-@font-face {
-    src: url("/fonts/Roboto-Bold.ttf");
-    font-family: Roboto;
+    src: url("/fonts/tahomab.ttf");
+    font-family: Tahoma;
     fontWeight: bold;
-    embedAsCFF: true;
-}
-
-@font-face {
-    src: url("/fonts/RobotoCondensed.ttf");
-    font-family: RobotoCond;
-    embedAsCFF: true;
-}
-
-@font-face {
-    src: url("/fonts/RobotoCondensed-Bold.ttf");
-    font-family: RobotoCond;
-    font-weight: bold;
     embedAsCFF: true;
 }
 
@@ -64,34 +45,15 @@
 }
 
 @font-face {
-    src: url("/fonts/Roboto-Regular.ttf");
-    font-family: RobotoMX;
+    src: url("/fonts/tahoma.ttf");
+    font-family: TahomaMX;
     embedAsCFF: false;
 }
 
 @font-face {
-    src: url("/fonts/Roboto-Light.ttf");
-    font-family: RobotoLightMX;
-    embedAsCFF: false;
-}
-
-@font-face {
-    src: url("/fonts/Roboto-Bold.ttf");
-    font-family: RobotoMX;
+    src: url("/fonts/tahomab.ttf");
+    font-family: TahomaMX;
     fontWeight: bold;
-    embedAsCFF: false;
-}
-
-@font-face {
-    src: url("/fonts/RobotoCondensed.ttf");
-    font-family: RobotoCondMX;
-    embedAsCFF: false;
-}
-
-@font-face {
-    src: url("/fonts/RobotoCondensed-Bold.ttf");
-    font-family: RobotoCondMX;
-    font-weight: bold;
     embedAsCFF: false;
 }
 
@@ -99,7 +61,7 @@
 
 global {
     fontSize: 14px;
-    fontFamily: RobotoMX;
+    fontFamily: TahomaMX;
     fontWeight: normal;
     contentBackgroundAlpha: 0;
     backgroundColor: 0;
@@ -108,13 +70,13 @@ global {
 
 s|Button {
     fontSize: 14px;
-    fontFamily: Roboto;
+    fontFamily: Tahoma;
     fontWeight: normal;
 }
 
 s|Label {
     fontSize: 14px;
-    fontFamily: Roboto;
+    fontFamily: Tahoma;
     fontWeight: normal;
 }
 
@@ -124,7 +86,7 @@ input|TextInputForm {
     skinClass: ClassReference("dittner.gsa.view.common.input.TextInputFormSkin");
     borderVisible: false;
     focusSkin: ClassReference("mx.core.UIComponent");
-    fontFamily: RobotoMX;
+    fontFamily: TahomaMX;
     fontSize: 14px;
     color: #333333;
 }
@@ -132,7 +94,7 @@ input|TextInputForm {
 s|TextInput.loginInput {
     fontSize: 30px;
     color: #b2d2e6;
-    fontFamily: MyriadProRegMX;
+    fontFamily: TahomaMX;
     fontWeight: normal;
     borderVisible: false;
     focusSkin: ClassReference("mx.core.UIComponent");
@@ -142,7 +104,7 @@ s|TextInput.loginInput {
 s|TextArea.loginInput {
     fontSize: 20px;
     color: #050f25;
-    fontFamily: MyriadProRegMX;
+    fontFamily: TahomaMX;
     fontWeight: normal;
     borderVisible: false;
     focusSkin: ClassReference("mx.core.UIComponent");
@@ -154,7 +116,7 @@ list|ListForm {
     skinClass: ClassReference("dittner.gsa.view.common.list.ListFormSkin");
     borderVisible: false;
     focusSkin: ClassReference("mx.core.UIComponent");
-    fontFamily: RobotoMX;
+    fontFamily: TahomaMX;
     fontSize: 16px;
     color: #333333;
 }
@@ -172,5 +134,5 @@ spinner|CustomSpinner {
     skin-class: ClassReference("dittner.gsa.view.common.spinner.CustomSpinnerSkin");
     fontSize: 14px;
     color: #4e4f61;
-    fontFamily: Roboto;
+    fontFamily: Tahoma;
 }

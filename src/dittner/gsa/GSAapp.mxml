@@ -34,6 +34,6 @@
         }
         ]]></fx:Script>
 
-    <fx:Style source="/gsaStyle.css"/>
+    <fx:Style source="/GSA.css"/>
 
 </s:Application>
