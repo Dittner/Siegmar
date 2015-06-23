@@ -27,10 +27,12 @@ public class DocumentFormMediator extends WalterMediator {
 	private function startEdit(msg:WalterMessage):void {
 		switch (msg.data) {
 			case ToolAction.ADD:
-				view.add();
+				view.add(getReservedTitleHash());
 				break;
 			case ToolAction.EDIT:
-				if (system.selectedFileHeader) view.edit(system.selectedFileHeader);
+				if (system.selectedFileHeader) {
+					view.edit(system.selectedFileHeader, getReservedTitleHash(false));
+				}
 				break;
 			case ToolAction.REMOVE:
 				if (system.selectedFileHeader) view.remove(system.selectedFileHeader);
@@ -90,6 +92,12 @@ public class DocumentFormMediator extends WalterMediator {
 		if (system.selectedFileHeader) system.selectedFileHeader.remove();
 	}
 
+	private function getReservedTitleHash(includeSelectedHeader:Boolean = true):Object {
+		var hash:Object = {};
+		for each(var header:FileHeader in system.availableHeaders)
+			hash[header.title] = includeSelectedHeader || system.selectedFileHeader != header;
+		return hash;
+	}
 	override protected function deactivate():void {
 		view.cancelBtn.removeEventListener(MouseEvent.CLICK, cancelHandler);
 		view.applyBtn.removeEventListener(MouseEvent.CLICK, applyHandler);

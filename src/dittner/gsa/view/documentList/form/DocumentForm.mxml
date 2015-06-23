@@ -49,12 +49,15 @@
             }
         }
 
-        public function add():void {
+        private var reservedTitleHash:Object = {};
+        public function add(reservedTitleHash:Object):void {
+            this.reservedTitleHash = reservedTitleHash;
             _mode = DocumentFormMode.ADD;
             dispatchEvent(new Event("modeChanged"));
         }
 
-        public function edit(fileHeader:FileHeader):void {
+        public function edit(fileHeader:FileHeader, reservedTitleHash:Object):void {
+            this.reservedTitleHash = reservedTitleHash;
             _mode = DocumentFormMode.EDIT;
             titleInput.text = fileHeader.title;
             pwdInput.text = fileHeader.password;
@@ -85,7 +88,8 @@
         }
 
         private function isApplyBtnEnabled(mode:String, docTitle:String):Boolean {
-            return mode == DocumentFormMode.REMOVE || docTitle != "";
+            if (mode == DocumentFormMode.REMOVE) return true;
+            else return docTitle && !reservedTitleHash[docTitle];
         }
 
         private function radioBtnClickHandler(event:MouseEvent):void {
