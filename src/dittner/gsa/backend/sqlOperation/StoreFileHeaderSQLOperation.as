@@ -19,7 +19,7 @@ public class StoreFileHeaderSQLOperation extends DeferredOperation {
 		try {
 			var sqlParams:Object = headerWrapper.headerToSQLObj();
 			var statement:QueuedStatement;
-			if (isNewFile) {
+			if (headerWrapper.header.isNewFile) {
 				statement = new QueuedStatement(headerWrapper.sqlFactory.insertFileHeader, sqlParams);
 			}
 			else {
@@ -34,12 +34,8 @@ public class StoreFileHeaderSQLOperation extends DeferredOperation {
 		}
 	}
 
-	private function get isNewFile():Boolean {
-		return headerWrapper.header.fileID == -1;
-	}
-
 	private function executeComplete(results:Vector.<SQLResult>):void {
-		if (isNewFile) {
+		if (headerWrapper.header.isNewFile) {
 			var result:SQLResult = results[0];
 			if (result.rowsAffected > 0) headerWrapper.header.fileID = result.lastInsertRowID;
 		}

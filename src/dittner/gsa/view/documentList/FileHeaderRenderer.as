@@ -50,7 +50,7 @@ public class FileHeaderRenderer extends ItemRendererBase {
 	}
 
 	private function get isFolder():Boolean {
-		return fileHeader && fileHeader.fileType == FileType.FOLDER;
+		return fileHeader && fileHeader.isFolder;
 	}
 
 	override public function set data(value:Object):void {

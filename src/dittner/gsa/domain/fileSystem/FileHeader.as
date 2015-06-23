@@ -15,6 +15,7 @@ public class FileHeader {
 	public var fileStorage:FileStorage;
 
 	private var _fileID:int = -1;
+	public function get isNewFile():Boolean {return fileID == -1;}
 	public function get fileID():int {return _fileID;}
 	public function set fileID(value:int):void {
 		if (_fileID != value) {
@@ -37,6 +38,7 @@ public class FileHeader {
 	//  fileType
 	//--------------------------------------
 	private var _fileType:uint;
+	public function get isFolder():Boolean {return fileType == FileType.FOLDER;}
 	public function get fileType():uint {return _fileType;}
 	public function set fileType(value:uint):void {
 		if (_fileType != value) {

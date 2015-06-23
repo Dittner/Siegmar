@@ -33,7 +33,7 @@ public class DocumentFormMediator extends WalterMediator {
 				if (system.selectedFileHeader) view.edit(system.selectedFileHeader);
 				break;
 			case ToolAction.REMOVE:
-				view.remove(null);
+				if (system.selectedFileHeader) view.remove(system.selectedFileHeader);
 				break;
 		}
 		view.visible = true;
@@ -51,6 +51,7 @@ public class DocumentFormMediator extends WalterMediator {
 	private function applyHandler(event:MouseEvent):void {
 		if (view.mode == DocumentFormMode.ADD) createAndSaveNewFile();
 		else if (view.mode == DocumentFormMode.EDIT) updateAndSaveFile();
+		else if (view.mode == DocumentFormMode.REMOVE) removeFileHeader();
 		sendMessage(MediatorMsg.END_EDIT);
 	}
 
@@ -83,6 +84,10 @@ public class DocumentFormMediator extends WalterMediator {
 			setData(system.selectedFileHeader);
 			system.selectedFileHeader.store();
 		}
+	}
+
+	private function removeFileHeader():void {
+		if (system.selectedFileHeader) system.selectedFileHeader.remove();
 	}
 
 	override protected function deactivate():void {

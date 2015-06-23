@@ -8,6 +8,9 @@ public class ClassUtils {
 		var a:Array = (args == null) ? [] : args;
 
 		switch (a.length) {
+			case 0:
+				result = new clazz();
+				break;
 			case 1:
 				result = new clazz(a[0]);
 				break;

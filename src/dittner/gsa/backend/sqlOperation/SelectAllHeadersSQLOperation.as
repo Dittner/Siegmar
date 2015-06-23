@@ -7,9 +7,9 @@ import dittner.gsa.domain.store.FileStorage;
 
 import flash.data.SQLResult;
 
-public class SelectFileHeadersSQLOperation extends DeferredOperation {
+public class SelectAllHeadersSQLOperation extends DeferredOperation {
 
-	public function SelectFileHeadersSQLOperation(storage:FileStorage, parentFolderID:int, system:GSAFileSystem) {
+	public function SelectAllHeadersSQLOperation(storage:FileStorage, parentFolderID:int, system:GSAFileSystem) {
 		this.parentFolderID = parentFolderID;
 		this.storage = storage;
 		this.system = system;
@@ -20,7 +20,7 @@ public class SelectFileHeadersSQLOperation extends DeferredOperation {
 	private var system:GSAFileSystem;
 
 	override public function process():void {
-		storage.sqlRunner.execute(storage.sqlFactory.selectFileHeaders, {parentFolderID: parentFolderID}, loadCompleteHandler, FileHeader);
+		storage.sqlRunner.execute(storage.sqlFactory.selectAllFileHeaders, null, loadCompleteHandler, FileHeader);
 	}
 
 	private function loadCompleteHandler(result:SQLResult):void {

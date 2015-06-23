@@ -29,7 +29,7 @@ public class CreateDataBaseSQLOperation extends DeferredOperation {
 			}
 		}
 
-		dbFile = File.documentsDirectory.resolvePath(AppInfo.dbRootPath + "user.db");
+		dbFile = File.documentsDirectory.resolvePath(AppInfo.dbRootPath + AppInfo.DB_NAME);
 		storage.sqlRunner = new SQLRunner(dbFile);
 	}
 

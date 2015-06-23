@@ -4,6 +4,7 @@ import flash.filesystem.File;
 public class AppInfo {
 
 	public static const APP_NAME:String = "GSA";
+	public static const DB_NAME:String = "Agent.db";
 	public static const MIN_PWD_LEN:uint = 2;
 
 	public static function get dbRootPath():String {

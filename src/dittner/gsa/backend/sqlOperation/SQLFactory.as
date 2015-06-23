@@ -62,15 +62,36 @@ public class SQLFactory extends WalterProxy {
 	//  delete
 	//--------------------------------------
 
+	[Embed(source="/dittner/gsa/backend/sqlOperation/sql/DeleteFileHeaderByFileID.sql", mimeType="application/octet-stream")]
+	private static const DeleteFileHeaderByFileIDClass:Class;
+	private static const DELETE_FILE_HEADER_BY_FILE_ID_SQL:String = new DeleteFileHeaderByFileIDClass();
+	public function get deleteFileHeaderByFileID():String {
+		return DELETE_FILE_HEADER_BY_FILE_ID_SQL;
+	}
+
+	[Embed(source="/dittner/gsa/backend/sqlOperation/sql/DeleteFileBodyByFileID.sql", mimeType="application/octet-stream")]
+	private static const DeleteFileBodyByFileIDClass:Class;
+	private static const DELETE_FILE_BODY_BY_FILE_ID_SQL:String = new DeleteFileBodyByFileIDClass();
+	public function get deleteFileBodyByFileID():String {
+		return DELETE_FILE_BODY_BY_FILE_ID_SQL;
+	}
+
 	//--------------------------------------
 	//  select
 	//--------------------------------------
 
-	[Embed(source="/dittner/gsa/backend/sqlOperation/sql/SelectFilesHeaders.sql", mimeType="application/octet-stream")]
-	private static const SelectFilesHeadersClass:Class;
-	private static const SELECT_FILES_HEADERS_SQL:String = new SelectFilesHeadersClass();
-	public function get selectFilesHeaders():String {
-		return SELECT_FILES_HEADERS_SQL;
+	[Embed(source="/dittner/gsa/backend/sqlOperation/sql/SelectFileHeaders.sql", mimeType="application/octet-stream")]
+	private static const SelectFileHeadersClass:Class;
+	private static const SELECT_FILE_HEADERS_SQL:String = new SelectFileHeadersClass();
+	public function get selectFileHeaders():String {
+		return SELECT_FILE_HEADERS_SQL;
+	}
+
+	[Embed(source="/dittner/gsa/backend/sqlOperation/sql/SelectAllFileHeaders.sql", mimeType="application/octet-stream")]
+	private static const SelectAllFilesHeadersClass:Class;
+	private static const SELECT_ALL_FILES_HEADERS_SQL:String = new SelectAllFilesHeadersClass();
+	public function get selectAllFileHeaders():String {
+		return SELECT_ALL_FILES_HEADERS_SQL;
 	}
 }
 }

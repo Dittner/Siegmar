@@ -119,7 +119,7 @@ public class GSAFileSystem extends WalterProxy {
 	}
 
 	public function openFolder(header:FileHeader):void {
-		if (header && header != openedFolderHeader && header.fileType == FileType.FOLDER) {
+		if (header && header != openedFolderHeader && header.isFolder) {
 			openedFolderStack.push(header);
 			setOpenedFolderHeader(header);
 		}

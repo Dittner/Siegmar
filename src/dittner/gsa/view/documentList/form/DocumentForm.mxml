@@ -27,6 +27,9 @@
         [Bindable("modeChanged")]
         public function get isAddMode():Boolean {return _mode == DocumentFormMode.ADD;}
 
+        [Bindable("modeChanged")]
+        public function get isRemoveMode():Boolean {return _mode == DocumentFormMode.REMOVE;}
+
         private function setFileType(fileType:uint):void {
             switch (fileType) {
                 case FileType.FOLDER :
@@ -63,6 +66,9 @@
 
         public function remove(fileHeader:FileHeader):void {
             _mode = DocumentFormMode.REMOVE;
+            removeLbl.text = "Sind Sie sicher, das Sie entfernen möchten?\n";
+            removeLbl.text += fileHeader.isFolder ? "Ordner: " : "Datei: ";
+            removeLbl.text += fileHeader.title.toUpperCase();
             dispatchEvent(new Event("modeChanged"));
         }
 
@@ -78,8 +84,8 @@
             return formMode == DocumentFormMode.ADD ? "NEUES DOKUMENT" : formMode == DocumentFormMode.EDIT ? "AUFBEREITUNG" : "ENTFERNUNG";
         }
 
-        private function applyBtnEnabled(docTitle:String):Boolean {
-            return docTitle != "";
+        private function isApplyBtnEnabled(mode:String, docTitle:String):Boolean {
+            return mode == DocumentFormMode.REMOVE || docTitle != "";
         }
 
         private function radioBtnClickHandler(event:MouseEvent):void {
@@ -161,12 +167,23 @@
                            click="radioBtnClickHandler(event)"/>
         </s:Group>
 
-        <input:TextInputForm id="titleInput" width="100%" title="Titel:"/>
-        <input:TextInputForm id="authorInput" width="100%" title="Autor:"
-                             visible.folder="false" includeInLayout.folder="false"/>
-        <input:TextInputForm id="dateInput" width="100%" title="Datum der Ausgabe:"
-                             visible.folder="false" includeInLayout.folder="false"/>
-        <input:TextInputForm id="pwdInput" width="100%" title="Parole:"/>
+        <s:VGroup width="100%"
+                  visible="{!isRemoveMode}" includeInLayout="{!isRemoveMode}">
+            <input:TextInputForm id="titleInput" width="100%" title="Titel:"/>
+
+            <input:TextInputForm id="authorInput" width="100%" title="Autor:"
+                                 visible.folder="false" includeInLayout.folder="false"/>
+            <input:TextInputForm id="dateInput" width="100%" title="Datum der Ausgabe:"
+                                 visible.folder="false" includeInLayout.folder="false"/>
+            <input:TextInputForm id="pwdInput" width="100%" title="Parole:"/>
+        </s:VGroup>
+
+        <s:Label id="removeLbl"
+                 visible="{isRemoveMode}" includeInLayout="{isRemoveMode}"
+                 width="100%" textAlign="center"
+                 fontFamily="{FontName.TAHOMA}" fontSize="30"
+                 mouseChildren="false" mouseEnabled="false"
+                 color="{AppColors.TEXT_LIGHT}"/>
 
         <s:Spacer height="50"/>
 
@@ -178,7 +195,7 @@
             <button:BlackButton id="applyBtn"
                                 width="100%"
                                 label="Bestätigen"
-                                enabled="{applyBtnEnabled(titleInput.text)}"/>
+                                enabled="{isApplyBtnEnabled(mode, titleInput.text)}"/>
         </s:HGroup>
     </s:VGroup>
 

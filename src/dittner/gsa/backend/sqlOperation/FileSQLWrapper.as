@@ -11,6 +11,7 @@ public class FileSQLWrapper {
 	public var encryptionService:IEncryptionService;
 	public var sqlFactory:SQLFactory;
 	public var sqlRunner:SQLRunner;
+	public var removingFileIDs:Array = [];
 
 	public function headerToSQLObj():Object {
 		var res:Object = {};

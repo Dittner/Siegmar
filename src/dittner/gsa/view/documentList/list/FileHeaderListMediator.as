@@ -2,7 +2,6 @@ package dittner.gsa.view.documentList.list {
 import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.bootstrap.walter.message.WalterMessage;
 import dittner.gsa.domain.fileSystem.FileHeader;
-import dittner.gsa.domain.fileSystem.FileType;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.message.MediatorMsg;
 import dittner.gsa.view.common.list.SelectableDataGroupEvent;
@@ -43,7 +42,7 @@ public class FileHeaderListMediator extends WalterMediator {
 	}
 
 	private function viewListDoubleClicked(event:SelectableDataGroupEvent):void {
-		if (event.data is FileHeader && (event.data as FileHeader).fileType == FileType.FOLDER)
+		if (event.data is FileHeader && (event.data as FileHeader).isFolder)
 			system.openFolder(event.data as FileHeader);
 	}
 

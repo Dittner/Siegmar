@@ -4,6 +4,7 @@ import com.probertson.data.SQLRunner;
 import dittner.gsa.backend.encryption.IEncryptionService;
 import dittner.gsa.backend.sqlOperation.CreateDataBaseSQLOperation;
 import dittner.gsa.backend.sqlOperation.FileSQLWrapper;
+import dittner.gsa.backend.sqlOperation.RemoveFileHeaderSQLOperation;
 import dittner.gsa.backend.sqlOperation.SQLFactory;
 import dittner.gsa.backend.sqlOperation.SelectFileHeadersSQLOperation;
 import dittner.gsa.backend.sqlOperation.StoreFileBodySQLOperation;
@@ -61,7 +62,9 @@ public class FileStorage extends WalterProxy {
 	}
 
 	public function removeHeader(header:FileHeader):IAsyncOperation {
-		var op:IAsyncOperation = new AsyncOperation();
+		var op:IDeferredOperation = new RemoveFileHeaderSQLOperation(wrapFileHeader(header));
+		op.addCompleteCallback(notifyFileStored);
+		deferredOperationManager.add(op);
 		return op;
 	}
 
@@ -81,6 +84,7 @@ public class FileStorage extends WalterProxy {
 	}
 
 	public function loadFileHeaders(parentFolderID:int):IAsyncOperation {
+		//var op:IDeferredOperation = new SelectAllHeadersSQLOperation(this, parentFolderID, system);
 		var op:IDeferredOperation = new SelectFileHeadersSQLOperation(this, parentFolderID, system);
 		deferredOperationManager.add(op);
 		return op;
