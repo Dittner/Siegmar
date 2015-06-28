@@ -1,6 +1,5 @@
 package dittner.gsa.view.documentList.list {
 import dittner.gsa.domain.fileSystem.FileHeader;
-import dittner.gsa.domain.fileSystem.FileType;
 import dittner.gsa.view.common.renderer.ItemRendererBase;
 import dittner.gsa.view.common.utils.AppColors;
 import dittner.gsa.view.common.utils.FontName;
@@ -12,7 +11,7 @@ import flash.text.TextFormat;
 
 public class FileHeaderRenderer extends ItemRendererBase {
 
-	private static const TITLE_FORMAT:TextFormat = new TextFormat(FontName.TAHOMA_MX, 18, AppColors.LILA);
+	private static const TITLE_FORMAT:TextFormat = new TextFormat(FontName.TAHOMA_MX, 20, AppColors.LILA);
 
 	private static const HGAP:Number = 10;
 
@@ -129,7 +128,7 @@ public class FileHeaderRenderer extends ItemRendererBase {
 		tf.x = folderIcon.x + folderIcon.width + HGAP;
 		tf.textColor = isFolder ? AppColors.BRAUN : AppColors.LILA;
 		tf.y = (h - tf.textHeight) / 2 - 2;
-		tf.width = w - HGAP - tf.x;
+		adjustSize(tf, w - HGAP - tf.x);
 	}
 
 }

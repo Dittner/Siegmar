@@ -12,7 +12,7 @@ public class AppColors {
 	public static const BG:uint = 0xe0e0e6;
 	public static const EDITOR_CONTENT_BG:uint = 0xf0F0f5;
 
-	public static const BG_DARK:uint = 0x3d3f4b;
+	public static const BG_DARK:uint = 0x0b0e34;
 	public static const SCREEN_LIST_BG:uint = 0;
 
 	public static const EDITOR_BORDER:uint = 0;

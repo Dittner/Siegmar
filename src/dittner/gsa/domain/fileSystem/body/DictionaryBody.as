@@ -11,7 +11,7 @@ public class DictionaryBody extends FileBody {
 
 	override public function addNote(note:Note):void {
 		if (note) {
-			items.push(note);
+			items.unshift(note);
 			store();
 		}
 	}

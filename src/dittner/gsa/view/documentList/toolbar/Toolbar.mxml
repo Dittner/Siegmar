@@ -5,6 +5,8 @@
          xmlns:utils="dittner.gsa.view.common.utils.*">
 
     <fx:Script><![CDATA[
+        import dittner.gsa.view.common.utils.AppColors;
+
         public var selectedOpCallBack:Function;
 
         private function btnClickHandler(event:MouseEvent):void {
@@ -13,7 +15,7 @@
             }
         }
         ]]></fx:Script>
-    <utils:BG width="100%" height="100%" color="#0b0e34"/>
+    <utils:BG width="100%" height="100%" color="{AppColors.BG_DARK}"/>
 
     <s:VGroup width="100%" height="100%" verticalAlign="bottom"
               paddingLeft="5" paddingRight="5" paddingTop="10" paddingBottom="10" gap="10">

@@ -2,7 +2,8 @@ package dittner.gsa.view.common.preloader {
 import dittner.gsa.view.common.utils.AppColors;
 import dittner.gsa.view.common.utils.FontName;
 
-import flash.display.DisplayObject;
+import flash.display.Bitmap;
+import flash.display.Graphics;
 import flash.events.Event;
 import flash.events.TimerEvent;
 import flash.text.TextField;
@@ -16,7 +17,7 @@ import mx.preloaders.SparkDownloadProgressBar;
 
 public final class AppPreloader extends SparkDownloadProgressBar {
 
-	[Embed(source="/bg.png")]
+	[Embed(source="/bg_pattern.png")]
 	private var BgClass:Class;
 
 	private const DELAY_DURATION:int = 1000;//ms
@@ -38,24 +39,15 @@ public final class AppPreloader extends SparkDownloadProgressBar {
 	private var startDelayTime:int = 0;
 	private var elapsedTime:int = 0;
 	private var progress:Number = 0;
-	private var bg:DisplayObject;
 
 	private function addedToStage(event:Event):void {
 		removeEventListener(Event.ADDED_TO_STAGE, addedToStage);
-		//stage.align = StageAlign.TOP_LEFT;
-		//stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 
-		bg = new BgClass();
-		/*var bgRatio:Number = bg.width / bg.height;
-		 if (bg.width / stage.fullScreenWidth > bg.height / stage.fullScreenHeight) {
-		 bg.height = stage.fullScreenHeight;
-		 bg.width = bg.height * bgRatio;
-		 }
-		 else {
-		 bg.width = stage.fullScreenWidth;
-		 bg.height = bg.width / bgRatio;
-		 }*/
-		addChild(bg);
+		var bg:Bitmap = new BgClass();
+		var g:Graphics = graphics;
+		g.clear();
+		g.beginBitmapFill(bg.bitmapData);
+		g.drawRect(0, 0, stage.fullScreenWidth * 2, stage.fullScreenHeight * 2);
 
 		progressField = new TextField();
 		progressField.selectable = false;

@@ -86,9 +86,7 @@ public class SelectableDataGroup extends DataGroup {
 	//  allowSelectLastItem
 	//--------------------------------------------------------------------------------
 	private var _allowSelectLastItem:Boolean = false;
-	public function get allowSelectLastItem():Boolean {
-		return _allowSelectLastItem;
-	}
+	public function get allowSelectLastItem():Boolean {return _allowSelectLastItem;}
 	public function set allowSelectLastItem(value:Boolean):void {
 		_allowSelectLastItem = value;
 	}
@@ -178,6 +176,7 @@ public class SelectableDataGroup extends DataGroup {
 		for (var i:int = 0; i < numElements; i++) {
 			var renderer:IItemRenderer = getElementAt(i) as IItemRenderer;
 			renderer.addEventListener(MouseEvent.CLICK, renderer_clickHandler);
+			renderer.addEventListener(MouseEvent.DOUBLE_CLICK, renderer_double_clickHandler);
 		}
 	}
 
@@ -188,6 +187,7 @@ public class SelectableDataGroup extends DataGroup {
 		for (var i:int = 0; i < numElements; i++) {
 			var renderer:IItemRenderer = getElementAt(i) as IItemRenderer;
 			renderer.removeEventListener(MouseEvent.CLICK, renderer_clickHandler);
+			renderer.addEventListener(MouseEvent.DOUBLE_CLICK, renderer_double_clickHandler);
 		}
 	}
 

@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark">
+
+    <fx:Script><![CDATA[
+        import dittner.gsa.domain.fileSystem.FileOptionKeys;
+        import dittner.gsa.domain.fileSystem.FileType;
+        import dittner.gsa.domain.fileSystem.GSAFile;
+        import dittner.gsa.view.common.utils.AppColors;
+        import dittner.gsa.view.common.utils.FontName;
+
+        //--------------------------------------
+        //  file
+        //--------------------------------------
+        private var _file:GSAFile;
+        [Bindable("fileChanged")]
+        public function get file():GSAFile {return _file;}
+        public function set file(value:GSAFile):void {
+            if (_file != value) {
+                _file = value;
+                updateData();
+                dispatchEvent(new Event("fileChanged"));
+            }
+        }
+
+        private function updateData():void {
+            if (!file) return;
+            switch(file.header.fileType) {
+                case FileType.ARTICLE : currentState = "article"; break;
+                case FileType.DICTIONARY : currentState = "dictionary"; break;
+                case FileType.PHOTOALBUM : currentState = "album"; break;
+                case FileType.NOTEBUCH : currentState = "notebuch"; break;
+            }
+
+            fileNameLbl.text = file.header.title;
+            autorNameLbl.text = file.header.options[FileOptionKeys.AUTHOR];
+            dateLbl.text = file.header.options[FileOptionKeys.DATE_CREATED];
+        }
+        ]]></fx:Script>
+
+    <s:states>
+        <s:State name="article"/>
+        <s:State name="dictionary"/>
+        <s:State name="notebuch"/>
+        <s:State name="album"/>
+    </s:states>
+
+    <s:layout>
+        <s:VerticalLayout paddingLeft="10" paddingRight="5" paddingTop="20" paddingBottom="5"/>
+    </s:layout>
+
+    <s:HGroup width="100%" gap="10">
+        <s:Label text.article="Artikel:"
+                 text.dictionary="Wörterbuch:"
+                 text.notebuch="Notebuch:"
+                 text.album="Album:"
+                 width="40%"
+                 fontFamily="{FontName.TAHOMA}" fontSize="16" fontWeight="bold"
+                 mouseChildren="false" mouseEnabled="false"
+                 color="{AppColors.HELL_TÜRKIS}"/>
+
+        <s:Label id="fileNameLbl"
+                 width="60%"
+                 fontFamily="{FontName.TAHOMA}" fontSize="18"
+                 mouseChildren="false" mouseEnabled="false"
+                 color="{AppColors.HELL_TÜRKIS}"/>
+    </s:HGroup>
+
+    <s:HGroup width="100%" gap="10">
+        <s:Label text="Autor:"
+                 width="40%"
+                 fontFamily="{FontName.TAHOMA}" fontSize="16" fontWeight="bold"
+                 mouseChildren="false" mouseEnabled="false"
+                 color="{AppColors.HELL_TÜRKIS}"/>
+
+        <s:Label id="autorNameLbl"
+                 width="60%"
+                 fontFamily="{FontName.TAHOMA}" fontSize="18"
+                 mouseChildren="false" mouseEnabled="false"
+                 color="{AppColors.HELL_TÜRKIS}"/>
+    </s:HGroup>
+
+    <s:HGroup width="100%" gap="10">
+        <s:Label text="Hinzugefügt am:"
+                 width="40%"
+                 fontFamily="{FontName.TAHOMA}" fontSize="16" fontWeight="bold"
+                 mouseChildren="false" mouseEnabled="false"
+                 color="{AppColors.HELL_TÜRKIS}"/>
+
+        <s:Label id="dateLbl"
+                 width="60%"
+                 fontFamily="{FontName.TAHOMA}" fontSize="18"
+                 mouseChildren="false" mouseEnabled="false"
+                 color="{AppColors.HELL_TÜRKIS}"/>
+    </s:HGroup>
+
+</s:Group>

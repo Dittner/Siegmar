@@ -94,12 +94,17 @@ public class ItemRendererBase extends UIComponent implements IItemRenderer {
 	//
 	//----------------------------------------------------------------------------------------------
 
-	protected function createTextField(textFormat:TextFormat):TextField {
-		return TextFieldFactory.create(textFormat, false);
+	protected function createTextField(textFormat:TextFormat, selectable:Boolean = false):TextField {
+		return TextFieldFactory.create(textFormat, false, selectable);
 	}
 
-	protected function createMultilineTextField(textFormat:TextFormat):TextField {
-		return TextFieldFactory.create(textFormat, true);
+	protected function createMultilineTextField(textFormat:TextFormat, selectable:Boolean = false):TextField {
+		return TextFieldFactory.create(textFormat, true, selectable);
+	}
+
+	protected function adjustSize(tf:TextField, wid:Number = 0, hei:Number = 0):void {
+		tf.width = wid ? wid : tf.textWidth + 5;
+		tf.height = hei ? hei : tf.textHeight + 5;
 	}
 
 	private function addedToStageHandler(event:Event):void {

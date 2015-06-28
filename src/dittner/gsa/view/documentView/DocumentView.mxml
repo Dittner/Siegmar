@@ -2,21 +2,25 @@
 <view:ViewBase xmlns:fx="http://ns.adobe.com/mxml/2009"
                xmlns:s="library://ns.adobe.com/flex/spark"
                xmlns:view="dittner.gsa.view.common.view.*"
-               xmlns:utils="dittner.gsa.view.common.utils.*"
                xmlns:toolbar="dittner.gsa.view.documentList.toolbar.*"
                xmlns:form="dittner.gsa.view.documentView.form.*"
-               xmlns:document="dittner.gsa.view.documentView.document.*">
+               xmlns:document="dittner.gsa.view.documentView.document.*"
+               xmlns:info="dittner.gsa.view.documentView.docInfo.*">
 
-    <utils:BG width="100%" height="100%" color="#172141"/>
+    <view:layout>
+        <s:HorizontalLayout gap="0"/>
+    </view:layout>
 
-    <s:HGroup width="100%" height="100%" gap="0">
+    <document:Document id="document" width="100%" height="100%" enabled="{!form.visible}"/>
 
-        <document:Document id="document" width="100%" height="100%" enabled="{!form.visible}"/>
-
+    <s:Group width="400" height="100%">
         <form:FileBodyForm id="form" width="400" height="100%" visible="false"/>
+        <info:DocInfoBoard id="fileInfoBoard" width="400" height="100%"
+                            visible="{!form.visible}"
+                            enabled="{!form.visible}"/>
 
-        <toolbar:Toolbar id="toolbar" width="40" height="100%"/>
+    </s:Group>
 
-    </s:HGroup>
+    <toolbar:Toolbar id="toolbar" width="40" height="100%"/>
 
 </view:ViewBase>

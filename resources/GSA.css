@@ -121,6 +121,13 @@ list|ListForm {
     color: #333333;
 }
 
+/************************** SCROLL **************************/
+s|Scroller {
+    interactionMode: mouse;
+    horizontalScrollPolicy: off;
+    verticalScrollPolicy: auto;
+}
+
 /************************** OTHER COMPONENTS **************************/
 s|CheckBox {
     skinClass: ClassReference("dittner.gsa.view.common.checkBox.CustomCheckBoxSkin");
@@ -136,3 +143,4 @@ spinner|CustomSpinner {
     color: #4e4f61;
     fontFamily: Tahoma;
 }
+

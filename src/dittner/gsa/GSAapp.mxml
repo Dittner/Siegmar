@@ -4,7 +4,7 @@
                frameRate="30"
                usePreloader="true"
                preloader="dittner.gsa.view.common.preloader.AppPreloader"
-               backgroundColor="0x3d3f4b"
+               backgroundColor="#172141"
                creationComplete="creationCompleteHandler(event)"
                uncaughtError="uncaughtErrorHandler(event)">
 

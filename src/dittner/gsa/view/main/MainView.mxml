@@ -2,27 +2,13 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
          xmlns:s="library://ns.adobe.com/flex/spark"
          xmlns:busyindicator="dittner.gsa.view.common.busyIndicator.*"
-         xmlns:mx="mx.core.*"
          addedToStage="addedToStageHandler(event)">
 
     <fx:Script><![CDATA[
         import dittner.gsa.view.common.popup.SimplePopup;
         import dittner.gsa.view.common.view.ViewBase;
 
-        [Embed(source="/bg.png")]
-        private var BgClass:Class;
-        private static var bg:DisplayObject;
-
         private function addedToStageHandler(event:Event):void {
-            if (bg && bg.parent) {
-                bg.parent.removeChild(bg);
-            }
-            else if (!bg) {
-                bg = new BgClass();
-            }
-
-            bgCont.addChild(bg);
-
             SimplePopup.container.percentHeight = 100;
             SimplePopup.container.percentWidth = 100;
             popupLayer.addElement(SimplePopup.container);
@@ -51,7 +37,6 @@
         <s:State name="lock"/>
     </s:states>
 
-    <mx:UIComponent id="bgCont"/>
 
     <s:Group id="viewCont"
              width="100%"

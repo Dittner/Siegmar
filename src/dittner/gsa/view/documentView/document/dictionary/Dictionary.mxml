@@ -7,6 +7,7 @@
     <fx:Script><![CDATA[
         import dittner.gsa.domain.fileSystem.GSAFile;
         import dittner.gsa.domain.fileSystem.body.DictionaryBody;
+        import dittner.gsa.view.common.utils.AppColors;
 
         import mx.collections.ArrayCollection;
 
@@ -15,15 +16,18 @@
         }
         ]]></fx:Script>
     <utils:BG width="100%" height="100%" color="#ffFFff"/>
+    <utils:BG width="40" height="100%" color="{AppColors.BG_DARK}"/>
+
     <s:Scroller width="100%" height="100%">
-        <list:SelectableDataGroup id="list"
-                                  width="100%"
-                                  deselectEnabled="true"
-                                  itemRenderer="dittner.gsa.view.documentView.document.dictionary.DictionaryItemRenderer">
+        <list:FileBodyList id="list"
+                           width="100%"
+                           clickableArea="40"
+                           deselectEnabled="true"
+                           itemRenderer="dittner.gsa.view.documentView.document.dictionary.DictionaryItemRenderer">
             <list:layout>
                 <s:VerticalLayout gap="0" useVirtualLayout="true" variableRowHeight="true"/>
             </list:layout>
-        </list:SelectableDataGroup>
+        </list:FileBodyList>
 
     </s:Scroller>
 

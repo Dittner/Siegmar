@@ -8,14 +8,12 @@ public class TextFieldFactory {
 
 	public static var useEmbedFonts:Boolean = false;
 
-	public static function create(textFormat:TextFormat, multiline:Boolean = false):TextField {
+	public static function create(textFormat:TextFormat, multiline:Boolean = false, selectable:Boolean = false):TextField {
 		var textField:TextField = new TextField();
-		textField.width = 3000;
-		textField.height = 3000;
-		textField.selectable = false;
+		textField.selectable = selectable;
 		textField.multiline = multiline;
 		textField.wordWrap = multiline;
-		textField.mouseEnabled = false;
+		textField.mouseEnabled = selectable;
 		textField.mouseWheelEnabled = false;
 		textField.embedFonts = useEmbedFonts;
 		textField.antiAliasType = AntiAliasType.ADVANCED;
