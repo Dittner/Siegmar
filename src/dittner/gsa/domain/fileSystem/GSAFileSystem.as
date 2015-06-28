@@ -148,7 +148,9 @@ public class GSAFileSystem extends WalterProxy {
 	}
 
 	private function filesLoaded(res:AsyncOperationResult):void {
-		setAvailableHeaders(res.isSuccess ? res.data as Array : []);
+		var files:Array = res.isSuccess ? res.data as Array : [];
+		files.sortOn(["fileType", "title"]);
+		setAvailableHeaders(files);
 		selectedFileHeader = null;
 	}
 
@@ -172,15 +174,17 @@ public class GSAFileSystem extends WalterProxy {
 	}
 
 	public function closeOpenedFile():void {
-		setOpenedFile(null);
-		selectedFileHeader = null;
-	}
-
-	public function logout():void {
+		_openedFile = null;
 		_openedFolderHeader = null;
 		openedFolderStack.length = 0;
 		availableHeaders.length = 0;
-		closeOpenedFile();
+	}
+
+	public function logout():void {
+		_openedFile = null;
+		_openedFolderHeader = null;
+		openedFolderStack.length = 0;
+		availableHeaders.length = 0;
 	}
 
 }

@@ -21,7 +21,7 @@ public class DictionaryItemRenderer extends ItemRendererBase {
 
 	private static const PAD:uint = 20;
 	private static const GAP:uint = 10;
-	private static const SEP_COLOR:uint = 0xc5c5cd;
+	private static const SEP_COLOR:uint = 0;
 
 	public function DictionaryItemRenderer() {
 		super();
@@ -102,7 +102,7 @@ public class DictionaryItemRenderer extends ItemRendererBase {
 
 		descriptionTf.visible = selected;
 
-		g.lineStyle(1, SEP_COLOR, 0.5);
+		g.lineStyle(1, SEP_COLOR, 0.25);
 		g.moveTo(INDEX_COLUMN_WID, h - 1);
 		g.lineTo(w, h - 1);
 

@@ -15,7 +15,7 @@
             list.dataProvider = new ArrayCollection((file.body as DictionaryBody).items);
         }
         ]]></fx:Script>
-    <utils:BG width="100%" height="100%" color="#ffFFff"/>
+    <utils:BG width="100%" height="100%" color="{AppColors.DOC_DICTIONARY}"/>
     <utils:BG width="40" height="100%" color="{AppColors.BG_DARK}"/>
 
     <s:Scroller width="100%" height="100%">

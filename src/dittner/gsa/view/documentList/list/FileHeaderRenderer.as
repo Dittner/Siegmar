@@ -1,5 +1,6 @@
 package dittner.gsa.view.documentList.list {
 import dittner.gsa.domain.fileSystem.FileHeader;
+import dittner.gsa.domain.fileSystem.FileType;
 import dittner.gsa.view.common.renderer.ItemRendererBase;
 import dittner.gsa.view.common.utils.AppColors;
 import dittner.gsa.view.common.utils.FontName;
@@ -126,9 +127,22 @@ public class FileHeaderRenderer extends ItemRendererBase {
 		lockIcon.visible = !isFolder && fileHeader.password;
 
 		tf.x = folderIcon.x + folderIcon.width + HGAP;
-		tf.textColor = isFolder ? AppColors.BRAUN : AppColors.LILA;
+		tf.textColor = getTextColor(fileHeader.fileType);
 		tf.y = (h - tf.textHeight) / 2 - 2;
 		adjustSize(tf, w - HGAP - tf.x);
+	}
+
+	private function getTextColor(fileType:uint):uint {
+		switch (fileType) {
+			case FileType.ARTICLE :
+				return AppColors.DOC_ARTICLE;
+			case FileType.DICTIONARY :
+				return AppColors.DOC_DICTIONARY;
+			case FileType.NOTEBUCH :
+				return AppColors.DOC_NOTEBUCH;
+			default :
+				return AppColors.BRAUN;
+		}
 	}
 
 }

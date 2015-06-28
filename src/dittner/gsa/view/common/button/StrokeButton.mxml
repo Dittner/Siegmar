@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<s:Button xmlns:fx="http://ns.adobe.com/mxml/2009"
+          xmlns:s="library://ns.adobe.com/flex/spark"
+          minWidth="150" height="31">
+    <fx:Metadata>
+        [Style(name="strokeColor", type="uint")]
+    </fx:Metadata>
+    <fx:Declarations>
+
+        <fx:Component className="StrokeButtonSkin">
+
+            <s:SparkSkin alpha="1" alpha.disabled="0.5">
+
+                <fx:Metadata>
+                    [HostComponent("spark.components.Button")]
+                </fx:Metadata>
+
+                <s:states>
+                    <s:State name="disabled"/>
+                    <s:State name="down"/>
+                    <s:State name="over"/>
+                    <s:State name="up"/>
+                </s:states>
+
+                <s:Label id="labelDisplay"
+                         color="{getStyle('strokeColor')}"
+                         textAlign="center"
+                         maxDisplayedLines="1" mouseChildren="false" mouseEnabled="false"
+                         horizontalCenter="0" verticalCenter="1" verticalAlign="middle"
+                         left="10" right="10" top="2" bottom="2"/>
+
+                <s:Rect width="100%" height="100%" radiusX="4" radiusY="4">
+                    <s:fill>
+                        <s:SolidColor alpha="0" alpha.down=".1"/>
+                    </s:fill>
+                    <s:stroke>
+                        <s:SolidColorStroke color="{getStyle('strokeColor')}" alpha=".5" alpha.down="1"/>
+                    </s:stroke>
+                </s:Rect>
+
+            </s:SparkSkin>
+
+        </fx:Component>
+
+    </fx:Declarations>
+
+    <s:skinClass>{StrokeButtonSkin}</s:skinClass>
+
+</s:Button>

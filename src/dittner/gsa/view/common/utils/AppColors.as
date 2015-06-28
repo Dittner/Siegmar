@@ -19,7 +19,7 @@ public class AppColors {
 	public static const EDITOR_SHADOW:uint = 0x54545d;
 	public static const SCREEN_HEADER_BG:uint = 0xceced6;
 
-	public static const TEXT_BLACK:uint = 0x000000;
+	public static const TEXT_BLACK:uint = 0x0b0c33;
 	public static const TEXT_DARK:uint = 0x4e4f61;
 	public static const TEXT_GRAY:uint = 0x666666;
 	public static const HELL_TÜRKIS:uint = 0xb2d2e6;
@@ -36,7 +36,9 @@ public class AppColors {
 	public static const INPUT_BORDER:uint = 0xc7c7cf;
 	public static const INPUT_CONTENT:uint = 0xffFFff;
 
-	public static const YELLOW:uint = 0xFFCC00;
+	public static const DOC_DICTIONARY:uint = 0x93acd5;
+	public static const DOC_NOTEBUCH:uint = 0xc88ca2;
+	public static const DOC_ARTICLE:uint = 0xa18ec5;
 
 }
 }
