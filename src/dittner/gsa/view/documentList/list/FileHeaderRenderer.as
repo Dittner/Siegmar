@@ -1,4 +1,4 @@
-package dittner.gsa.view.documentList {
+package dittner.gsa.view.documentList.list {
 import dittner.gsa.domain.fileSystem.FileHeader;
 import dittner.gsa.domain.fileSystem.FileType;
 import dittner.gsa.view.common.renderer.ItemRendererBase;
@@ -16,16 +16,16 @@ public class FileHeaderRenderer extends ItemRendererBase {
 
 	private static const HGAP:Number = 10;
 
-	[Embed(source='/lock_icon.png')]
+	[Embed(source='/assets/file/lock_icon.png')]
 	protected static var LockIconClass:Class;
 
-	[Embed(source='/folder_icon.png')]
+	[Embed(source='/assets/file/folder_icon.png')]
 	protected static var FolderIconClass:Class;
 
-	[Embed(source='/dic_icon.png')]
+	[Embed(source='/assets/file/dic_icon.png')]
 	protected static var DicIconClass:Class;
 
-	[Embed(source='/locked_folder_icon.png')]
+	[Embed(source='/assets/file/locked_folder_icon.png')]
 	protected static var LockedFolderIconClass:Class;
 
 	public function FileHeaderRenderer() {

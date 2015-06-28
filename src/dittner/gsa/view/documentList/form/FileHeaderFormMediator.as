@@ -6,14 +6,15 @@ import dittner.gsa.domain.fileSystem.FileOptionKeys;
 import dittner.gsa.domain.fileSystem.FileType;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.message.MediatorMsg;
+import dittner.gsa.view.common.form.FileFormMode;
 import dittner.gsa.view.documentList.toolbar.ToolAction;
 
 import flash.events.MouseEvent;
 
-public class DocumentFormMediator extends WalterMediator {
+public class FileHeaderFormMediator extends WalterMediator {
 
 	[Inject]
-	public var view:DocumentForm;
+	public var view:FileHeaderForm;
 	[Inject]
 	public var system:GSAFileSystem;
 
@@ -51,9 +52,9 @@ public class DocumentFormMediator extends WalterMediator {
 	}
 
 	private function applyHandler(event:MouseEvent):void {
-		if (view.mode == DocumentFormMode.ADD) createAndSaveNewFile();
-		else if (view.mode == DocumentFormMode.EDIT) updateAndSaveFile();
-		else if (view.mode == DocumentFormMode.REMOVE) removeFileHeader();
+		if (view.mode == FileFormMode.ADD) createAndSaveNewFile();
+		else if (view.mode == FileFormMode.EDIT) updateAndSaveFile();
+		else if (view.mode == FileFormMode.REMOVE) removeFileHeader();
 		sendMessage(MediatorMsg.END_EDIT);
 	}
 

@@ -14,6 +14,7 @@ public class GSAFileSystem extends WalterProxy {
 
 	public static const FILE_SELECTED:String = "fileSelected";
 	public static const HEADERS_UPDATED:String = "headersUpdated";
+	public static const FILE_OPENED:String = "fileOpened";
 	public static const FOLDER_OPENED:String = "folderOpened";
 
 	[Inject]
@@ -69,6 +70,36 @@ public class GSAFileSystem extends WalterProxy {
 		}
 	}
 
+	//--------------------------------------
+	//  openedFile
+	//--------------------------------------
+	private var _openedFile:GSAFile;
+	public function get openedFile():GSAFile {return _openedFile;}
+	private function setOpenedFile(value:GSAFile):void {
+		if (_openedFile != value) {
+			_openedFile = value;
+			sendMessage(FILE_OPENED, _openedFile);
+		}
+	}
+
+	public function openSelectedFile():void {
+		if (selectedFileHeader && !selectedFileHeader.isFolder) {
+			var op:IAsyncOperation = fileStorage.loadFileBody(selectedFileHeader);
+			op.addCompleteCallback(fileBodyLoaded)
+		}
+		else {
+			_openedFile = null;
+		}
+	}
+
+	private function fileBodyLoaded(res:AsyncOperationResult):void {
+		var file:GSAFile;
+		file = new GSAFile();
+		file.header = selectedFileHeader;
+		file.body = res.data as FileBody;
+		setOpenedFile(file);
+	}
+
 	//----------------------------------------------------------------------------------------------
 	//
 	//  Methods
@@ -98,14 +129,17 @@ public class GSAFileSystem extends WalterProxy {
 		return header;
 	}
 
-	public function createFileBody(fileType:int):FileBody {
-		switch (fileType) {
+	public function createFileBody(header:FileHeader):FileBody {
+		var body:FileBody;
+		switch (header.fileType) {
 			case FileType.DICTIONARY :
-				return new DictionaryBody();
+				body = new DictionaryBody();
 				break;
 			default :
-				throw new Error("Unknown doc type:" + fileType);
+				throw new Error("Unknown doc type:" + header.fileType);
 		}
+		body.fileID = header.fileID;
+		return body;
 	}
 
 	private function loadFileHeaders():void {
@@ -135,6 +169,18 @@ public class GSAFileSystem extends WalterProxy {
 		for each(var header:FileHeader in openedFolderStack)
 			res += header.title + " / ";
 		return res;
+	}
+
+	public function closeOpenedFile():void {
+		setOpenedFile(null);
+		selectedFileHeader = null;
+	}
+
+	public function logout():void {
+		_openedFolderHeader = null;
+		openedFolderStack.length = 0;
+		availableHeaders.length = 0;
+		closeOpenedFile();
 	}
 
 }

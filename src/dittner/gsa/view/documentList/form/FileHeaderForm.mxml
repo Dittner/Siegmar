@@ -2,33 +2,28 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
          xmlns:s="library://ns.adobe.com/flex/spark"
          xmlns:input="dittner.gsa.view.common.input.*"
-         xmlns:button="dittner.gsa.view.common.button.*"
-         xmlns:mx="mx.core.*"
-         addedToStage="addedToStageHandler(event)">
+         xmlns:button="dittner.gsa.view.common.button.*">
 
     <fx:Script><![CDATA[
         import dittner.gsa.domain.fileSystem.FileHeader;
         import dittner.gsa.domain.fileSystem.FileOptionKeys;
         import dittner.gsa.domain.fileSystem.FileType;
+        import dittner.gsa.view.common.form.FileFormMode;
         import dittner.gsa.view.common.utils.AppColors;
         import dittner.gsa.view.common.utils.FontName;
-
-        [Embed(source="/form_bg.png")]
-        private var BgClass:Class;
-        private static var bg:DisplayObject;
 
         //--------------------------------------
         //  mode
         //--------------------------------------
-        private var _mode:String = DocumentFormMode.ADD;
+        private var _mode:String = FileFormMode.ADD;
         [Bindable("modeChanged")]
         public function get mode():String {return _mode;}
 
         [Bindable("modeChanged")]
-        public function get isAddMode():Boolean {return _mode == DocumentFormMode.ADD;}
+        public function get isAddMode():Boolean {return _mode == FileFormMode.ADD;}
 
         [Bindable("modeChanged")]
-        public function get isRemoveMode():Boolean {return _mode == DocumentFormMode.REMOVE;}
+        public function get isRemoveMode():Boolean {return _mode == FileFormMode.REMOVE;}
 
         private function setFileType(fileType:uint):void {
             switch (fileType) {
@@ -52,13 +47,13 @@
         private var reservedTitleHash:Object = {};
         public function add(reservedTitleHash:Object):void {
             this.reservedTitleHash = reservedTitleHash;
-            _mode = DocumentFormMode.ADD;
+            _mode = FileFormMode.ADD;
             dispatchEvent(new Event("modeChanged"));
         }
 
         public function edit(fileHeader:FileHeader, reservedTitleHash:Object):void {
             this.reservedTitleHash = reservedTitleHash;
-            _mode = DocumentFormMode.EDIT;
+            _mode = FileFormMode.EDIT;
             titleInput.text = fileHeader.title;
             pwdInput.text = fileHeader.password;
             authorInput.text = fileHeader.options[FileOptionKeys.AUTHOR] || "";
@@ -68,8 +63,8 @@
         }
 
         public function remove(fileHeader:FileHeader):void {
-            _mode = DocumentFormMode.REMOVE;
-            removeLbl.text = "Sind Sie sicher, das Sie entfernen möchten?\n";
+            _mode = FileFormMode.REMOVE;
+            removeLbl.text = "Sind Sie sicher, das Sie entfernen möchten?\n\n";
             removeLbl.text += fileHeader.isFolder ? "Ordner: " : "Datei: ";
             removeLbl.text += fileHeader.title.toUpperCase();
             dispatchEvent(new Event("modeChanged"));
@@ -84,11 +79,11 @@
         }
 
         private function getTitle(formMode:String):String {
-            return formMode == DocumentFormMode.ADD ? "NEUES DOKUMENT" : formMode == DocumentFormMode.EDIT ? "AUFBEREITUNG" : "ENTFERNUNG";
+            return formMode == FileFormMode.ADD ? "NEUES DOKUMENT" : formMode == FileFormMode.EDIT ? "AUFBEREITUNG" : "ENTFERNUNG";
         }
 
         private function isApplyBtnEnabled(mode:String, docTitle:String):Boolean {
-            if (mode == DocumentFormMode.REMOVE) return true;
+            if (mode == FileFormMode.REMOVE) return true;
             else return docTitle && !reservedTitleHash[docTitle];
         }
 
@@ -96,16 +91,6 @@
             setFileType((event.target as RadioButton).value as uint);
         }
 
-        private function addedToStageHandler(event:Event):void {
-            if (bg && bg.parent) {
-                bg.parent.removeChild(bg);
-            }
-            else if (!bg) {
-                bg = new BgClass();
-            }
-
-            bgCont.addChild(bg);
-        }
         ]]></fx:Script>
 
     <s:states>
@@ -115,7 +100,7 @@
         <s:State name="album"/>
     </s:states>
 
-    <mx:UIComponent id="bgCont"/>
+    <s:BitmapImage width="100%" height="100%" source="@Embed(source='/form_bg.png')" fillMode="repeat"/>
 
     <s:VGroup width="600" horizontalCenter="0" top="10" bottom="10" gap="20">
 

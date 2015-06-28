@@ -93,5 +93,12 @@ public class SQLFactory extends WalterProxy {
 	public function get selectAllFileHeaders():String {
 		return SELECT_ALL_FILES_HEADERS_SQL;
 	}
+
+	[Embed(source="/dittner/gsa/backend/sqlOperation/sql/SelectFileBody.sql", mimeType="application/octet-stream")]
+	private static const SelectFileBodyClass:Class;
+	private static const SELECT_FILE_BODY_SQL:String = new SelectFileBodyClass();
+	public function get selectFileBody():String {
+		return SELECT_FILE_BODY_SQL;
+	}
 }
 }

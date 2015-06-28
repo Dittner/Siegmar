@@ -6,6 +6,7 @@ import dittner.gsa.backend.sqlOperation.CreateDataBaseSQLOperation;
 import dittner.gsa.backend.sqlOperation.FileSQLWrapper;
 import dittner.gsa.backend.sqlOperation.RemoveFileHeaderSQLOperation;
 import dittner.gsa.backend.sqlOperation.SQLFactory;
+import dittner.gsa.backend.sqlOperation.SelectFileBodySQLOperation;
 import dittner.gsa.backend.sqlOperation.SelectFileHeadersSQLOperation;
 import dittner.gsa.backend.sqlOperation.StoreFileBodySQLOperation;
 import dittner.gsa.backend.sqlOperation.StoreFileHeaderSQLOperation;
@@ -68,6 +69,12 @@ public class FileStorage extends WalterProxy {
 		return op;
 	}
 
+	public function loadFileHeaders(parentFolderID:int):IAsyncOperation {
+		var op:IDeferredOperation = new SelectFileHeadersSQLOperation(this, parentFolderID, system);
+		deferredOperationManager.add(op);
+		return op;
+	}
+
 	//--------------------------------------
 	//  body
 	//--------------------------------------
@@ -83,12 +90,15 @@ public class FileStorage extends WalterProxy {
 		return op;
 	}
 
-	public function loadFileHeaders(parentFolderID:int):IAsyncOperation {
-		//var op:IDeferredOperation = new SelectAllHeadersSQLOperation(this, parentFolderID, system);
-		var op:IDeferredOperation = new SelectFileHeadersSQLOperation(this, parentFolderID, system);
+	public function loadFileBody(header:FileHeader):IAsyncOperation {
+		var op:IDeferredOperation = new SelectFileBodySQLOperation(wrapFileHeader(header), system);
 		deferredOperationManager.add(op);
 		return op;
 	}
+
+	//--------------------------------------
+	//  wrap
+	//--------------------------------------
 
 	private function wrapFileHeader(header:FileHeader):FileSQLWrapper {
 		var wrapper:FileSQLWrapper = new FileSQLWrapper();

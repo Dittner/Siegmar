@@ -2,6 +2,7 @@ package dittner.gsa.view.common.list {
 import flash.events.Event;
 import flash.events.MouseEvent;
 
+import mx.collections.ICollectionView;
 import mx.collections.ListCollectionView;
 import mx.core.IDataRenderer;
 import mx.core.IVisualElement;
@@ -147,6 +148,21 @@ public class SelectableDataGroup extends DataGroup {
 			}
 		}
 		return null;
+	}
+
+	public function refresh():void {
+		if (dataProvider) {
+			selectedItem = null;
+			if (dataProvider is ICollectionView) (dataProvider as ICollectionView).refresh();
+			for (var i:int = 0; i < numElements; i++) {
+				var renderer:IItemRenderer = getElementAt(i) as IItemRenderer;
+				if (renderer) {
+					var renData:Object = renderer.data;
+					renderer.data = null;
+					renderer.data = renData;
+				}
+			}
+		}
 	}
 
 	//--------------------------------------------------------------------------

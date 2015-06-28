@@ -69,6 +69,7 @@ public class ItemRendererBase extends UIComponent implements IItemRenderer {
 	public function set selected(value:Boolean):void {
 		if (value != _selected) {
 			_selected = value;
+			invalidateSize();
 			invalidateDisplayList();
 		}
 	}

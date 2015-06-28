@@ -1,4 +1,6 @@
 package dittner.gsa.view.documentList.list {
+import dittner.gsa.bootstrap.navigator.ViewNavigator;
+import dittner.gsa.bootstrap.viewFactory.ViewID;
 import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.bootstrap.walter.message.WalterMessage;
 import dittner.gsa.domain.fileSystem.FileHeader;
@@ -16,6 +18,8 @@ public class FileHeaderListMediator extends WalterMediator {
 	public var view:FileHeaderList;
 	[Inject]
 	public var system:GSAFileSystem;
+	[Inject]
+	public var viewNavigator:ViewNavigator;
 
 	override protected function activate():void {
 		listenProxy(system, GSAFileSystem.HEADERS_UPDATED, headersUpdated);
@@ -42,8 +46,15 @@ public class FileHeaderListMediator extends WalterMediator {
 	}
 
 	private function viewListDoubleClicked(event:SelectableDataGroupEvent):void {
-		if (event.data is FileHeader && (event.data as FileHeader).isFolder)
+		if (!event.data is FileHeader) return;
+
+		if ((event.data as FileHeader).isFolder) {
 			system.openFolder(event.data as FileHeader);
+		}
+		else {
+			system.selectedFileHeader = event.data as FileHeader;
+			viewNavigator.navigate(ViewID.DOCUMENT_VIEW);
+		}
 	}
 
 	private function headersUpdated(msg:WalterMessage):void {

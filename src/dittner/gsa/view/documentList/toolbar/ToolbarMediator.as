@@ -22,6 +22,7 @@ public class ToolbarMediator extends WalterMediator {
 		listenProxy(system, GSAFileSystem.FILE_SELECTED, fileSelected);
 		listenMediator(MediatorMsg.START_EDIT, startEditing);
 		listenMediator(MediatorMsg.END_EDIT, endEditing);
+		listenMediator(MediatorMsg.NOTE_SELECTED, noteSelected);
 		view.selectedOpCallBack = actionHandler;
 	}
 
@@ -29,9 +30,14 @@ public class ToolbarMediator extends WalterMediator {
 		view.editBtn.enabled = view.removeBtn.enabled = system.selectedFileHeader != null;
 	}
 
+	private function noteSelected(msg:WalterMessage):void {
+		view.editBtn.enabled = view.removeBtn.enabled = system.openedFile && system.openedFile.selectedNote;
+	}
+
 	private function startEditing(msg:WalterMessage):void {
 		view.enabled = false;
 	}
+
 	private function endEditing(msg:WalterMessage):void {
 		view.enabled = true;
 	}

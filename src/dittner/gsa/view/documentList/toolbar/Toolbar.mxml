@@ -13,7 +13,7 @@
             }
         }
         ]]></fx:Script>
-    <utils:BG width="100%" height="100%" color="#0A0C28"/>
+    <utils:BG width="100%" height="100%" color="#0b0e34"/>
 
     <s:VGroup width="100%" height="100%" verticalAlign="bottom"
               paddingLeft="5" paddingRight="5" paddingTop="10" paddingBottom="10" gap="10">
@@ -21,6 +21,8 @@
         <button:ToolButton toolId="{ToolAction.LOGOUT}"
                            image="@Embed(source='/assets/btn/logout_btn.png')"
                            click="btnClickHandler(event)"/>
+
+        <s:Spacer height="100%"/>
 
         <button:ToolButton id="addBtn"
                            toolId="{ToolAction.ADD}"

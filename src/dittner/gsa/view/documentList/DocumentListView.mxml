@@ -27,12 +27,12 @@
 
     <s:HGroup width="100%" height="100%"
               gap="0">
+        <list2:FileHeaderList id="fileHeaderList" width="50%" height="100%"/>
+
+        <form:FileHeaderForm id="documentForm" width="50%" height="100%" visible="false"/>
 
         <toolbar:Toolbar id="toolbar" height="100%"/>
 
-        <list2:FileHeaderList id="fileHeaderList" width="400" height="100%"/>
-
-        <form:DocumentForm id="documentForm" width="100%" height="100%" visible="false"/>
     </s:HGroup>
 
 </view:ViewBase>

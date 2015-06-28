@@ -61,7 +61,7 @@ public class User extends WalterProxy implements IUser {
 		else {
 			_userName = userName;
 			encryptionService.createEncryptionKey(password, privacyLevel, function ():void {
-				encryptedPassword = encryptionService.encryptText(password);
+				encryptedPassword = encryptionService.encryptRandomText();
 				localStorage.writeField("userName", userName);
 				localStorage.writeField("encryptedPassword", encryptedPassword);
 				login(password, privacyLevel);
@@ -74,14 +74,15 @@ public class User extends WalterProxy implements IUser {
 	public function login(enteredPwd:String, privacyLevel:uint):IAsyncOperation {
 		var op:IAsyncOperation = new AsyncOperation();
 		if (isAuthorized) {
-			op.dispatchComplete(new AsyncOperationResult("Agent has been already authorize!", false));
+			op.dispatchComplete(new AsyncOperationResult("Agent has been already authorized!", false));
 		}
 		else if (!isRegistered) {
 			op.dispatchComplete(new AsyncOperationResult("Agent can not login for unregistered user!", false));
 		}
 		else {
 			encryptionService.createEncryptionKey(enteredPwd, privacyLevel, function ():void {
-				if (encryptedPassword == encryptionService.encryptText(enteredPwd)) {
+				var encryptedEnteredPwd:String = encryptionService.encryptRandomText();
+				if (encryptedPassword == encryptedEnteredPwd) {
 					isAuthorized = true;
 					op.dispatchComplete();
 				}
@@ -97,6 +98,7 @@ public class User extends WalterProxy implements IUser {
 	public function logout():void {
 		if (isAuthorized) {
 			isAuthorized = false;
+			system.logout();
 			encryptionService.deleteEncryptionKey();
 		}
 	}

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<view:ViewBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+               xmlns:s="library://ns.adobe.com/flex/spark"
+               xmlns:view="dittner.gsa.view.common.view.*"
+               xmlns:utils="dittner.gsa.view.common.utils.*"
+               xmlns:toolbar="dittner.gsa.view.documentList.toolbar.*"
+               xmlns:form="dittner.gsa.view.documentView.form.*"
+               xmlns:document="dittner.gsa.view.documentView.document.*">
+
+    <utils:BG width="100%" height="100%" color="#172141"/>
+
+    <s:HGroup width="100%" height="100%" gap="0">
+
+        <document:Document id="document" width="100%" height="100%" enabled="{!form.visible}"/>
+
+        <form:FileBodyForm id="form" width="400" height="100%" visible="false"/>
+
+        <toolbar:Toolbar id="toolbar" width="40" height="100%"/>
+
+    </s:HGroup>
+
+</view:ViewBase>

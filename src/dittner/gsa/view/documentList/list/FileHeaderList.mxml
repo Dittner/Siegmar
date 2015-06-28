@@ -9,7 +9,7 @@
         import dittner.gsa.view.common.utils.FontName;
         ]]></fx:Script>
 
-    <utils:BG width="100%" height="100%" color="#0b0e34"/>
+    <utils:BG width="100%" height="100%" color="#172141"/>
 
     <button:ColorButton id="backBtn"
                         width="100%"
@@ -23,7 +23,7 @@
     <s:Scroller width="100%" top="50" bottom="50">
         <list:SelectableDataGroup id="list"
                                   width="100%"
-                                  itemRenderer="dittner.gsa.view.documentList.FileHeaderRenderer">
+                                  itemRenderer="dittner.gsa.view.documentList.list.FileHeaderRenderer">
             <list:layout>
                 <s:VerticalLayout gap="0" useVirtualLayout="true" variableRowHeight="false"/>
             </list:layout>
@@ -31,7 +31,7 @@
 
     </s:Scroller>
 
-    <utils:BG width="100%" height="50" bottom="0" color="#0A0C28"/>
+    <utils:BG width="100%" height="50" bottom="0" color="#0b0e34"/>
     <s:Label id="pathLbl" verticalAlign="middle"
              paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"
              width="100%" height="50" bottom="0" fontSize="14"

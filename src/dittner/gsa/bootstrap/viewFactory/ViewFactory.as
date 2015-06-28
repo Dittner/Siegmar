@@ -2,6 +2,7 @@ package dittner.gsa.bootstrap.viewFactory {
 import dittner.gsa.bootstrap.walter.WalterProxy;
 import dittner.gsa.view.common.view.ViewBase;
 import dittner.gsa.view.documentList.DocumentListView;
+import dittner.gsa.view.documentView.DocumentView;
 import dittner.gsa.view.login.LoginView;
 
 public class ViewFactory extends WalterProxy implements IViewFactory {
@@ -16,6 +17,9 @@ public class ViewFactory extends WalterProxy implements IViewFactory {
 				break;
 			case ViewID.DOCUMENT_LIST :
 				view = new DocumentListView();
+				break;
+			case ViewID.DOCUMENT_VIEW :
+				view = new DocumentView();
 				break;
 			default :
 				throw new Error("Unknown view ID:" + viewID);

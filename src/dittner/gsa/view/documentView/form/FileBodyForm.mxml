@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         implements="dittner.gsa.view.common.form.IBodyForm"
+         xmlns:dictionary="dittner.gsa.view.documentView.form.body.*">
+
+    <fx:Script><![CDATA[
+        import dittner.gsa.bootstrap.async.IAsyncOperation;
+        import dittner.gsa.domain.fileSystem.FileType;
+        import dittner.gsa.domain.fileSystem.GSAFile;
+        import dittner.gsa.view.common.form.IBodyForm;
+
+        private var curBodyForm:IBodyForm;
+
+        private function activate(file:GSAFile):void {
+            switch (file.header.fileType) {
+                case FileType.ARTICLE :
+                    setCurrentState("article");
+                    break;
+                case FileType.DICTIONARY :
+                    curBodyForm = dictionaryBodyForm;
+                    setCurrentState("dictionary");
+                    break;
+                case FileType.PHOTOALBUM :
+                    setCurrentState("album");
+                    break;
+                default :
+                    throw new Error("Unknown file type: " + file.header.fileType);
+            }
+        }
+
+        //----------------------------------------------------------------------------------------------
+        //
+        //  Interface Methods
+        //
+        //----------------------------------------------------------------------------------------------
+
+        public function createNote(file:GSAFile):IAsyncOperation {
+            activate(file);
+            return curBodyForm.createNote(file);
+        }
+
+        public function editNoteFrom(file:GSAFile):IAsyncOperation {
+            activate(file);
+            return curBodyForm.editNoteFrom(file);
+        }
+
+        public function removeNoteFrom(file:GSAFile):IAsyncOperation {
+            activate(file);
+            return curBodyForm.removeNoteFrom(file);
+        }
+
+        public function clear():void {
+            curBodyForm.clear();
+        }
+        ]]></fx:Script>
+
+    <s:states>
+        <s:State name="note"/>
+        <s:State name="article"/>
+        <s:State name="dictionary"/>
+        <s:State name="album"/>
+    </s:states>
+
+    <s:BitmapImage width="100%" height="100%" source="@Embed(source='/form_bg.png')" fillMode="repeat"/>
+
+    <dictionary:DictionaryBodyForm id="dictionaryBodyForm"
+                                   includeInLayout="false" visible="false"
+                                   includeInLayout.dictionary="true" visible.dictionary="true"
+                                   left="10" top="10" bottom="10" right="10"/>
+
+</s:Group>
