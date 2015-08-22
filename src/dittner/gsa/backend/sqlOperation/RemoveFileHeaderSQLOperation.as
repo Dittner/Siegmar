@@ -2,7 +2,6 @@ package dittner.gsa.backend.sqlOperation {
 import dittner.gsa.backend.phaseOperation.PhaseRunner;
 import dittner.gsa.backend.sqlOperation.phase.RemoveFileHeadersAndBodiesPhaseOperation;
 import dittner.gsa.backend.sqlOperation.phase.SelectFileHeaderIDsPhaseOperation;
-import dittner.gsa.bootstrap.async.AsyncOperationResult;
 import dittner.gsa.bootstrap.deferredOperation.DeferredOperation;
 
 public class RemoveFileHeaderSQLOperation extends DeferredOperation {
@@ -25,12 +24,12 @@ public class RemoveFileHeaderSQLOperation extends DeferredOperation {
 		}
 		catch (exc:Error) {
 			phaseRunner.destroy();
-			dispatchComplete(new AsyncOperationResult(exc.message, false));
+			dispatchError(exc.message);
 		}
 	}
 
 	private function phaseRunnerCompleteSuccessHandler():void {
-		dispatchComplete(new AsyncOperationResult());
+		dispatchSuccess();
 		headerWrapper = null;
 	}
 

@@ -5,6 +5,8 @@ import dittner.gsa.view.common.renderer.ItemRendererBase;
 import dittner.gsa.view.common.utils.AppColors;
 import dittner.gsa.view.common.utils.FontName;
 
+import flash.display.Bitmap;
+import flash.display.BitmapData;
 import flash.display.DisplayObject;
 import flash.display.Graphics;
 import flash.text.TextField;
@@ -25,6 +27,9 @@ public class FileHeaderRenderer extends ItemRendererBase {
 	[Embed(source='/assets/file/dic_icon.png')]
 	protected static var DicIconClass:Class;
 
+	[Embed(source='/assets/file/note_icon.png')]
+	protected static var NoteIconClass:Class;
+
 	[Embed(source='/assets/file/locked_folder_icon.png')]
 	protected static var LockedFolderIconClass:Class;
 
@@ -34,9 +39,9 @@ public class FileHeaderRenderer extends ItemRendererBase {
 	}
 
 	private var lockedFolderIcon:DisplayObject;
-	private var dicIcon:DisplayObject;
-	private var folderIcon:DisplayObject;
-	private var lockIcon:DisplayObject;
+	private var fileIcon:Bitmap;
+	private var folderIcon:Bitmap;
+	private var lockIcon:Bitmap;
 	private var tf:TextField;
 
 	//----------------------------------------------------------------------------------------------
@@ -72,8 +77,8 @@ public class FileHeaderRenderer extends ItemRendererBase {
 		folderIcon = new FolderIconClass();
 		addChild(folderIcon);
 
-		dicIcon = new DicIconClass();
-		addChild(dicIcon);
+		fileIcon = new Bitmap();
+		addChild(fileIcon);
 
 		lockIcon = new LockIconClass();
 		addChild(lockIcon);
@@ -90,7 +95,8 @@ public class FileHeaderRenderer extends ItemRendererBase {
 		if (dataChanged) {
 			dataChanged = false;
 			tf.text = fileHeader ? fileHeader.title : "";
-			folderIcon.visible = fileHeader.password;
+			if (isFolder) folderIcon.visible = fileHeader.password;
+			else fileIcon.bitmapData = getIcon(fileHeader.fileType);
 		}
 	}
 
@@ -109,15 +115,15 @@ public class FileHeaderRenderer extends ItemRendererBase {
 		g.drawRect(0, 0, w, h);
 		g.endFill();
 
-		lockedFolderIcon.x = folderIcon.x = dicIcon.x = HGAP;
-		lockedFolderIcon.y = folderIcon.y = dicIcon.y = (h - folderIcon.height) / 2;
+		lockedFolderIcon.x = folderIcon.x = fileIcon.x = HGAP;
+		lockedFolderIcon.y = folderIcon.y = fileIcon.y = (h - folderIcon.height) / 2;
 		if (isFolder) {
-			dicIcon.visible = false;
+			fileIcon.visible = false;
 			lockedFolderIcon.visible = fileHeader.password;
 			folderIcon.visible = !lockedFolderIcon.visible;
 		}
 		else {
-			dicIcon.visible = true;
+			fileIcon.visible = true;
 			lockedFolderIcon.visible = false;
 			folderIcon.visible = false;
 		}
@@ -138,10 +144,27 @@ public class FileHeaderRenderer extends ItemRendererBase {
 				return AppColors.DOC_ARTICLE;
 			case FileType.DICTIONARY :
 				return AppColors.DOC_DICTIONARY;
-			case FileType.NOTEBUCH :
+			case FileType.NOTEBOOK :
 				return AppColors.DOC_NOTEBUCH;
 			default :
 				return AppColors.BRAUN;
+		}
+	}
+
+	private static var dicIcon:BitmapData;
+	private static var noteIcon:BitmapData;
+	private function getIcon(fileType:uint):BitmapData {
+		switch (fileType) {
+			case FileType.ARTICLE :
+				return null;
+			case FileType.DICTIONARY :
+				if (!dicIcon) dicIcon = (new DicIconClass).bitmapData;
+				return dicIcon;
+			case FileType.NOTEBOOK :
+				if (!noteIcon) noteIcon = (new NoteIconClass).bitmapData;
+				return noteIcon;
+			default :
+				return null;
 		}
 	}
 

@@ -11,7 +11,6 @@ import dittner.gsa.backend.sqlOperation.SelectFileHeadersSQLOperation;
 import dittner.gsa.backend.sqlOperation.StoreFileBodySQLOperation;
 import dittner.gsa.backend.sqlOperation.StoreFileHeaderSQLOperation;
 import dittner.gsa.bootstrap.async.AsyncOperation;
-import dittner.gsa.bootstrap.async.AsyncOperationResult;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.deferredOperation.DeferredOperationManager;
 import dittner.gsa.bootstrap.deferredOperation.IDeferredOperation;
@@ -118,8 +117,8 @@ public class FileStorage extends WalterProxy {
 		return wrapper;
 	}
 
-	private function notifyFileStored(res:AsyncOperationResult):void {
-		if (res.isSuccess) sendMessage(FILE_STORED);
+	private function notifyFileStored(op:IAsyncOperation):void {
+		if (op.isSuccess) sendMessage(FILE_STORED);
 	}
 }
 }

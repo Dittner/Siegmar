@@ -1,7 +1,7 @@
 package dittner.gsa.bootstrap.deferredOperation {
 import dittner.gsa.bootstrap.walter.WalterProxy;
-import dittner.gsa.utils.pendingInvoke.clearDelay;
-import dittner.gsa.utils.pendingInvoke.doLaterInMSec;
+import dittner.gsa.utils.delay.clearDelay;
+import dittner.gsa.utils.delay.doLaterInMSec;
 
 import flash.utils.getQualifiedClassName;
 

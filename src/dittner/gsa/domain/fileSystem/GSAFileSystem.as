@@ -1,11 +1,11 @@
 package dittner.gsa.domain.fileSystem {
-import dittner.gsa.bootstrap.async.AsyncOperationResult;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.walter.WalterProxy;
 import dittner.gsa.bootstrap.walter.message.WalterMessage;
 import dittner.gsa.bootstrap.walter.walter_namespace;
 import dittner.gsa.domain.fileSystem.body.DictionaryBody;
 import dittner.gsa.domain.fileSystem.body.FileBody;
+import dittner.gsa.domain.fileSystem.body.NotebookBody;
 import dittner.gsa.domain.store.FileStorage;
 
 use namespace walter_namespace;
@@ -92,12 +92,14 @@ public class GSAFileSystem extends WalterProxy {
 		}
 	}
 
-	private function fileBodyLoaded(res:AsyncOperationResult):void {
-		var file:GSAFile;
-		file = new GSAFile();
-		file.header = selectedFileHeader;
-		file.body = res.data as FileBody;
-		setOpenedFile(file);
+	private function fileBodyLoaded(op:IAsyncOperation):void {
+		if (op.isSuccess) {
+			var file:GSAFile;
+			file = new GSAFile();
+			file.header = selectedFileHeader;
+			file.body = op.result as FileBody;
+			setOpenedFile(file);
+		}
 	}
 
 	//----------------------------------------------------------------------------------------------
@@ -135,6 +137,9 @@ public class GSAFileSystem extends WalterProxy {
 			case FileType.DICTIONARY :
 				body = new DictionaryBody();
 				break;
+			case FileType.NOTEBOOK :
+				body = new NotebookBody();
+				break;
 			default :
 				throw new Error("Unknown doc type:" + header.fileType);
 		}
@@ -147,8 +152,8 @@ public class GSAFileSystem extends WalterProxy {
 		op.addCompleteCallback(filesLoaded);
 	}
 
-	private function filesLoaded(res:AsyncOperationResult):void {
-		var files:Array = res.isSuccess ? res.data as Array : [];
+	private function filesLoaded(op:IAsyncOperation):void {
+		var files:Array = op.isSuccess ? op.result as Array : [];
 		files.sortOn(["fileType", "title"]);
 		setAvailableHeaders(files);
 		selectedFileHeader = null;

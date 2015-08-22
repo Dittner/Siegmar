@@ -1,7 +1,6 @@
 package dittner.gsa.backend.sqlOperation {
 import com.probertson.data.QueuedStatement;
 
-import dittner.gsa.bootstrap.async.AsyncOperationResult;
 import dittner.gsa.bootstrap.deferredOperation.DeferredOperation;
 import dittner.gsa.domain.fileSystem.body.FileBody;
 
@@ -34,7 +33,7 @@ public class StoreFileBodySQLOperation extends DeferredOperation {
 			bodyWrapper.sqlRunner.executeModify(Vector.<QueuedStatement>([statement]), executeComplete, executeError);
 		}
 		catch (exc:Error) {
-			dispatchComplete(new AsyncOperationResult(exc.message, false));
+			dispatchError(exc.message);
 		}
 	}
 
@@ -52,11 +51,11 @@ public class StoreFileBodySQLOperation extends DeferredOperation {
 			var result:SQLResult = results[0];
 			if (result.rowsAffected > 0) bodyWrapper.body.id = result.lastInsertRowID;
 		}
-		dispatchComplete();
+		dispatchSuccess();
 	}
 
 	private function executeError(error:SQLError):void {
-		dispatchComplete(new AsyncOperationResult(error.message, false));
+		dispatchError(error.message);
 	}
 
 }

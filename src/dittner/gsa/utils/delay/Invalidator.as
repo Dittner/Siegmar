@@ -1,4 +1,4 @@
-package dittner.gsa.utils.pendingInvalidation {
+package dittner.gsa.utils.delay {
 import flash.events.TimerEvent;
 
 public class Invalidator {

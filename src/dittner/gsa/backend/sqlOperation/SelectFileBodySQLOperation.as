@@ -1,5 +1,4 @@
 package dittner.gsa.backend.sqlOperation {
-import dittner.gsa.bootstrap.async.AsyncOperationResult;
 import dittner.gsa.bootstrap.deferredOperation.DeferredOperation;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.domain.fileSystem.body.FileBody;
@@ -31,7 +30,7 @@ public class SelectFileBodySQLOperation extends DeferredOperation {
 			decryptedBytes.position = 0;
 			fileBody.deserialize(decryptedBytes);
 		}
-		dispatchComplete(new AsyncOperationResult(fileBody));
+		dispatchSuccess(fileBody);
 	}
 
 	private function decrypt(ba:ByteArray):ByteArray {

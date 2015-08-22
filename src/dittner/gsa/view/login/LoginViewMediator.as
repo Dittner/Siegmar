@@ -1,5 +1,4 @@
 package dittner.gsa.view.login {
-import dittner.gsa.bootstrap.async.AsyncOperationResult;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.navigator.ViewNavigator;
 import dittner.gsa.bootstrap.viewFactory.ViewID;
@@ -47,8 +46,8 @@ public class LoginViewMediator extends WalterMediator {
 	private function get enteredName():String {return view.userNameInput.text;}
 	private function get enteredPL():uint {return uint(view.privacyLevelInput.text);}
 
-	private function loginHandler(result:AsyncOperationResult):void {
-		if (result.isSuccess) {
+	private function loginHandler(op:IAsyncOperation):void {
+		if (op.isSuccess) {
 			view.isInvalidPassword = false;
 			viewNavigator.navigate(ViewID.DOCUMENT_LIST);
 		}

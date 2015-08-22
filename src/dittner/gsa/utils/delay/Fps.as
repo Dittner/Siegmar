@@ -1,4 +1,4 @@
-package dittner.gsa.utils.pendingInvoke {
+package dittner.gsa.utils.delay {
 import mx.core.FlexGlobals;
 
 public class Fps {

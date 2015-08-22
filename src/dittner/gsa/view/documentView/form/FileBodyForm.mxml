@@ -21,7 +21,11 @@
                     curBodyForm = dictionaryBodyForm;
                     setCurrentState("dictionary");
                     break;
-                case FileType.PHOTOALBUM :
+                case FileType.NOTEBOOK :
+                    setCurrentState("notebook");
+                    curBodyForm = noteBodyForm;
+                    break;
+                case FileType.ALBUM :
                     setCurrentState("album");
                     break;
                 default :
@@ -40,14 +44,14 @@
             return curBodyForm.createNote(file);
         }
 
-        public function editNoteFrom(file:GSAFile):IAsyncOperation {
+        public function editNote(file:GSAFile):IAsyncOperation {
             activate(file);
-            return curBodyForm.editNoteFrom(file);
+            return curBodyForm.editNote(file);
         }
 
-        public function removeNoteFrom(file:GSAFile):IAsyncOperation {
+        public function removeNote(file:GSAFile):IAsyncOperation {
             activate(file);
-            return curBodyForm.removeNoteFrom(file);
+            return curBodyForm.removeNote(file);
         }
 
         public function clear():void {
@@ -56,7 +60,7 @@
         ]]></fx:Script>
 
     <s:states>
-        <s:State name="note"/>
+        <s:State name="notebook"/>
         <s:State name="article"/>
         <s:State name="dictionary"/>
         <s:State name="album"/>
@@ -68,5 +72,10 @@
                                    includeInLayout="false" visible="false"
                                    includeInLayout.dictionary="true" visible.dictionary="true"
                                    left="10" top="10" bottom="10" right="10"/>
+
+    <dictionary:NotebookBodyForm id="noteBodyForm"
+                                 includeInLayout="false" visible="false"
+                                 includeInLayout.notebook="true" visible.notebook="true"
+                                 left="10" top="10" bottom="10" right="10"/>
 
 </s:Group>

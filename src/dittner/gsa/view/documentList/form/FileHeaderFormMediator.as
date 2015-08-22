@@ -69,7 +69,8 @@ public class FileHeaderFormMediator extends WalterMediator {
 		if (view.folderBtn.selected) fileHeader = system.createFileHeader(FileType.FOLDER);
 		else if (view.dictionaryRadioBtn.selected) fileHeader = system.createFileHeader(FileType.DICTIONARY);
 		else if (view.articleRadioBtn.selected) fileHeader = system.createFileHeader(FileType.ARTICLE);
-		else if (view.albumRadioBtn.selected) fileHeader = system.createFileHeader(FileType.PHOTOALBUM);
+		else if (view.albumRadioBtn.selected) fileHeader = system.createFileHeader(FileType.ALBUM);
+		else if (view.notebookRadioBtn.selected) fileHeader = system.createFileHeader(FileType.NOTEBOOK);
 		else throw new Error("Unknown file type selected!");
 		return fileHeader;
 	}

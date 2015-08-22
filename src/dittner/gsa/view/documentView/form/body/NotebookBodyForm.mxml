@@ -9,8 +9,7 @@
         import dittner.gsa.bootstrap.async.AsyncOperation;
         import dittner.gsa.bootstrap.async.IAsyncOperation;
         import dittner.gsa.domain.fileSystem.GSAFile;
-        import dittner.gsa.domain.fileSystem.body.DictionaryBody;
-        import dittner.gsa.domain.fileSystem.body.note.TitledNote;
+        import dittner.gsa.domain.fileSystem.body.note.Note;
         import dittner.gsa.view.common.utils.AppColors;
         import dittner.gsa.view.common.utils.FontName;
 
@@ -25,7 +24,6 @@
         public function createNote(file:GSAFile):IAsyncOperation {
             operation = new AsyncOperation();
             this.file = file;
-            reservedTitleHash = getReservedTitleHash();
             currentState = "add";
             return operation;
         }
@@ -33,10 +31,8 @@
         public function editNote(file:GSAFile):IAsyncOperation {
             operation = new AsyncOperation();
             this.file = file;
-            reservedTitleHash = getReservedTitleHash();
-            var titledNote:TitledNote = file.selectedNote as TitledNote;
-            titleInput.text = titledNote.title;
-            contentInput.text = titledNote.text;
+            var note:Note = file.selectedNote;
+            textInput.text = note.text;
             currentState = "edit";
             return operation;
         }
@@ -44,18 +40,16 @@
         public function removeNote(file:GSAFile):IAsyncOperation {
             operation = new AsyncOperation();
             this.file = file;
-            var titledNote:TitledNote = file.selectedNote as TitledNote;
+            var note:Note = file.selectedNote;
             removeLbl.text = "Sind Sie sicher, das Sie entfernen möchten?\n\n";
-            removeLbl.text += titledNote.title + "\n" + titledNote.text;
+            removeLbl.text += note.text;
             currentState = "remove";
             return operation;
         }
 
         public function clear():void {
-            titleInput.text = "";
-            contentInput.text = "";
+            textInput.text = "";
             operation = null;
-            reservedTitleHash = null;
         }
 
         //----------------------------------------------------------------------------------------------
@@ -64,17 +58,9 @@
         //
         //----------------------------------------------------------------------------------------------
 
-        private var reservedTitleHash:Object;
-        private function getReservedTitleHash():Object {
-            var hash:Object = {};
-            for each(var note:TitledNote in (file.body as DictionaryBody).items)
-                hash[note.title] = note != file.selectedNote;
-            return hash;
-        }
-
-        private function isApplyBtnEnabled(currentState:String, docTitle:String, docContent:String):Boolean {
+        private function isApplyBtnEnabled(currentState:String, docContent:String):Boolean {
             if (currentState == "remove") return true;
-            else return docContent && docTitle && !reservedTitleHash[docTitle];
+            else return docContent;
         }
 
         private function cancelBtnClickHandler():void {
@@ -94,10 +80,9 @@
             operation.dispatchSuccess(true);
         }
 
-        private function getNote():TitledNote {
-            var res:TitledNote = new TitledNote();
-            res.title = titleInput.text;
-            res.text = contentInput.text;
+        private function getNote():Note {
+            var res:Note = new Note();
+            res.text = textInput.text;
             return res;
         }
         ]]></fx:Script>
@@ -120,20 +105,17 @@
              mouseChildren="false" mouseEnabled="false" paddingBottom="50"
              color="{AppColors.TEXT_WHITE}"/>
 
-    <input:TextInputForm id="titleInput"
+    <input:TextAreaForm id="textInput"
                          visible.remove="false" includeInLayout.remove="false"
-                         width="100%" title="Titel:"/>
-
-    <input:TextInputForm id="contentInput"
-                         visible.remove="false" includeInLayout.remove="false"
-                         width="100%" title="Inhalt:"/>
+                         width="100%" height="50%" title="Inhalt:"/>
 
     <s:Label id="removeLbl"
              visible="false" includeInLayout="false"
              visible.remove="true" includeInLayout.remove="true"
              width="100%" textAlign="center"
-             fontFamily="{FontName.TAHOMA}" fontSize="30"
+             fontFamily="{FontName.TAHOMA}" fontSize="20"
              mouseChildren="false" mouseEnabled="false"
+             maxDisplayedLines="5"
              color="{AppColors.TEXT_LIGHT}"/>
 
     <s:Spacer height="50"/>
@@ -147,7 +129,7 @@
         <button:BlackButton id="applyBtn"
                             width="100%"
                             label="Bestätigen"
-                            enabled="{isApplyBtnEnabled(currentState, titleInput.text, contentInput.text)}"
+                            enabled="{isApplyBtnEnabled(currentState, textInput.text)}"
                             click="applyBtnClickHandler()"/>
     </s:HGroup>
 

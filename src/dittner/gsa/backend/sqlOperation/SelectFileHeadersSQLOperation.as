@@ -1,5 +1,4 @@
 package dittner.gsa.backend.sqlOperation {
-import dittner.gsa.bootstrap.async.AsyncOperationResult;
 import dittner.gsa.bootstrap.deferredOperation.DeferredOperation;
 import dittner.gsa.domain.fileSystem.FileHeader;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
@@ -28,7 +27,7 @@ public class SelectFileHeadersSQLOperation extends DeferredOperation {
 		for each(var header:FileHeader in result.data) {
 			fileHeaders.push(header);
 		}
-		dispatchComplete(new AsyncOperationResult(fileHeaders));
+		dispatchSuccess(fileHeaders);
 	}
 }
 }

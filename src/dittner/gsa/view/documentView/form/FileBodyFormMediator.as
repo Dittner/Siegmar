@@ -1,5 +1,4 @@
 package dittner.gsa.view.documentView.form {
-import dittner.gsa.bootstrap.async.AsyncOperationResult;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.bootstrap.walter.message.WalterMessage;
@@ -27,10 +26,10 @@ public class FileBodyFormMediator extends WalterMediator {
 				op = view.createNote(system.openedFile);
 				break;
 			case ToolAction.EDIT:
-				if (system.openedFile.selectedNote) op = view.editNoteFrom(system.openedFile);
+				if (system.openedFile.selectedNote) op = view.editNote(system.openedFile);
 				break;
 			case ToolAction.REMOVE:
-				if (system.openedFile.selectedNote) op = view.removeNoteFrom(system.openedFile);
+				if (system.openedFile.selectedNote) op = view.removeNote(system.openedFile);
 				break;
 		}
 		if (op) {
@@ -44,7 +43,7 @@ public class FileBodyFormMediator extends WalterMediator {
 		view.clear();
 	}
 
-	private function closeForm(res:AsyncOperationResult):void {
+	private function closeForm(op:IAsyncOperation):void {
 		sendMessage(MediatorMsg.END_EDIT);
 	}
 

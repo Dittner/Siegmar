@@ -42,7 +42,10 @@
                 case FileType.DICTIONARY :
                     setCurrentState("dictionary");
                     break;
-                case FileType.PHOTOALBUM :
+                case FileType.NOTEBOOK :
+                    setCurrentState("notebook");
+                    break;
+                case FileType.ALBUM :
                     setCurrentState("album");
                     break;
                 default :
@@ -110,6 +113,7 @@
         <s:State name="folder"/>
         <s:State name="article"/>
         <s:State name="dictionary"/>
+        <s:State name="notebook"/>
         <s:State name="album"/>
     </s:states>
 
@@ -160,11 +164,18 @@
                            label="Wörterbuch"
                            click="radioBtnClickHandler(event)"/>
 
+            <s:RadioButton id="notebookRadioBtn"
+                           groupName="radioBar"
+                           width="200"
+                           value="{FileType.NOTEBOOK}"
+                           label="Notizbuch"
+                           click="radioBtnClickHandler(event)"/>
+
             <s:RadioButton id="albumRadioBtn"
                            groupName="radioBar"
                            enabled="false"
                            width="200"
-                           value="{FileType.PHOTOALBUM}"
+                           value="{FileType.ALBUM}"
                            label="Album"
                            click="radioBtnClickHandler(event)"/>
         </s:Group>

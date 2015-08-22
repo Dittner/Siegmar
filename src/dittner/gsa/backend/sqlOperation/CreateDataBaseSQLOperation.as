@@ -45,11 +45,11 @@ public class CreateDataBaseSQLOperation extends DeferredOperation {
 
 			storage.sqlRunner.executeModify(statements, executeComplete, executeError, null);
 		}
-		else dispatchComplete();
+		else dispatchSuccess();
 	}
 
 	private function executeComplete(results:Vector.<SQLResult>):void {
-		dispatchComplete();
+		dispatchSuccess();
 	}
 
 	private function executeError(error:SQLError):void {

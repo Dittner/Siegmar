@@ -2,7 +2,7 @@ package dittner.gsa.bootstrap.walter.injector {
 import dittner.gsa.bootstrap.walter.Walter;
 import dittner.gsa.bootstrap.walter.WalterProxy;
 import dittner.gsa.bootstrap.walter.walter_namespace;
-import dittner.gsa.utils.pendingInvalidation.invalidateOf;
+import dittner.gsa.utils.delay.invalidateOf;
 
 import flash.utils.describeType;
 import flash.utils.getDefinitionByName;

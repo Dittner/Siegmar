@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         xmlns:utils="dittner.gsa.view.common.utils.*"
+         xmlns:list="dittner.gsa.view.common.list.*">
+
+    <fx:Script><![CDATA[
+        import dittner.gsa.domain.fileSystem.GSAFile;
+        import dittner.gsa.domain.fileSystem.body.NotebookBody;
+        import dittner.gsa.view.common.utils.AppColors;
+
+        import mx.collections.ArrayCollection;
+
+        public function activate(file:GSAFile):void {
+            list.dataProvider = new ArrayCollection((file.body as NotebookBody).items);
+        }
+        ]]></fx:Script>
+    <utils:BG width="100%" height="100%" color="{AppColors.DOC_NOTEBUCH}"/>
+    <utils:BG width="40" height="100%" color="{AppColors.BG_DARK}"/>
+
+    <s:Scroller width="100%" height="100%">
+        <list:FileBodyList id="list"
+                           width="100%"
+                           clickableArea="40"
+                           deselectEnabled="true"
+                           itemRenderer="dittner.gsa.view.documentView.document.notebook.NotebookItemRenderer">
+            <list:layout>
+                <s:VerticalLayout gap="0" useVirtualLayout="true" variableRowHeight="true"/>
+            </list:layout>
+        </list:FileBodyList>
+
+    </s:Scroller>
+
+</s:Group>

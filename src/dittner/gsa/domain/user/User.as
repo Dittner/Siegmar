@@ -2,7 +2,6 @@ package dittner.gsa.domain.user {
 import dittner.gsa.backend.SharedObjectStorage;
 import dittner.gsa.backend.encryption.IEncryptionService;
 import dittner.gsa.bootstrap.async.AsyncOperation;
-import dittner.gsa.bootstrap.async.AsyncOperationResult;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.walter.WalterProxy;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
@@ -56,7 +55,7 @@ public class User extends WalterProxy implements IUser {
 	public function register(userName:String, password:String, privacyLevel:uint):IAsyncOperation {
 		var op:IAsyncOperation = new AsyncOperation();
 		if (isRegistered) {
-			op.dispatchComplete();
+			op.dispatchSuccess();
 		}
 		else {
 			_userName = userName;
@@ -65,7 +64,7 @@ public class User extends WalterProxy implements IUser {
 				localStorage.writeField("userName", userName);
 				localStorage.writeField("encryptedPassword", encryptedPassword);
 				login(password, privacyLevel);
-				op.dispatchComplete();
+				op.dispatchSuccess();
 			});
 		}
 		return op;
@@ -74,20 +73,20 @@ public class User extends WalterProxy implements IUser {
 	public function login(enteredPwd:String, privacyLevel:uint):IAsyncOperation {
 		var op:IAsyncOperation = new AsyncOperation();
 		if (isAuthorized) {
-			op.dispatchComplete(new AsyncOperationResult("Agent has been already authorized!", false));
+			op.dispatchError("Agent has been already authorized!");
 		}
 		else if (!isRegistered) {
-			op.dispatchComplete(new AsyncOperationResult("Agent can not login for unregistered user!", false));
+			op.dispatchError("Agent can not login for unregistered user!");
 		}
 		else {
 			encryptionService.createEncryptionKey(enteredPwd, privacyLevel, function ():void {
 				var encryptedEnteredPwd:String = encryptionService.encryptRandomText();
 				if (encryptedPassword == encryptedEnteredPwd) {
 					isAuthorized = true;
-					op.dispatchComplete();
+					op.dispatchSuccess();
 				}
 				else {
-					op.dispatchComplete(new AsyncOperationResult("Invalid password", false));
+					op.dispatchError("Invalid password");
 				}
 
 			});

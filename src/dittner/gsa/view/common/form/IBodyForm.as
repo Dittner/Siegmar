@@ -4,8 +4,8 @@ import dittner.gsa.domain.fileSystem.GSAFile;
 
 public interface IBodyForm {
 	function createNote(file:GSAFile):IAsyncOperation;
-	function editNoteFrom(file:GSAFile):IAsyncOperation;
-	function removeNoteFrom(file:GSAFile):IAsyncOperation;
+	function editNote(file:GSAFile):IAsyncOperation;
+	function removeNote(file:GSAFile):IAsyncOperation;
 	function clear():void;
 }
 }

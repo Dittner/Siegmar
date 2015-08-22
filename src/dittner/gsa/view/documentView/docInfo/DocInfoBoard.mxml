@@ -31,11 +31,11 @@
                 case FileType.DICTIONARY :
                     currentState = "dictionary";
                     break;
-                case FileType.PHOTOALBUM :
+                case FileType.ALBUM :
                     currentState = "album";
                     break;
-                case FileType.NOTEBUCH :
-                    currentState = "notebuch";
+                case FileType.NOTEBOOK :
+                    currentState = "notebook";
                     break;
             }
 
@@ -52,7 +52,7 @@
     <s:states>
         <s:State name="article"/>
         <s:State name="dictionary"/>
-        <s:State name="notebuch"/>
+        <s:State name="notebook"/>
         <s:State name="album"/>
     </s:states>
 
@@ -63,7 +63,7 @@
     <s:HGroup width="100%" gap="10">
         <s:Label text.article="Artikel:"
                  text.dictionary="Wörterbuch:"
-                 text.notebuch="Notebuch:"
+                 text.notebook="Notebuch:"
                  text.album="Album:"
                  width="40%"
                  fontFamily="{FontName.TAHOMA}" fontSize="16" fontWeight="bold"

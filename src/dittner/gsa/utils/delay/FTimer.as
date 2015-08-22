@@ -1,6 +1,4 @@
-package dittner.gsa.utils.pendingInvoke {
-import dittner.gsa.utils.pendingInvalidation.invalidateOf;
-
+package dittner.gsa.utils.delay {
 public class FTimer {
 	public function FTimer() {}
 
