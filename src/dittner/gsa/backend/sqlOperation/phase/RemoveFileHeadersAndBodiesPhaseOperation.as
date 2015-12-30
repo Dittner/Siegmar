@@ -1,9 +1,10 @@
 package dittner.gsa.backend.sqlOperation.phase {
-import dittner.gsa.backend.phaseOperation.PhaseOperation;
-import dittner.gsa.backend.phaseOperation.PhaseRunner;
 import dittner.gsa.backend.sqlOperation.FileSQLWrapper;
+import dittner.gsa.bootstrap.async.AsyncCommand;
+import dittner.gsa.bootstrap.async.CompositeOperation;
+import dittner.gsa.bootstrap.async.IAsyncOperation;
 
-public class RemoveFileHeadersAndBodiesPhaseOperation extends PhaseOperation {
+public class RemoveFileHeadersAndBodiesPhaseOperation extends AsyncCommand {
 
 	public function RemoveFileHeadersAndBodiesPhaseOperation(headerWrapper:FileSQLWrapper) {
 		this.headerWrapper = headerWrapper;
@@ -12,27 +13,28 @@ public class RemoveFileHeadersAndBodiesPhaseOperation extends PhaseOperation {
 	private var headerWrapper:FileSQLWrapper;
 
 	override public function execute():void {
-		var phaseRunner:PhaseRunner = new PhaseRunner();
-		phaseRunner.completeCallback = phaseRunnerCompleteSuccessHandler;
+		var compositeOp:CompositeOperation = new CompositeOperation();
+		compositeOp.addCompleteCallback(compositeOpHandler);
 
 		try {
 			if (headerWrapper.removingFileIDs.length > 0)
-				phaseRunner.addPhase(BackUpDataBasePhaseOperation);
+				compositeOp.addOperation(BackUpDataBasePhaseOperation);
 
 			for each(var fileID:int in headerWrapper.removingFileIDs) {
-				phaseRunner.addPhase(RemoveFileHeaderByFileIDPhaseOperation, headerWrapper, fileID);
-				phaseRunner.addPhase(RemoveFileBodyByFileIDPhaseOperation, headerWrapper, fileID);
+				compositeOp.addOperation(RemoveFileHeaderByFileIDPhaseOperation, headerWrapper, fileID);
+				compositeOp.addOperation(RemoveFileBodyByFileIDPhaseOperation, headerWrapper, fileID);
 			}
-			phaseRunner.execute();
+			compositeOp.execute();
 		}
 		catch (exc:Error) {
-			phaseRunner.destroy();
-			dispatchComplete();
+			compositeOp.destroy();
+			dispatchError(exc.message);
 		}
 	}
 
-	private function phaseRunnerCompleteSuccessHandler():void {
-		dispatchComplete();
+	private function compositeOpHandler(op:IAsyncOperation):void {
+		if (op.isSuccess) dispatchSuccess(op.result);
+		else dispatchError(op.error);
 	}
 
 	override public function destroy():void {

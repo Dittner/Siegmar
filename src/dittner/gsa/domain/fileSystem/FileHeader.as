@@ -14,6 +14,9 @@ public class FileHeader {
 	[Inject]
 	public var fileStorage:FileStorage;
 
+	//--------------------------------------
+	//  fileID
+	//--------------------------------------
 	private var _fileID:int = -1;
 	public function get isNewFile():Boolean {return fileID == -1;}
 	public function get fileID():int {return _fileID;}
@@ -47,6 +50,13 @@ public class FileHeader {
 	}
 
 	//--------------------------------------
+	//  fileTypeName
+	//--------------------------------------
+	public function get fileTypeName():String {
+		return FileTypeName.getNameByType(fileType);
+	}
+
+	//--------------------------------------
 	//  title
 	//--------------------------------------
 	private var _title:String = "";
@@ -54,17 +64,6 @@ public class FileHeader {
 	public function set title(value:String):void {
 		if (_title != value) {
 			_title = value || "";
-		}
-	}
-
-	//--------------------------------------
-	//  password
-	//--------------------------------------
-	private var _password:String = "";
-	public function get password():String {return _password;}
-	public function set password(value:String):void {
-		if (_password != value) {
-			_password = value || "";
 		}
 	}
 

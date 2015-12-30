@@ -2,7 +2,6 @@ package dittner.gsa.domain.fileSystem.body {
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.walter.Walter;
 import dittner.gsa.bootstrap.walter.walter_namespace;
-import dittner.gsa.domain.fileSystem.body.note.Note;
 import dittner.gsa.domain.store.FileStorage;
 
 import flash.utils.ByteArray;
@@ -43,15 +42,16 @@ public class FileBody {
 		}
 	}
 
+	//--------------------------------------
+	//  encryptEnabled
+	//--------------------------------------
+	public function get encryptEnabled():Boolean {return true;}
+
 	//----------------------------------------------------------------------------------------------
 	//
 	//  Methods
 	//
 	//----------------------------------------------------------------------------------------------
-
-	public function addNote(note:Note):void {}
-	public function replaceNote(oldNote:Note, newNote:Note):void {}
-	public function removeNote(note:Note):void {}
 
 	public function deserialize(ba:ByteArray):void {}
 

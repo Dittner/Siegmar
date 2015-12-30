@@ -3,7 +3,6 @@ INSERT INTO header
 	parentID,
 	fileType,
 	title,
-	password,
 	options
 )
 VALUES
@@ -11,6 +10,5 @@ VALUES
 	:parentID,
 	:fileType,
 	:title,
-	:password,
 	:options
 )

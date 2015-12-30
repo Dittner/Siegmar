@@ -5,7 +5,6 @@
 
     <fx:Script><![CDATA[
         import dittner.gsa.domain.fileSystem.FileOptionKeys;
-        import dittner.gsa.domain.fileSystem.FileType;
         import dittner.gsa.domain.fileSystem.GSAFile;
         import dittner.gsa.view.common.utils.AppColors;
         import dittner.gsa.view.common.utils.FontName;
@@ -24,22 +23,9 @@
 
         private function updateData():void {
             if (!file) return;
-            switch (file.header.fileType) {
-                case FileType.ARTICLE :
-                    currentState = "article";
-                    break;
-                case FileType.DICTIONARY :
-                    currentState = "dictionary";
-                    break;
-                case FileType.ALBUM :
-                    currentState = "album";
-                    break;
-                case FileType.NOTEBOOK :
-                    currentState = "notebook";
-                    break;
-            }
 
-            fileNameLbl.text = file.header.title;
+            fileTypeLbl.text = file.header.fileTypeName + ":";
+            fileTitleLbl.text = file.header.title;
             authorNameLbl.text = file.header.options[FileOptionKeys.AUTHOR];
             dateLbl.text = file.header.options[FileOptionKeys.DATE_CREATED];
 
@@ -49,28 +35,18 @@
         }
         ]]></fx:Script>
 
-    <s:states>
-        <s:State name="article"/>
-        <s:State name="dictionary"/>
-        <s:State name="notebook"/>
-        <s:State name="album"/>
-    </s:states>
-
     <s:layout>
         <s:VerticalLayout horizontalAlign="center" paddingLeft="10" paddingRight="5" paddingTop="20" paddingBottom="5"/>
     </s:layout>
 
     <s:HGroup width="100%" gap="10">
-        <s:Label text.article="Artikel:"
-                 text.dictionary="Wörterbuch:"
-                 text.notebook="Notebuch:"
-                 text.album="Album:"
+        <s:Label id="fileTypeLbl"
                  width="40%"
                  fontFamily="{FontName.TAHOMA}" fontSize="16" fontWeight="bold"
                  mouseChildren="false" mouseEnabled="false"
                  color="{AppColors.HELL_TÜRKIS}"/>
 
-        <s:Label id="fileNameLbl"
+        <s:Label id="fileTitleLbl"
                  width="60%"
                  fontFamily="{FontName.TAHOMA}" fontSize="18"
                  mouseChildren="false" mouseEnabled="false"
@@ -107,8 +83,4 @@
 
     <s:Spacer height="100%"/>
 
-    <button:StrokeButton id="closeBtn"
-                         strokeColor="{AppColors.HELL_TÜRKIS}"
-                         width="100"
-                         label="Schließen"/>
 </s:Group>

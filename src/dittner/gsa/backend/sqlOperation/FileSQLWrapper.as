@@ -1,16 +1,15 @@
 package dittner.gsa.backend.sqlOperation {
-import com.probertson.data.SQLRunner;
-
-import dittner.gsa.backend.encryption.IEncryptionService;
+import dittner.gsa.backend.encryption.EncryptionService;
 import dittner.gsa.domain.fileSystem.FileHeader;
 import dittner.gsa.domain.fileSystem.body.FileBody;
+
+import flash.data.SQLConnection;
 
 public class FileSQLWrapper {
 	public var header:FileHeader;
 	public var body:FileBody;
-	public var encryptionService:IEncryptionService;
-	public var sqlFactory:SQLFactory;
-	public var sqlRunner:SQLRunner;
+	public var encryptionService:EncryptionService;
+	public var sqlConnection:SQLConnection;
 	public var removingFileIDs:Array = [];
 
 	public function headerToSQLObj():Object {
@@ -18,7 +17,6 @@ public class FileSQLWrapper {
 		res.parentID = header.parentID;
 		res.fileType = header.fileType;
 		res.title = header.title;
-		res.password = header.password;
 		res.options = header.options;
 		return res;
 	}

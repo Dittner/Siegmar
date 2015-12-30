@@ -5,6 +5,7 @@ import dittner.gsa.bootstrap.walter.WalterProxy;
 import dittner.gsa.view.documentList.DocumentListMediator;
 import dittner.gsa.view.documentView.DocumentViewMediator;
 import dittner.gsa.view.login.LoginViewMediator;
+import dittner.gsa.view.paintingView.PaintingViewMediator;
 
 public class ViewMediatorFactory extends WalterProxy implements IViewMediatorFactory {
 
@@ -21,6 +22,9 @@ public class ViewMediatorFactory extends WalterProxy implements IViewMediatorFac
 				break;
 			case ViewID.DOCUMENT_VIEW :
 				mediator = new DocumentViewMediator();
+				break;
+			case ViewID.PAINTING_VIEW :
+				mediator = new PaintingViewMediator();
 				break;
 			default :
 				throw new Error("Unknown view ID:" + viewID);

@@ -6,5 +6,6 @@ public class FileType {
 	public static const DICTIONARY:uint = 2;
 	public static const NOTEBOOK:uint = 3;
 	public static const ALBUM:uint = 4;
+	public static const PICTURE:uint = 5;
 }
 }

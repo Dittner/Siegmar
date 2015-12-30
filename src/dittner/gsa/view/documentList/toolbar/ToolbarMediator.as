@@ -4,7 +4,7 @@ import dittner.gsa.bootstrap.viewFactory.ViewID;
 import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.bootstrap.walter.message.WalterMessage;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
-import dittner.gsa.domain.user.IUser;
+import dittner.gsa.domain.user.User;
 import dittner.gsa.message.MediatorMsg;
 
 public class ToolbarMediator extends WalterMediator {
@@ -14,7 +14,7 @@ public class ToolbarMediator extends WalterMediator {
 	[Inject]
 	public var viewNavigator:ViewNavigator;
 	[Inject]
-	public var user:IUser;
+	public var user:User;
 	[Inject]
 	public var system:GSAFileSystem;
 
@@ -48,6 +48,10 @@ public class ToolbarMediator extends WalterMediator {
 			case ToolAction.EDIT:
 			case ToolAction.REMOVE:
 				sendMessage(MediatorMsg.START_EDIT, action);
+				break;
+			case ToolAction.CLOSE:
+				system.closeOpenedFile();
+				viewNavigator.navigate(ViewID.DOCUMENT_LIST);
 				break;
 			case ToolAction.LOGOUT:
 				user.logout();

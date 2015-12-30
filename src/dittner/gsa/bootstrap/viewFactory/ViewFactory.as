@@ -4,6 +4,7 @@ import dittner.gsa.view.common.view.ViewBase;
 import dittner.gsa.view.documentList.DocumentListView;
 import dittner.gsa.view.documentView.DocumentView;
 import dittner.gsa.view.login.LoginView;
+import dittner.gsa.view.paintingView.PaintingView;
 
 public class ViewFactory extends WalterProxy implements IViewFactory {
 
@@ -20,6 +21,9 @@ public class ViewFactory extends WalterProxy implements IViewFactory {
 				break;
 			case ViewID.DOCUMENT_VIEW :
 				view = new DocumentView();
+				break;
+			case ViewID.PAINTING_VIEW :
+				view = new PaintingView();
 				break;
 			default :
 				throw new Error("Unknown view ID:" + viewID);

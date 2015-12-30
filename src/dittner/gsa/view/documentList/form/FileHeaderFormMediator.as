@@ -71,13 +71,13 @@ public class FileHeaderFormMediator extends WalterMediator {
 		else if (view.articleRadioBtn.selected) fileHeader = system.createFileHeader(FileType.ARTICLE);
 		else if (view.albumRadioBtn.selected) fileHeader = system.createFileHeader(FileType.ALBUM);
 		else if (view.notebookRadioBtn.selected) fileHeader = system.createFileHeader(FileType.NOTEBOOK);
+		else if (view.pictureRadioBtn.selected) fileHeader = system.createFileHeader(FileType.PICTURE);
 		else throw new Error("Unknown file type selected!");
 		return fileHeader;
 	}
 
 	private function setData(header:FileHeader):void {
 		header.title = view.titleInput.text;
-		header.password = view.pwdInput.text;
 
 		if (view.authorInput.text) header.options[FileOptionKeys.AUTHOR] = view.authorInput.text;
 		if (view.dateInput.text) header.options[FileOptionKeys.DATE_CREATED] = view.dateInput.text;

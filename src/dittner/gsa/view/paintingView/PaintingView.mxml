@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<view:ViewBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+               xmlns:s="library://ns.adobe.com/flex/spark"
+               xmlns:view="dittner.gsa.view.common.view.*"
+               xmlns:toolbar="dittner.gsa.view.documentList.toolbar.*"
+               xmlns:info="dittner.gsa.view.documentView.docInfo.*"
+               xmlns:paintingview="dittner.gsa.view.paintingView.*">
+
+    <fx:Script><![CDATA[
+        import dittner.gsa.domain.fileSystem.body.PictureBody;
+
+        //--------------------------------------
+        //  picture
+        //--------------------------------------
+        private var _picture:PictureBody;
+        [Bindable("pictureChanged")]
+        public function get picture():PictureBody {return _picture;}
+        public function set picture(value:PictureBody):void {
+            if (_picture != value) {
+                _picture = value;
+                dispatchEvent(new Event("pictureChanged"));
+            }
+        }
+        ]]></fx:Script>
+    <view:layout>
+        <s:HorizontalLayout gap="0"/>
+    </view:layout>
+
+    <paintingview:PicturePanel id="picturePanel"
+                               width="100%" height="100%"
+                               picture="{picture}"/>
+
+    <s:Group width="400" height="100%">
+        <info:DocInfoBoard id="fileInfoBoard"
+                           width="400" height="100%"/>
+
+    </s:Group>
+
+    <toolbar:Toolbar id="toolbar"
+                     showNoteBtns="false"
+                     width="40" height="100%"/>
+
+</view:ViewBase>

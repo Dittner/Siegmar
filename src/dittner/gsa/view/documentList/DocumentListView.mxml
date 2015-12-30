@@ -27,11 +27,15 @@
 
     <s:HGroup width="100%" height="100%"
               gap="0">
-        <list2:FileHeaderList id="fileHeaderList" width="50%" height="100%"/>
+        <list2:FileHeaderList id="fileHeaderList"
+                              width="50%" height="100%"/>
 
-        <form:FileHeaderForm id="documentForm" width="50%" height="100%" visible="false"/>
+        <form:FileHeaderForm id="documentForm"
+                             width="50%" height="100%" visible="false"/>
 
-        <toolbar:Toolbar id="toolbar" height="100%"/>
+        <toolbar:Toolbar id="toolbar"
+                         showCloseBtn="false"
+                         height="100%"/>
 
     </s:HGroup>
 

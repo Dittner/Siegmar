@@ -9,6 +9,7 @@
         import dittner.gsa.domain.fileSystem.FileHeader;
         import dittner.gsa.domain.fileSystem.FileOptionKeys;
         import dittner.gsa.domain.fileSystem.FileType;
+        import dittner.gsa.domain.fileSystem.FileTypeName;
         import dittner.gsa.view.common.form.FileFormMode;
         import dittner.gsa.view.common.utils.AppColors;
         import dittner.gsa.view.common.utils.FontName;
@@ -48,6 +49,9 @@
                 case FileType.ALBUM :
                     setCurrentState("album");
                     break;
+                case FileType.PICTURE :
+                    setCurrentState("picture");
+                    break;
                 default :
                     throw new Error("Unknown file type: " + fileType);
             }
@@ -65,7 +69,6 @@
             this.reservedTitleHash = reservedTitleHash;
             _mode = FileFormMode.EDIT;
             titleInput.text = fileHeader.title;
-            pwdInput.text = fileHeader.password;
             authorInput.text = fileHeader.options[FileOptionKeys.AUTHOR] || "";
             dateInput.text = fileHeader.options[FileOptionKeys.DATE_CREATED] || "";
             setFileType(fileHeader.fileType);
@@ -84,7 +87,6 @@
             titleInput.text = "";
             authorInput.text = "";
             dateInput.text = "";
-            pwdInput.text = "";
             setCurrentState("folder");
         }
 
@@ -115,6 +117,7 @@
         <s:State name="dictionary"/>
         <s:State name="notebook"/>
         <s:State name="album"/>
+        <s:State name="picture"/>
     </s:states>
 
     <s:BitmapImage width="100%" height="100%" source="@Embed(source='/form_bg.png')" fillMode="repeat"/>
@@ -146,7 +149,7 @@
                            width="200"
                            value="{FileType.FOLDER}"
                            selected="true"
-                           label="Direktory"
+                           label="{FileTypeName.FOLDER}"
                            click="radioBtnClickHandler(event)"/>
 
             <s:RadioButton id="articleRadioBtn"
@@ -154,21 +157,21 @@
                            width="200"
                            enabled="false"
                            value="{FileType.ARTICLE}"
-                           label="Artikel"
+                           label="{FileTypeName.ARTICLE}"
                            click="radioBtnClickHandler(event)"/>
 
             <s:RadioButton id="dictionaryRadioBtn"
                            groupName="radioBar"
                            width="200"
                            value="{FileType.DICTIONARY}"
-                           label="Wörterbuch"
+                           label="{FileTypeName.DICTIONARY}"
                            click="radioBtnClickHandler(event)"/>
 
             <s:RadioButton id="notebookRadioBtn"
                            groupName="radioBar"
                            width="200"
                            value="{FileType.NOTEBOOK}"
-                           label="Notizbuch"
+                           label="{FileTypeName.NOTEBOOK}"
                            click="radioBtnClickHandler(event)"/>
 
             <s:RadioButton id="albumRadioBtn"
@@ -176,7 +179,14 @@
                            enabled="false"
                            width="200"
                            value="{FileType.ALBUM}"
-                           label="Album"
+                           label="{FileTypeName.ALBUM}"
+                           click="radioBtnClickHandler(event)"/>
+
+            <s:RadioButton id="pictureRadioBtn"
+                           groupName="radioBar"
+                           width="200"
+                           value="{FileType.PICTURE}"
+                           label="{FileTypeName.PICTURE}"
                            click="radioBtnClickHandler(event)"/>
         </s:Group>
 
@@ -188,7 +198,6 @@
                                  visible.folder="false" includeInLayout.folder="false"/>
             <input:TextInputForm id="dateInput" width="100%" title="Datum der Ausgabe:"
                                  visible.folder="false" includeInLayout.folder="false"/>
-            <input:TextInputForm id="pwdInput" width="100%" title="Parole:"/>
         </s:VGroup>
 
         <s:Label id="removeLbl"

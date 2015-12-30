@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Rect xmlns:fx="http://ns.adobe.com/mxml/2009"
+        xmlns:s="library://ns.adobe.com/flex/spark">
+    <fx:Declarations>
+        <s:SolidColorStroke id="zStroke" weight="0" color="0"/>
+    </fx:Declarations>
+    <fx:Script>
+		<![CDATA[
+        /*fill  */
+        public function set color(value:uint):void {
+            zFillColor.color = value;
+        }
+        public function get color():uint {
+            return  zFillColor.color;
+        }
+        public function set fillAlpha(value:Number):void {
+            zFillColor.alpha = value;
+        }
+        public function get fillAlpha():Number {
+            return  zFillColor.alpha;
+        }
+
+        /* border */
+        public function set strokeColor(value:uint):void {
+            zStroke.color = value;
+        }
+        public function get strokeColor():uint {
+            return  zStroke.color;
+        }
+        public function set strokeAlpha(value:Number):void {
+            zStroke.alpha = value;
+        }
+        public function get strokeAlpha():Number {
+            return  zStroke.alpha;
+        }
+        public function set weight(value:Number):void {
+            if (value > 0)
+                stroke = zStroke;
+            else stroke = null;
+            zStroke.weight = value;
+        }
+        public function get weight():Number {
+            return  zStroke.weight;
+        }
+        ]]>
+	</fx:Script>
+    <s:fill>
+        <s:SolidColor id="zFillColor" color="0"/>
+    </s:fill>
+
+</s:Rect>

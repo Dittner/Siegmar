@@ -27,7 +27,7 @@
         }
 
         [Bindable]
-        public var isInvalidPassword:Boolean;
+        public var isLoginWithError:Boolean;
 
         public function registerUser():void {
             setCurrentState("registration");
@@ -118,7 +118,18 @@
                      text="Geheimhaltungsgrad:"/>
             <s:TextInput id="privacyLevelInput" width="500" styleName="loginInput"
                          changing="validationPrivacyLevelHandler(event)"
-                         displayAsPassword="false"/>
+                         displayAsPassword.authorization="true"/>
+        </s:HGroup>
+
+        <s:HGroup width="100%" gap="10" verticalAlign="middle">
+            <s:Label fontFamily="{FontName.GEORGIA}"
+                     color="{AppColors.TEXT_RED}"
+                     width="{width/2 - 260}"
+                     fontSize="30"
+                     textAlign="right"
+                     text="Datenbankschlüssel:"/>
+            <s:TextInput id="dataBasePasswordInput" width="500" styleName="loginInput"
+                         displayAsPassword.authorization="true"/>
         </s:HGroup>
 
         <button:BlackButton id="completeBtn"
@@ -127,9 +138,10 @@
                             label.registration="Bestätigen"
                             label.authorization="Einloggen"/>
 
-        <s:Label fontFamily="{FontName.GEORGIA}"
+        <s:Label id="errorLbl"
+                 fontFamily="{FontName.GEORGIA}"
                  fontWeight="bold"
-                 visible="{isInvalidPassword}"
+                 visible="{isLoginWithError}"
                  color="{AppColors.TEXT_INVALID}"
                  width="100%"
                  fontSize="20"

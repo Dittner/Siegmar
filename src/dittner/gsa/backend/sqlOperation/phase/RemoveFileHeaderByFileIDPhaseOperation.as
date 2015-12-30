@@ -1,13 +1,15 @@
 package dittner.gsa.backend.sqlOperation.phase {
-import com.probertson.data.QueuedStatement;
-
-import dittner.gsa.backend.phaseOperation.PhaseOperation;
 import dittner.gsa.backend.sqlOperation.FileSQLWrapper;
+import dittner.gsa.backend.sqlOperation.SQLLib;
+import dittner.gsa.backend.sqlOperation.SQLUtils;
+import dittner.gsa.bootstrap.async.AsyncCommand;
 
 import flash.data.SQLResult;
+import flash.data.SQLStatement;
 import flash.errors.SQLError;
+import flash.net.Responder;
 
-public class RemoveFileHeaderByFileIDPhaseOperation extends PhaseOperation {
+public class RemoveFileHeaderByFileIDPhaseOperation extends AsyncCommand {
 
 	public function RemoveFileHeaderByFileIDPhaseOperation(headerWrapper:FileSQLWrapper, fileID:int) {
 		this.headerWrapper = headerWrapper;
@@ -18,18 +20,17 @@ public class RemoveFileHeaderByFileIDPhaseOperation extends PhaseOperation {
 	private var fileID:int;
 
 	override public function execute():void {
-		var sqlParams:Object = {};
-		sqlParams.fileID = fileID;
-		var statement:QueuedStatement = new QueuedStatement(headerWrapper.sqlFactory.deleteFileHeaderByFileID, sqlParams);
-		headerWrapper.sqlRunner.executeModify(Vector.<QueuedStatement>([statement]), executeComplete, executeError);
+		var deleteStmt:SQLStatement = SQLUtils.createSQLStatement(SQLLib.DELETE_FILE_HEADER_BY_FILE_ID, {fileID: fileID});
+		deleteStmt.sqlConnection = headerWrapper.sqlConnection;
+		deleteStmt.execute(-1, new Responder(resultHandler, errorHandler));
 	}
 
-	private function executeComplete(results:Vector.<SQLResult>):void {
-		dispatchComplete();
+	private function resultHandler(result:SQLResult):void {
+		dispatchSuccess();
 	}
 
-	private function executeError(error:SQLError):void {
-		throw new Error(error.message);
+	private function errorHandler(error:SQLError):void {
+		dispatchError(error.details);
 	}
 }
 }

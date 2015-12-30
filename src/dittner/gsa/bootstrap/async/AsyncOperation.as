@@ -31,25 +31,31 @@ public class AsyncOperation implements IAsyncOperation {
 	//--------------------------------------
 	//  result
 	//--------------------------------------
-	private var _result:*;
+	protected var _result:*;
 	public function get result():* {return _result;}
 
 	//--------------------------------------
 	//  isSuccess
 	//--------------------------------------
-	private var _isSuccess:Boolean;
+	protected var _isSuccess:Boolean;
 	public function get isSuccess():Boolean {return _isSuccess;}
+
+	//--------------------------------------
+	//  isProcessing
+	//--------------------------------------
+	protected var _isProcessing:Boolean = true;
+	public function get isProcessing():Boolean {return _isProcessing;}
 
 	//--------------------------------------
 	//  isTimeout
 	//--------------------------------------
-	private var _isTimeout:Boolean = false;
+	protected var _isTimeout:Boolean = false;
 	public function get isTimeout():Boolean {return _isTimeout;}
 
 	//--------------------------------------
 	//  error
 	//--------------------------------------
-	private var _error:* = "";
+	protected var _error:* = "";
 	public function get error():* {return _error;}
 
 	//----------------------------------------------------------------------------------------------
@@ -58,7 +64,7 @@ public class AsyncOperation implements IAsyncOperation {
 	//
 	//----------------------------------------------------------------------------------------------
 
-	private var timeoutInd:int = NaN;
+	private var timeoutInd:Number = NaN;
 	protected function startTimeout():void {
 		stopTimeout();
 		if (timeoutInSec > 0) timeoutInd = doLaterInSec(timeoutHandler, timeoutInSec);
@@ -95,6 +101,7 @@ public class AsyncOperation implements IAsyncOperation {
 	}
 
 	protected function completeExecute():void {
+		_isProcessing = false;
 		for each(var handler:Function in completeCallbackQueue) handler(this);
 		stopTimeout();
 		destroy();

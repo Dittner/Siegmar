@@ -9,6 +9,32 @@
 
         public var selectedOpCallBack:Function;
 
+        //--------------------------------------
+        //  showNoteBtns
+        //--------------------------------------
+        private var _showNoteBtns:Boolean = true;
+        [Bindable("showNoteBtnsChanged")]
+        public function get showNoteBtns():Boolean {return _showNoteBtns;}
+        public function set showNoteBtns(value:Boolean):void {
+            if (_showNoteBtns != value) {
+                _showNoteBtns = value;
+                dispatchEvent(new Event("showNoteBtnsChanged"));
+            }
+        }
+
+        //--------------------------------------
+        //  showCloseBtn
+        //--------------------------------------
+        private var _showCloseBtn:Boolean = true;
+        [Bindable("showCloseBtnChanged")]
+        public function get showCloseBtn():Boolean {return _showCloseBtn;}
+        public function set showCloseBtn(value:Boolean):void {
+            if (_showCloseBtn != value) {
+                _showCloseBtn = value;
+                dispatchEvent(new Event("showCloseBtnChanged"));
+            }
+        }
+
         private function btnClickHandler(event:MouseEvent):void {
             if (selectedOpCallBack != null) {
                 selectedOpCallBack((event.target as ToolButton).toolId);
@@ -24,22 +50,31 @@
                            image="@Embed(source='/assets/btn/logout_btn.png')"
                            click="btnClickHandler(event)"/>
 
+        <button:ToolButton toolId="{ToolAction.CLOSE}"
+                           image="@Embed(source='/assets/btn/close_btn.png')"
+                           visible="{showCloseBtn}"
+                           includeInLayout="{showCloseBtn}"
+                           click="btnClickHandler(event)"/>
+
         <s:Spacer height="100%"/>
 
         <button:ToolButton id="addBtn"
                            toolId="{ToolAction.ADD}"
                            image="@Embed(source='/assets/btn/add_btn.png')"
-                           click="btnClickHandler(event)"/>
+                           click="btnClickHandler(event)"
+                           visible="{showNoteBtns}"/>
         <button:ToolButton id="editBtn"
                            enabled="false"
                            toolId="{ToolAction.EDIT}"
                            image="@Embed(source='/assets/btn/edit_btn.png')"
-                           click="btnClickHandler(event)"/>
+                           click="btnClickHandler(event)"
+                           visible="{showNoteBtns}"/>
         <button:ToolButton id="removeBtn"
                            enabled="false"
                            toolId="{ToolAction.REMOVE}"
                            image="@Embed(source='/assets/btn/delete_btn.png')"
-                           click="btnClickHandler(event)"/>
+                           click="btnClickHandler(event)"
+                           visible="{showNoteBtns}"/>
 
     </s:VGroup>
 

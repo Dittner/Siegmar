@@ -15,7 +15,7 @@
             list.dataProvider = new ArrayCollection((file.body as NotebookBody).items);
         }
         ]]></fx:Script>
-    <utils:BG width="100%" height="100%" color="{AppColors.DOC_NOTEBUCH}"/>
+    <utils:BG width="100%" height="100%" color="{AppColors.DOC_NOTEBOOK}"/>
     <utils:BG width="40" height="100%" color="{AppColors.BG_DARK}"/>
 
     <s:Scroller width="100%" height="100%">

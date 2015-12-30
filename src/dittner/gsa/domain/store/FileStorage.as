@@ -1,24 +1,23 @@
 package dittner.gsa.domain.store {
-import com.probertson.data.SQLRunner;
-
-import dittner.gsa.backend.encryption.IEncryptionService;
-import dittner.gsa.backend.sqlOperation.CreateDataBaseSQLOperation;
+import dittner.gsa.backend.encryption.EncryptionService;
 import dittner.gsa.backend.sqlOperation.FileSQLWrapper;
-import dittner.gsa.backend.sqlOperation.RemoveFileHeaderSQLOperation;
-import dittner.gsa.backend.sqlOperation.SQLFactory;
+import dittner.gsa.backend.sqlOperation.RemoveFileSQLOperation;
+import dittner.gsa.backend.sqlOperation.RunDataBaseSQLOperation;
+import dittner.gsa.backend.sqlOperation.SQLLib;
 import dittner.gsa.backend.sqlOperation.SelectFileBodySQLOperation;
 import dittner.gsa.backend.sqlOperation.SelectFileHeadersSQLOperation;
 import dittner.gsa.backend.sqlOperation.StoreFileBodySQLOperation;
 import dittner.gsa.backend.sqlOperation.StoreFileHeaderSQLOperation;
 import dittner.gsa.bootstrap.async.AsyncOperation;
+import dittner.gsa.bootstrap.async.IAsyncCommand;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
-import dittner.gsa.bootstrap.deferredOperation.DeferredOperationManager;
-import dittner.gsa.bootstrap.deferredOperation.IDeferredOperation;
+import dittner.gsa.bootstrap.async.SQLCommandManager;
 import dittner.gsa.bootstrap.walter.WalterProxy;
 import dittner.gsa.domain.fileSystem.FileHeader;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.domain.fileSystem.body.FileBody;
-import dittner.gsa.domain.user.IUser;
+
+import flash.data.SQLConnection;
 
 public class FileStorage extends WalterProxy {
 
@@ -27,17 +26,14 @@ public class FileStorage extends WalterProxy {
 	public function FileStorage() {}
 
 	[Inject]
-	public var user:IUser;
-	[Inject]
-	public var sqlFactory:SQLFactory;
-	[Inject]
-	public var deferredOperationManager:DeferredOperationManager;
-	[Inject]
-	public var encryptionService:IEncryptionService;
+	public var encryptionService:EncryptionService;
 	[Inject]
 	public var system:GSAFileSystem;
 
-	public var sqlRunner:SQLRunner;
+	private var sqlCmdManager:SQLCommandManager;
+
+	private var _sqlConnection:SQLConnection;
+	public function get sqlConnection():SQLConnection {return _sqlConnection;}
 
 	//----------------------------------------------------------------------------------------------
 	//
@@ -45,9 +41,28 @@ public class FileStorage extends WalterProxy {
 	//
 	//----------------------------------------------------------------------------------------------
 
-	override protected function activate():void {
-		var op:IDeferredOperation = new CreateDataBaseSQLOperation(this, sqlFactory);
-		deferredOperationManager.add(op);
+	override protected function activate():void {}
+
+	private var isOpened:Boolean = false;
+	public function open(dataBasePwd:String):IAsyncOperation {
+		if (isOpened) {
+			var op:IAsyncOperation = new AsyncOperation();
+			op.dispatchSuccess();
+			return op;
+		}
+		isOpened = true;
+
+		var cmd:IAsyncCommand;
+		sqlCmdManager = new SQLCommandManager();
+
+		cmd = new RunDataBaseSQLOperation(dataBasePwd, [SQLLib.CREATE_FILE_HEADER_TBL, SQLLib.CREATE_FILE_BODY_TBL]);
+		cmd.addCompleteCallback(dataBaseOpened);
+		sqlCmdManager.add(cmd);
+		return cmd;
+	}
+
+	private function dataBaseOpened(opEvent:*):void {
+		_sqlConnection = opEvent.result as SQLConnection;
 	}
 
 	//--------------------------------------
@@ -55,23 +70,23 @@ public class FileStorage extends WalterProxy {
 	//--------------------------------------
 
 	public function storeHeader(header:FileHeader):IAsyncOperation {
-		var op:IDeferredOperation = new StoreFileHeaderSQLOperation(wrapFileHeader(header));
-		op.addCompleteCallback(notifyFileStored);
-		deferredOperationManager.add(op);
-		return op;
+		var cmd:IAsyncCommand = new StoreFileHeaderSQLOperation(wrapFileHeader(header));
+		cmd.addCompleteCallback(notifyFileStored);
+		sqlCmdManager.add(cmd);
+		return cmd;
 	}
 
 	public function removeHeader(header:FileHeader):IAsyncOperation {
-		var op:IDeferredOperation = new RemoveFileHeaderSQLOperation(wrapFileHeader(header));
-		op.addCompleteCallback(notifyFileStored);
-		deferredOperationManager.add(op);
-		return op;
+		var cmd:IAsyncCommand = new RemoveFileSQLOperation(wrapFileHeader(header));
+		cmd.addCompleteCallback(notifyFileStored);
+		sqlCmdManager.add(cmd);
+		return cmd;
 	}
 
 	public function loadFileHeaders(parentFolderID:int):IAsyncOperation {
-		var op:IDeferredOperation = new SelectFileHeadersSQLOperation(this, parentFolderID, system);
-		deferredOperationManager.add(op);
-		return op;
+		var cmd:IAsyncCommand = new SelectFileHeadersSQLOperation(this, parentFolderID, system);
+		sqlCmdManager.add(cmd);
+		return cmd;
 	}
 
 	//--------------------------------------
@@ -79,9 +94,9 @@ public class FileStorage extends WalterProxy {
 	//--------------------------------------
 
 	public function storeBody(body:FileBody):IAsyncOperation {
-		var op:IDeferredOperation = new StoreFileBodySQLOperation(wrapFileBody(body));
-		deferredOperationManager.add(op);
-		return op;
+		var cmd:IAsyncCommand = new StoreFileBodySQLOperation(wrapFileBody(body));
+		sqlCmdManager.add(cmd);
+		return cmd;
 	}
 
 	public function removeBody(body:FileBody):IAsyncOperation {
@@ -90,9 +105,9 @@ public class FileStorage extends WalterProxy {
 	}
 
 	public function loadFileBody(header:FileHeader):IAsyncOperation {
-		var op:IDeferredOperation = new SelectFileBodySQLOperation(wrapFileHeader(header), system);
-		deferredOperationManager.add(op);
-		return op;
+		var cmd:IAsyncCommand = new SelectFileBodySQLOperation(wrapFileHeader(header), system);
+		sqlCmdManager.add(cmd);
+		return cmd;
 	}
 
 	//--------------------------------------
@@ -102,8 +117,7 @@ public class FileStorage extends WalterProxy {
 	private function wrapFileHeader(header:FileHeader):FileSQLWrapper {
 		var wrapper:FileSQLWrapper = new FileSQLWrapper();
 		wrapper.header = header;
-		wrapper.sqlRunner = sqlRunner;
-		wrapper.sqlFactory = sqlFactory;
+		wrapper.sqlConnection = sqlConnection;
 		wrapper.encryptionService = encryptionService;
 		return wrapper;
 	}
@@ -111,8 +125,7 @@ public class FileStorage extends WalterProxy {
 	private function wrapFileBody(body:FileBody):FileSQLWrapper {
 		var wrapper:FileSQLWrapper = new FileSQLWrapper();
 		wrapper.body = body;
-		wrapper.sqlRunner = sqlRunner;
-		wrapper.sqlFactory = sqlFactory;
+		wrapper.sqlConnection = sqlConnection;
 		wrapper.encryptionService = encryptionService;
 		return wrapper;
 	}

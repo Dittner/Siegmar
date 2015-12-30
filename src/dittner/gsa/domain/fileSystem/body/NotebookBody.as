@@ -3,8 +3,10 @@ import dittner.gsa.domain.fileSystem.body.note.Note;
 
 import flash.utils.ByteArray;
 
-public class NotebookBody extends FileBody {
-	public function NotebookBody() {}
+public class NotebookBody extends NoteListBody {
+	public function NotebookBody() {
+		super();
+	}
 
 	public var items:Array = [];
 

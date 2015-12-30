@@ -10,6 +10,7 @@
         import dittner.gsa.bootstrap.async.IAsyncOperation;
         import dittner.gsa.domain.fileSystem.GSAFile;
         import dittner.gsa.domain.fileSystem.body.DictionaryBody;
+        import dittner.gsa.domain.fileSystem.body.NoteListBody;
         import dittner.gsa.domain.fileSystem.body.note.TitledNote;
         import dittner.gsa.view.common.utils.AppColors;
         import dittner.gsa.view.common.utils.FontName;
@@ -22,9 +23,11 @@
 
         private var operation:IAsyncOperation;
         private var file:GSAFile;
+        private var fileBody:NoteListBody;
         public function createNote(file:GSAFile):IAsyncOperation {
             operation = new AsyncOperation();
             this.file = file;
+            this.fileBody = file.body as NoteListBody;
             reservedTitleHash = getReservedTitleHash();
             currentState = "add";
             return operation;
@@ -83,13 +86,13 @@
 
         private function applyBtnClickHandler():void {
             if (currentState == "add") {
-                file.body.addNote(getNote());
+                fileBody.addNote(getNote());
             }
             else if (currentState == "edit") {
-                file.body.replaceNote(file.selectedNote, getNote());
+                fileBody.replaceNote(file.selectedNote, getNote());
             }
             else if (currentState == "remove") {
-                file.body.removeNote(file.selectedNote);
+                fileBody.removeNote(file.selectedNote);
             }
             operation.dispatchSuccess(true);
         }

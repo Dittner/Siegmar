@@ -4,7 +4,7 @@ import dittner.gsa.domain.fileSystem.body.note.TitledNote;
 
 import flash.utils.ByteArray;
 
-public class DictionaryBody extends FileBody {
+public class DictionaryBody extends NoteListBody {
 	public function DictionaryBody() {}
 
 	public var items:Array = [];

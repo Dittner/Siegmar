@@ -6,6 +6,7 @@ import dittner.gsa.bootstrap.walter.walter_namespace;
 import dittner.gsa.domain.fileSystem.body.DictionaryBody;
 import dittner.gsa.domain.fileSystem.body.FileBody;
 import dittner.gsa.domain.fileSystem.body.NotebookBody;
+import dittner.gsa.domain.fileSystem.body.PictureBody;
 import dittner.gsa.domain.store.FileStorage;
 
 use namespace walter_namespace;
@@ -139,6 +140,9 @@ public class GSAFileSystem extends WalterProxy {
 				break;
 			case FileType.NOTEBOOK :
 				body = new NotebookBody();
+				break;
+			case FileType.PICTURE :
+				body = new PictureBody();
 				break;
 			default :
 				throw new Error("Unknown doc type:" + header.fileType);

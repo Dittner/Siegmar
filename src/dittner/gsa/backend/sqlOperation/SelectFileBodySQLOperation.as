@@ -1,12 +1,15 @@
 package dittner.gsa.backend.sqlOperation {
-import dittner.gsa.bootstrap.deferredOperation.DeferredOperation;
+import dittner.gsa.bootstrap.async.AsyncCommand;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.domain.fileSystem.body.FileBody;
 
 import flash.data.SQLResult;
+import flash.data.SQLStatement;
+import flash.errors.SQLError;
+import flash.net.Responder;
 import flash.utils.ByteArray;
 
-public class SelectFileBodySQLOperation extends DeferredOperation {
+public class SelectFileBodySQLOperation extends AsyncCommand {
 
 	public function SelectFileBodySQLOperation(fileWrapper:FileSQLWrapper, system:GSAFileSystem) {
 		this.headerWrapper = fileWrapper;
@@ -16,17 +19,20 @@ public class SelectFileBodySQLOperation extends DeferredOperation {
 	private var headerWrapper:FileSQLWrapper;
 	private var system:GSAFileSystem;
 
-	override public function process():void {
-		headerWrapper.sqlRunner.execute(headerWrapper.sqlFactory.selectFileBody, {fileID: headerWrapper.header.fileID}, loadCompleteHandler);
+
+	override public function execute():void {
+		var insertStmt:SQLStatement = SQLUtils.createSQLStatement(SQLLib.SELECT_FILE_BODY, {fileID: headerWrapper.header.fileID});
+		insertStmt.sqlConnection = headerWrapper.sqlConnection;
+		insertStmt.execute(-1, new Responder(resultHandler, errorHandler));
 	}
 
-	private function loadCompleteHandler(result:SQLResult):void {
+	private function resultHandler(result:SQLResult):void {
 		var fileBody:FileBody = system.createFileBody(headerWrapper.header);
 		var data:Object = result.data ? result.data[0] : null;
 		if (data) {
 			fileBody.id = data.id;
 			fileBody.fileID = data.fileID;
-			var decryptedBytes:ByteArray = decrypt(data.bytes);
+			var decryptedBytes:ByteArray = fileBody.encryptEnabled ? decrypt(data.bytes) : data.bytes;
 			decryptedBytes.position = 0;
 			fileBody.deserialize(decryptedBytes);
 		}
@@ -35,6 +41,10 @@ public class SelectFileBodySQLOperation extends DeferredOperation {
 
 	private function decrypt(ba:ByteArray):ByteArray {
 		return headerWrapper.encryptionService.decrypt(ba);
+	}
+
+	private function errorHandler(error:SQLError):void {
+		dispatchError(error.details);
 	}
 }
 }

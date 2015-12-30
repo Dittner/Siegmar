@@ -7,6 +7,7 @@ public interface IAsyncOperation {
 
 	function get isSuccess():Boolean;
 	function get isTimeout():Boolean;
+	function get isProcessing():Boolean;
 	function get error():*;
 	function get result():*;
 	function get uid():Number;

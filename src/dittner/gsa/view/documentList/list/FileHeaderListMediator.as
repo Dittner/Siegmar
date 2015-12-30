@@ -4,6 +4,7 @@ import dittner.gsa.bootstrap.viewFactory.ViewID;
 import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.bootstrap.walter.message.WalterMessage;
 import dittner.gsa.domain.fileSystem.FileHeader;
+import dittner.gsa.domain.fileSystem.FileType;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.message.MediatorMsg;
 import dittner.gsa.view.common.list.SelectableDataGroupEvent;
@@ -53,7 +54,8 @@ public class FileHeaderListMediator extends WalterMediator {
 		}
 		else {
 			system.selectedFileHeader = event.data as FileHeader;
-			viewNavigator.navigate(ViewID.DOCUMENT_VIEW);
+			var viewID:String = system.selectedFileHeader.fileType == FileType.PICTURE ? ViewID.PAINTING_VIEW : ViewID.DOCUMENT_VIEW;
+			viewNavigator.navigate(viewID);
 		}
 	}
 

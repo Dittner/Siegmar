@@ -11,16 +11,20 @@
         <s:HorizontalLayout gap="0"/>
     </view:layout>
 
-    <document:Document id="document" width="100%" height="100%" enabled="{!form.visible}"/>
+    <document:Document id="document"
+                       width="100%" height="100%" enabled="{!form.visible}"/>
 
     <s:Group width="400" height="100%">
-        <form:FileBodyForm id="form" width="400" height="100%" visible="false"/>
-        <info:DocInfoBoard id="fileInfoBoard" width="400" height="100%"
-                            visible="{!form.visible}"
-                            enabled="{!form.visible}"/>
+        <form:FileBodyForm id="form"
+                           width="400" height="100%" visible="false"/>
+        <info:DocInfoBoard id="fileInfoBoard"
+                           width="400" height="100%"
+                           visible="{!form.visible}"
+                           enabled="{!form.visible}"/>
 
     </s:Group>
 
-    <toolbar:Toolbar id="toolbar" width="40" height="100%"/>
+    <toolbar:Toolbar id="toolbar"
+                     width="40" height="100%"/>
 
 </view:ViewBase>

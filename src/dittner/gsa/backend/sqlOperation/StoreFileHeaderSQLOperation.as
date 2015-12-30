@@ -1,12 +1,12 @@
 package dittner.gsa.backend.sqlOperation {
-import com.probertson.data.QueuedStatement;
-
-import dittner.gsa.bootstrap.deferredOperation.DeferredOperation;
+import dittner.gsa.bootstrap.async.AsyncCommand;
 
 import flash.data.SQLResult;
+import flash.data.SQLStatement;
 import flash.errors.SQLError;
+import flash.net.Responder;
 
-public class StoreFileHeaderSQLOperation extends DeferredOperation {
+public class StoreFileHeaderSQLOperation extends AsyncCommand {
 
 	public function StoreFileHeaderSQLOperation(fileWrapper:FileSQLWrapper) {
 		this.headerWrapper = fileWrapper;
@@ -14,35 +14,35 @@ public class StoreFileHeaderSQLOperation extends DeferredOperation {
 
 	private var headerWrapper:FileSQLWrapper;
 
-	override public function process():void {
+	override public function execute():void {
 		try {
 			var sqlParams:Object = headerWrapper.headerToSQLObj();
-			var statement:QueuedStatement;
+			var sqlText:String;
 			if (headerWrapper.header.isNewFile) {
-				statement = new QueuedStatement(headerWrapper.sqlFactory.insertFileHeader, sqlParams);
+				sqlText = SQLLib.INSERT_FILE_HEADER
 			}
 			else {
 				sqlParams.fileID = headerWrapper.header.fileID;
-				statement = new QueuedStatement(headerWrapper.sqlFactory.updateFileHeader, sqlParams);
+				sqlText = SQLLib.UPDATE_FILE_HEADER;
 			}
 
-			headerWrapper.sqlRunner.executeModify(Vector.<QueuedStatement>([statement]), executeComplete, executeError);
+			var insertStmt:SQLStatement = SQLUtils.createSQLStatement(sqlText, sqlParams);
+			insertStmt.sqlConnection = headerWrapper.sqlConnection;
+			insertStmt.execute(-1, new Responder(resultHandler, errorHandler));
 		}
 		catch (exc:Error) {
 			dispatchError(exc.message);
 		}
 	}
 
-	private function executeComplete(results:Vector.<SQLResult>):void {
-		if (headerWrapper.header.isNewFile) {
-			var result:SQLResult = results[0];
+	private function resultHandler(result:SQLResult):void {
+		if (headerWrapper.header.isNewFile)
 			if (result.rowsAffected > 0) headerWrapper.header.fileID = result.lastInsertRowID;
-		}
 		dispatchSuccess();
 	}
 
-	private function executeError(error:SQLError):void {
-		dispatchError(error.message);
+	private function errorHandler(error:SQLError):void {
+		dispatchError(error.details);
 	}
 
 }

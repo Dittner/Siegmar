@@ -1,14 +1,13 @@
 package dittner.gsa.backend.sqlOperation {
-import com.probertson.data.QueuedStatement;
-
-import dittner.gsa.bootstrap.deferredOperation.DeferredOperation;
-import dittner.gsa.domain.fileSystem.body.FileBody;
+import dittner.gsa.bootstrap.async.AsyncCommand;
 
 import flash.data.SQLResult;
+import flash.data.SQLStatement;
 import flash.errors.SQLError;
+import flash.net.Responder;
 import flash.utils.ByteArray;
 
-public class StoreFileBodySQLOperation extends DeferredOperation {
+public class StoreFileBodySQLOperation extends AsyncCommand {
 
 	public function StoreFileBodySQLOperation(fileWrapper:FileSQLWrapper) {
 		this.bodyWrapper = fileWrapper;
@@ -16,46 +15,35 @@ public class StoreFileBodySQLOperation extends DeferredOperation {
 
 	private var bodyWrapper:FileSQLWrapper;
 
-	override public function process():void {
+	override public function execute():void {
 		try {
+			var bytes:ByteArray = bodyWrapper.body.serialize();
 			var sqlParams:Object = {};
 			sqlParams.fileID = bodyWrapper.body.fileID;
-			sqlParams.bytes = encrypt(bodyWrapper.body);
-			var statement:QueuedStatement;
+			sqlParams.bytes = bodyWrapper.body.encryptEnabled ? bodyWrapper.encryptionService.encrypt(bytes) : bytes;
+			var sqlText:String = isNewFile ? SQLLib.INSERT_FILE_BODY : SQLLib.UPDATE_FILE_BODY;
 
-			if (isNewFile) {
-				statement = new QueuedStatement(bodyWrapper.sqlFactory.insertFileBody, sqlParams);
-			}
-			else {
-				statement = new QueuedStatement(bodyWrapper.sqlFactory.updateFileBody, sqlParams);
-			}
-
-			bodyWrapper.sqlRunner.executeModify(Vector.<QueuedStatement>([statement]), executeComplete, executeError);
+			var insertStmt:SQLStatement = SQLUtils.createSQLStatement(sqlText, sqlParams);
+			insertStmt.sqlConnection = bodyWrapper.sqlConnection;
+			insertStmt.execute(-1, new Responder(resultHandler, errorHandler));
 		}
 		catch (exc:Error) {
 			dispatchError(exc.message);
 		}
 	}
 
-	private function encrypt(body:FileBody):ByteArray {
-		var bytes:ByteArray = body.serialize();
-		return bodyWrapper.encryptionService.encrypt(bytes);
-	}
-
 	private function get isNewFile():Boolean {
 		return bodyWrapper.body.id == -1;
 	}
 
-	private function executeComplete(results:Vector.<SQLResult>):void {
-		if (isNewFile) {
-			var result:SQLResult = results[0];
+	private function resultHandler(result:SQLResult):void {
+		if (isNewFile)
 			if (result.rowsAffected > 0) bodyWrapper.body.id = result.lastInsertRowID;
-		}
 		dispatchSuccess();
 	}
 
-	private function executeError(error:SQLError):void {
-		dispatchError(error.message);
+	private function errorHandler(error:SQLError):void {
+		dispatchError(error.details);
 	}
 
 }
