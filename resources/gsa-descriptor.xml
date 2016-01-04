@@ -14,7 +14,7 @@
         <maximizable>true</maximizable>
         <resizable>true</resizable>
         <width>1280</width>
-        <height>800</height>
+        <height>950</height>
         <minSize>1000 700</minSize>
         <aspectRatio>landscape</aspectRatio>
         <autoOrients>false</autoOrients>

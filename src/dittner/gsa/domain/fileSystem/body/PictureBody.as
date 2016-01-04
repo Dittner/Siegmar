@@ -1,5 +1,8 @@
 package dittner.gsa.domain.fileSystem.body {
+import dittner.gsa.view.paintingView.action.PaintingAction;
+
 import flash.display.BitmapData;
+import flash.geom.Matrix;
 import flash.geom.Rectangle;
 import flash.utils.ByteArray;
 
@@ -16,6 +19,7 @@ public class PictureBody extends FileBody {
 	public function set image(value:BitmapData):void {
 		if (_image != value) {
 			_image = value;
+			adjustBgSize();
 			store();
 		}
 	}
@@ -29,7 +33,19 @@ public class PictureBody extends FileBody {
 	public function set bg(value:BitmapData):void {
 		if (_bg != value) {
 			_bg = value;
+			adjustBgSize();
 			store();
+		}
+	}
+
+	private function adjustBgSize():void {
+		if (image && bg && (image.width != bg.width || image.height != bg.height)) {
+			var mtr:Matrix = new Matrix();
+			mtr.scale(image.width / bg.width, image.height / bg.height);
+			var scaledBG:BitmapData = new BitmapData(image.width, image.height, true, 0);
+			scaledBG.draw(bg, mtr);
+			bg.dispose();
+			_bg = scaledBG;
 		}
 	}
 
@@ -109,6 +125,14 @@ public class PictureBody extends FileBody {
 		}
 
 		return bd;
+	}
+
+	public function render():BitmapData {
+		if (!image) return null;
+		var res:BitmapData = image.clone();
+		for each(var action:PaintingAction in actions)
+			res = action.exec(res, bg);
+		return res;
 	}
 }
 }

@@ -1,10 +1,7 @@
 <?xml version="1.0"?>
 <s:Button xmlns:fx="http://ns.adobe.com/mxml/2009"
           xmlns:s="library://ns.adobe.com/flex/spark"
-          minWidth="150" height="31">
-    <fx:Metadata>
-        [Style(name="strokeColor", type="uint")]
-    </fx:Metadata>
+          minWidth="31" height="31">
     <fx:Declarations>
 
         <fx:Component className="StrokeButtonSkin">
@@ -23,7 +20,7 @@
                 </s:states>
 
                 <s:Label id="labelDisplay"
-                         color="{getStyle('strokeColor')}"
+                         color="{getStyle('color')}"
                          textAlign="center"
                          maxDisplayedLines="1" mouseChildren="false" mouseEnabled="false"
                          horizontalCenter="0" verticalCenter="1" verticalAlign="middle"
@@ -34,7 +31,7 @@
                         <s:SolidColor alpha="0" alpha.down=".1"/>
                     </s:fill>
                     <s:stroke>
-                        <s:SolidColorStroke color="{getStyle('strokeColor')}" alpha=".5" alpha.down="1"/>
+                        <s:SolidColorStroke color="{getStyle('color')}" alpha=".5" alpha.down="1"/>
                     </s:stroke>
                 </s:Rect>
 

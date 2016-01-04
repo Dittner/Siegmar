@@ -35,5 +35,6 @@
         ]]></fx:Script>
 
     <fx:Style source="/GSA.css"/>
+    <fx:Style source="CosmoStyle.css"/>
 
 </s:Application>

@@ -11,7 +11,7 @@ import spark.components.DataGroup;
 import spark.components.IItemRenderer;
 import spark.events.RendererExistenceEvent;
 
-[Event(name="selectedItemChange", type="flash.events.Event")]
+[Event(name="selectedItemChange", type="dittner.gsa.view.common.list.SelectableDataGroupEvent")]
 public class SelectableDataGroup extends DataGroup {
 
 	public function SelectableDataGroup() {
@@ -44,12 +44,10 @@ public class SelectableDataGroup extends DataGroup {
 	//--------------------------------------------------------------------------------
 	//  selectedItem
 	//--------------------------------------------------------------------------------
-	private var _selectedItem:Object;
-	[Bindable("selected")]
-	public function get selectedItem():Object {
-		return _selectedItem;
-	}
-	public function set selectedItem(value:Object):void {
+	private var _selectedItem:*;
+	[Bindable("selectedItemChange")]
+	public function get selectedItem():* {return _selectedItem;}
+	public function set selectedItem(value:*):void {
 		if (value == _selectedItem) {
 			if (allowSelectLastItem)
 				dispatchEvent(new SelectableDataGroupEvent(SelectableDataGroupEvent.SELECTED, selectedItem));

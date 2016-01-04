@@ -6,35 +6,27 @@
                xmlns:info="dittner.gsa.view.documentView.docInfo.*"
                xmlns:paintingview="dittner.gsa.view.paintingView.*">
 
-    <fx:Script><![CDATA[
-        import dittner.gsa.domain.fileSystem.body.PictureBody;
-
-        //--------------------------------------
-        //  picture
-        //--------------------------------------
-        private var _picture:PictureBody;
-        [Bindable("pictureChanged")]
-        public function get picture():PictureBody {return _picture;}
-        public function set picture(value:PictureBody):void {
-            if (_picture != value) {
-                _picture = value;
-                dispatchEvent(new Event("pictureChanged"));
-            }
-        }
-        ]]></fx:Script>
     <view:layout>
         <s:HorizontalLayout gap="0"/>
     </view:layout>
 
     <paintingview:PicturePanel id="picturePanel"
-                               width="100%" height="100%"
-                               picture="{picture}"/>
+                               width="100%" height="100%"/>
 
-    <s:Group width="400" height="100%">
+    <s:VGroup width="400" height="100%" gap="0">
         <info:DocInfoBoard id="fileInfoBoard"
-                           width="400" height="100%"/>
+                           width="400"/>
 
-    </s:Group>
+        <paintingview:PictureInfoBoard id="pictureInfo"
+                                       pictureScale="{picturePanel.pictureScale}"
+                                       width="100%"/>
+
+        <s:Spacer height="15"/>
+
+        <paintingview:PaintingActionTools id="actionTools"
+                                          width="100%" height="100%"/>
+
+    </s:VGroup>
 
     <toolbar:Toolbar id="toolbar"
                      showNoteBtns="false"

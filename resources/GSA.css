@@ -2,6 +2,7 @@
 @namespace input "dittner.gsa.view.common.input.*";
 @namespace list "dittner.gsa.view.common.list.*";
 @namespace spinner "dittner.gsa.view.common.spinner.*";
+@namespace cap "dittner.gsa.view.common.scroll.cap.*";
 
 @font-face {
     src: url("/fonts/georgia.ttf");
@@ -61,7 +62,6 @@
 
 global {
     fontSize: 14px;
-    fontFamily: TahomaMX;
     fontWeight: normal;
     contentBackgroundAlpha: 0;
     backgroundColor: 0;
@@ -70,13 +70,11 @@ global {
 
 s|Button {
     fontSize: 14px;
-    fontFamily: Tahoma;
     fontWeight: normal;
 }
 
 s|Label {
     fontSize: 14px;
-    fontFamily: Tahoma;
     fontWeight: normal;
 }
 
@@ -122,13 +120,38 @@ list|ListForm {
 }
 
 /************************** SCROLL **************************/
+
 s|Scroller {
     interactionMode: mouse;
-    horizontalScrollPolicy: off;
-    verticalScrollPolicy: auto;
+    skinClass: ClassReference("dittner.gsa.view.common.scroll.cap.CapScrollerSkin");
 }
 
+cap|CapVScrollBarSkin #decrementButton {
+    skin-class: ClassReference("dittner.gsa.view.common.scroll.cap.ArrowButtonSkin");
+    icon: Embed(source="/assets/scroll/vtop_arrow_icon.png");
+}
+
+cap|CapVScrollBarSkin #incrementButton {
+    skin-class: ClassReference("dittner.gsa.view.common.scroll.cap.ArrowButtonSkin");
+    icon: Embed(source="/assets/scroll/vbottom_arrow_icon.png");
+}
+
+cap|CapHScrollBarSkin #decrementButton {
+    skin-class: ClassReference("dittner.gsa.view.common.scroll.cap.ArrowButtonSkin");
+    icon: Embed(source="/assets/scroll/hleft_arrow_icon.png");
+}
+
+cap|CapHScrollBarSkin #incrementButton {
+    skin-class: ClassReference("dittner.gsa.view.common.scroll.cap.ArrowButtonSkin");
+    icon: Embed(source="/assets/scroll/hright_arrow_icon.png");
+}
+
+
 /************************** OTHER COMPONENTS **************************/
+s|TabBar {
+    skinClass: ClassReference("dittner.gsa.view.common.tabBar.TabBarSkin");
+}
+
 s|CheckBox {
     skinClass: ClassReference("dittner.gsa.view.common.checkBox.CustomCheckBoxSkin");
 }

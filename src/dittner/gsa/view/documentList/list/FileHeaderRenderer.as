@@ -158,24 +158,25 @@ import flash.display.Sprite;
 import flash.text.TextField;
 import flash.text.TextFormat;
 
+import flashx.textLayout.formats.TextAlign;
+
 class DocIconRender extends Sprite {
-	private static const WIDTH:uint = 18;
-	private static const HEIGHT:uint = 22;
+	private static const RAD:uint = 11;
 
 	public function DocIconRender(color:uint, letter:String) {
-		tf = TextFieldFactory.create(new TextFormat(FontName.TAHOMA_MX, 11, color));
+		tf = TextFieldFactory.create(new TextFormat(FontName.ARIAL_MX, 12, color, null, null, null, null, null, TextAlign.CENTER));
 		addChild(tf);
 		tf.text = letter;
 		var g:Graphics = graphics;
-		g.beginFill(0, 0.25);
-		g.drawRect(0, 0, WIDTH, HEIGHT);
+		g.beginFill(0, 1);
+		g.drawCircle(RAD, RAD, RAD);
 		g.endFill();
-		tf.x = (WIDTH - tf.textWidth >> 1) - 2;
-		tf.y = (HEIGHT - tf.textHeight >> 1) - 2;
+		tf.width = 21;
+		tf.y = (2 * RAD - tf.textHeight >> 1) - 1;
 	}
 
 	public function render():BitmapData {
-		var bd:BitmapData = new BitmapData(WIDTH, HEIGHT, false, 0);
+		var bd:BitmapData = new BitmapData(2 * RAD, 2 * RAD, true, 0);
 		bd.draw(this, null, null, null, null, true);
 		return bd;
 	}
