@@ -3,6 +3,7 @@ import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.walter.Walter;
 import dittner.gsa.bootstrap.walter.walter_namespace;
 import dittner.gsa.domain.store.FileStorage;
+import dittner.gsa.view.common.utils.AppColors;
 
 use namespace walter_namespace;
 
@@ -75,6 +76,36 @@ public class FileHeader {
 	public function set options(value:Object):void {
 		if (_options != value) {
 			_options = value;
+		}
+	}
+
+	public function get textColor():uint {
+		switch (fileType) {
+			case FileType.ARTICLE :
+				return AppColors.DOC_ARTICLE;
+			case FileType.DICTIONARY :
+				return AppColors.DOC_DICTIONARY;
+			case FileType.NOTEBOOK :
+				return AppColors.DOC_NOTEBOOK;
+			case FileType.PICTURE :
+				return AppColors.DOC_PICTURE;
+			default :
+				return AppColors.FOLDER;
+		}
+	}
+
+	public function get symbol():String {
+		switch (fileType) {
+			case FileType.ARTICLE :
+				return "A";
+			case FileType.DICTIONARY :
+				return "W";
+			case FileType.NOTEBOOK :
+				return "N";
+			case FileType.PICTURE :
+				return "B";
+			default :
+				return "?";
 		}
 	}
 

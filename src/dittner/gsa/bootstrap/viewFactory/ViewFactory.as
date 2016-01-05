@@ -1,8 +1,8 @@
 package dittner.gsa.bootstrap.viewFactory {
 import dittner.gsa.bootstrap.walter.WalterProxy;
 import dittner.gsa.view.common.view.ViewBase;
-import dittner.gsa.view.documentList.DocumentListView;
-import dittner.gsa.view.documentView.DocumentView;
+import dittner.gsa.view.fileList.FileListView;
+import dittner.gsa.view.fileView.FileView;
 import dittner.gsa.view.login.LoginView;
 import dittner.gsa.view.paintingView.PaintingView;
 
@@ -16,11 +16,11 @@ public class ViewFactory extends WalterProxy implements IViewFactory {
 			case ViewID.LOGIN :
 				view = new LoginView();
 				break;
-			case ViewID.DOCUMENT_LIST :
-				view = new DocumentListView();
+			case ViewID.FILE_LIST :
+				view = new FileListView();
 				break;
-			case ViewID.DOCUMENT_VIEW :
-				view = new DocumentView();
+			case ViewID.FILE_VIEW :
+				view = new FileView();
 				break;
 			case ViewID.PAINTING_VIEW :
 				view = new PaintingView();

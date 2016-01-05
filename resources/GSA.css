@@ -126,6 +126,11 @@ s|Scroller {
     skinClass: ClassReference("dittner.gsa.view.common.scroll.cap.CapScrollerSkin");
 }
 
+s|Scroller.cosmoScrollerStyle {
+    interactionMode: mouse;
+    skinClass: ClassReference("cosmoLib.components.scroll.CosmoScrollerSkin");
+}
+
 cap|CapVScrollBarSkin #decrementButton {
     skin-class: ClassReference("dittner.gsa.view.common.scroll.cap.ArrowButtonSkin");
     icon: Embed(source="/assets/scroll/vtop_arrow_icon.png");
@@ -149,6 +154,7 @@ cap|CapHScrollBarSkin #incrementButton {
 
 /************************** OTHER COMPONENTS **************************/
 s|TabBar {
+    fontSize: 14;
     skinClass: ClassReference("dittner.gsa.view.common.tabBar.TabBarSkin");
 }
 

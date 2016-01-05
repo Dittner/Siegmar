@@ -27,8 +27,6 @@ public class AppColors {
 	public static const TEXT_YELLOW:uint = 0xccAA00;
 
 	public static const LIST_ITEM_SELECTION:Array = [0x575762, 0];
-	public static const ITEM_SELECTED:uint = 0x454589;
-
 
 	public static const INPUT_BORDER:uint = 0xc7c7cf;
 	public static const INPUT_CONTENT:uint = 0xffFFff;

@@ -10,7 +10,7 @@ import flash.text.TextFormat;
 import spark.skins.mobile.TextInputSkin;
 
 public class TextInputFormSkin extends TextInputSkin {
-	private static const TITLE_FORMAT:TextFormat = new TextFormat(FontName.TAHOMA_MX, 14, AppColors.TEXT_LIGHT);
+	private static const TITLE_FORMAT:TextFormat = new TextFormat(FontName.ARIAL_MX, 14, AppColors.TEXT_LIGHT);
 	private static const TITLE_HEIGHT:uint = 20;
 
 	public function TextInputFormSkin() {

@@ -73,7 +73,7 @@ public class LoginViewMediator extends WalterMediator {
 
 	private function dataBaseOpened(op:IAsyncOperation):void {
 		if (op.isSuccess) {
-			viewNavigator.navigate(ViewID.DOCUMENT_LIST);
+			viewNavigator.navigate(ViewID.FILE_LIST);
 		}
 		else {
 			view.isLoginWithError = true;

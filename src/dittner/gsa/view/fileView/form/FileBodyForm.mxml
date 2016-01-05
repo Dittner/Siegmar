@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         xmlns:dictionary="dittner.gsa.view.fileView.form.body.*">
+
+    <fx:Script><![CDATA[
+        import dittner.gsa.bootstrap.async.IAsyncOperation;
+        import dittner.gsa.domain.fileSystem.FileType;
+        import dittner.gsa.domain.fileSystem.GSAFile;
+        import dittner.gsa.view.common.form.IBodyForm;
+        import dittner.gsa.view.fileList.toolbar.ToolAction;
+
+        private var curBodyForm:IBodyForm;
+
+        public function activate(file:GSAFile, toolAction:String):IAsyncOperation {
+            switch (file.header.fileType) {
+                case FileType.ARTICLE :
+                    setCurrentState("article");
+                    break;
+                case FileType.DICTIONARY :
+                    curBodyForm = dictionaryBodyForm;
+                    setCurrentState("dictionary");
+                    break;
+                case FileType.NOTEBOOK :
+                    setCurrentState("notebook");
+                    curBodyForm = noteBodyForm;
+                    break;
+                case FileType.ALBUM :
+                    setCurrentState("album");
+                    break;
+                default :
+                    throw new Error("Unknown file type: " + file.header.fileType);
+            }
+
+            switch (toolAction) {
+                case ToolAction.ADD :
+                    return curBodyForm.createNote(file);
+                case ToolAction.EDIT :
+                    return curBodyForm.editNote(file);
+                case ToolAction.REMOVE :
+                    return curBodyForm.removeNote(file);
+            }
+            return null;
+        }
+
+        //----------------------------------------------------------------------------------------------
+        //
+        //  Interface Methods
+        //
+        //----------------------------------------------------------------------------------------------
+
+        public function clear():void {
+            if (curBodyForm) curBodyForm.clear();
+        }
+        ]]></fx:Script>
+
+    <s:states>
+        <s:State name="notebook"/>
+        <s:State name="article"/>
+        <s:State name="dictionary"/>
+        <s:State name="album"/>
+    </s:states>
+
+    <s:BitmapImage width="100%" height="100%"
+                   source="@Embed(source='/assets/form_bg_pattern.png')" fillMode="repeat"/>
+
+    <dictionary:DictionaryBodyForm id="dictionaryBodyForm"
+                                   includeInLayout="false" visible="false"
+                                   includeInLayout.dictionary="true" visible.dictionary="true"
+                                   left="10" top="10" bottom="10" right="10"/>
+
+    <dictionary:NotebookBodyForm id="noteBodyForm"
+                                 includeInLayout="false" visible="false"
+                                 includeInLayout.notebook="true" visible.notebook="true"
+                                 left="10" top="10" bottom="10" right="10"/>
+
+</s:Group>

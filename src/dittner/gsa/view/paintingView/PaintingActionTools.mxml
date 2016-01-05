@@ -3,7 +3,7 @@
          xmlns:s="library://ns.adobe.com/flex/spark"
          xmlns:button="dittner.gsa.view.common.button.*"
          xmlns:list="dittner.gsa.view.common.list.*"
-         xmlns:common="dittner.gsa.view.common.common.*"
+         xmlns:common="cosmoLib.components.styleComponents.*"
          xmlns:actionform="dittner.gsa.view.paintingView.actionForm.*">
     <fx:Script><![CDATA[
         import dittner.gsa.view.common.popup.SimplePopup;

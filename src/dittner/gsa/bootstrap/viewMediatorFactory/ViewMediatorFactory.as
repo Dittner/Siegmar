@@ -2,8 +2,8 @@ package dittner.gsa.bootstrap.viewMediatorFactory {
 import dittner.gsa.bootstrap.viewFactory.ViewID;
 import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.bootstrap.walter.WalterProxy;
-import dittner.gsa.view.documentList.DocumentListMediator;
-import dittner.gsa.view.documentView.DocumentViewMediator;
+import dittner.gsa.view.fileList.FileListMediator;
+import dittner.gsa.view.fileView.FileViewMediator;
 import dittner.gsa.view.login.LoginViewMediator;
 import dittner.gsa.view.paintingView.PaintingViewMediator;
 
@@ -17,11 +17,11 @@ public class ViewMediatorFactory extends WalterProxy implements IViewMediatorFac
 			case ViewID.LOGIN :
 				mediator = new LoginViewMediator();
 				break;
-			case ViewID.DOCUMENT_LIST :
-				mediator = new DocumentListMediator();
+			case ViewID.FILE_LIST :
+				mediator = new FileListMediator();
 				break;
-			case ViewID.DOCUMENT_VIEW :
-				mediator = new DocumentViewMediator();
+			case ViewID.FILE_VIEW :
+				mediator = new FileViewMediator();
 				break;
 			case ViewID.PAINTING_VIEW :
 				mediator = new PaintingViewMediator();

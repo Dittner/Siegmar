@@ -10,8 +10,7 @@ import dittner.gsa.domain.fileSystem.body.PictureBody;
 import dittner.gsa.utils.FileChooser;
 import dittner.gsa.view.common.colorChooser.SelectColorEvent;
 import dittner.gsa.view.common.list.SelectableDataGroupEvent;
-import dittner.gsa.view.documentList.toolbar.ToolbarMediator;
-import dittner.gsa.view.documentView.docInfo.DocInfoBoardMediator;
+import dittner.gsa.view.fileList.toolbar.ToolbarMediator;
 import dittner.gsa.view.paintingView.action.DrawLinesAction;
 import dittner.gsa.view.paintingView.action.LinesDisplacementAction;
 import dittner.gsa.view.paintingView.action.PaintingAction;
@@ -50,7 +49,7 @@ public class PaintingViewMediator extends WalterMediator {
 			openedFileBody = openedFile.body as PictureBody;
 
 			registerMediator(view.toolbar, new ToolbarMediator());
-			registerMediator(view.fileInfoBoard, new DocInfoBoardMediator());
+			view.pictureInfo.title = openedFile.header.title;
 			view.pictureInfo.picture = openedFileBody;
 
 			view.actionTools.addImageBtn.addEventListener(MouseEvent.CLICK, addImage);
@@ -69,7 +68,7 @@ public class PaintingViewMediator extends WalterMediator {
 		}
 		else {
 			system.closeOpenedFile();
-			viewNavigator.navigate(ViewID.DOCUMENT_LIST);
+			viewNavigator.navigate(ViewID.FILE_LIST);
 		}
 	}
 

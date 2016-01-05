@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
          xmlns:s="library://ns.adobe.com/flex/spark"
-         xmlns:stylecomponents="dittner.gsa.view.common.common.*">
+         xmlns:common="cosmoLib.components.styleComponents.*">
 
     <fx:Script><![CDATA[
         import dittner.gsa.view.common.utils.AppColors;
@@ -33,7 +33,7 @@
         }
         ]]></fx:Script>
 
-    <stylecomponents:Background left="0" right="0" top="0" bottom="0"
+    <common:Background left="0" right="0" top="0" bottom="0"
                                 color="#ffFFff"/>
 
     <s:Scroller left="5" right="5" top="5" bottom="5">
