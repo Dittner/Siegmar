@@ -7,6 +7,7 @@ import dittner.gsa.bootstrap.walter.message.WalterMessage;
 import dittner.gsa.domain.fileSystem.GSAFile;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.domain.fileSystem.body.PictureBody;
+import dittner.gsa.utils.BitmapLocalSaver;
 import dittner.gsa.utils.FileChooser;
 import dittner.gsa.view.common.colorChooser.SelectColorEvent;
 import dittner.gsa.view.common.list.SelectableDataGroupEvent;
@@ -62,6 +63,7 @@ public class PaintingViewMediator extends WalterMediator {
 			view.actionTools.actionList.addEventListener(SelectableDataGroupEvent.REMOVE, removeAction);
 			view.actionTools.actionForm.colorChooser.addEventListener(SelectColorEvent.COLOR_SELECTED, bgColorSelected);
 			view.actionTools.actionForm.applyBtn.addEventListener(MouseEvent.CLICK, applyChanges);
+			view.actionTools.saveResultBtn.addEventListener(MouseEvent.CLICK, saveResult);
 			view.pictureInfo.incScaleBtn.addEventListener(MouseEvent.CLICK, incPictureScale);
 			view.pictureInfo.decScaleBtn.addEventListener(MouseEvent.CLICK, decPictureScale);
 			updatePicture();
@@ -81,6 +83,15 @@ public class PaintingViewMediator extends WalterMediator {
 		view.actionTools.actionForm.storeChanges();
 		openedFileBody.store();
 		updatePicture();
+	}
+
+	private function saveResult(e:MouseEvent):void {
+		if (view.actionTools.showModeChooser.selectedItem == PictureShowMode.COMBINATION && view.picturePanel.source) {
+			BitmapLocalSaver.save(view.picturePanel.source, openedFile.header.title + ".png");
+		}
+		else {
+			BitmapLocalSaver.save(openedFileBody.render(), openedFile.header.title + ".png");
+		}
 	}
 
 	private function imageBrowsed(op:IAsyncOperation):void {
@@ -219,6 +230,7 @@ public class PaintingViewMediator extends WalterMediator {
 		view.actionTools.actionList.removeEventListener(SelectableDataGroupEvent.REMOVE, removeAction);
 		view.actionTools.actionForm.colorChooser.removeEventListener(SelectColorEvent.COLOR_SELECTED, bgColorSelected);
 		view.actionTools.actionForm.applyBtn.removeEventListener(MouseEvent.CLICK, applyChanges);
+		view.actionTools.saveResultBtn.removeEventListener(MouseEvent.CLICK, saveResult);
 		view.pictureInfo.incScaleBtn.removeEventListener(MouseEvent.CLICK, incPictureScale);
 		view.pictureInfo.decScaleBtn.removeEventListener(MouseEvent.CLICK, decPictureScale);
 	}

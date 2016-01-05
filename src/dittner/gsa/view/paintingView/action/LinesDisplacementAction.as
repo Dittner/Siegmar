@@ -20,7 +20,7 @@ public class LinesDisplacementAction extends PaintingAction {
 
 	override public function exec(src:BitmapData, bg:BitmapData):BitmapData {
 		var res:BitmapData = src.clone();
-		var srcImage:BitmapData = useBg && bg ? bg : new BitmapData(src.width, src.height, true, 0xff000000 + bgColor);
+		var srcImage:BitmapData = useBg && bg ? bg : new BitmapData(src.width, src.height, true, bgColorEnabled ? 0xff000000 + bgColor : 0);
 		var lineRect:Rectangle = new Rectangle();
 		var destPos:Point = new Point();
 		var i:int;

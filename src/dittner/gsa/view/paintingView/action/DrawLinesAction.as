@@ -17,14 +17,15 @@ public class DrawLinesAction extends PaintingAction {
 
 	override public function exec(src:BitmapData, bg:BitmapData):BitmapData {
 		var res:BitmapData = src;
-		var srcImage:BitmapData = useBg && bg ? bg : new BitmapData(src.width, src.height, true, 0xff000000 + bgColor);
+		var srcImage:BitmapData = useBg && bg ? bg : new BitmapData(src.width, src.height, true, bgColorEnabled ? 0xff000000 + bgColor : 0);
 		var lineRect:Rectangle;
 		var destPos:Point;
+		var i:int;
 
 		if (isVerticalPos) {
 			lineRect = new Rectangle(0, 0, lineWeight, src.height);
 			destPos = new Point(0, 0);
-			for (var i:int = 0; i < src.width; i += 2 * lineStep) {
+			for (i = 0; i < src.width; i += 2 * lineStep) {
 				lineRect.x = i;
 				destPos.x = i;
 				res.copyPixels(srcImage, lineRect, destPos);
@@ -33,7 +34,7 @@ public class DrawLinesAction extends PaintingAction {
 		else {
 			lineRect = new Rectangle(0, 0, src.width, lineWeight);
 			destPos = new Point(0, 0);
-			for (var i:int = 0; i < src.height; i += 2 * lineStep) {
+			for (i = 0; i < src.height; i += 2 * lineStep) {
 				lineRect.y = i;
 				destPos.y = i;
 				res.copyPixels(srcImage, lineRect, destPos);

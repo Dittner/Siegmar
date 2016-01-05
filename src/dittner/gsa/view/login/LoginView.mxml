@@ -28,6 +28,8 @@
 
         [Bindable]
         public var isLoginWithError:Boolean;
+        [Bindable]
+        public var isLoginSuccess:Boolean = false;
 
         public function registerUser():void {
             setCurrentState("registration");
@@ -73,6 +75,12 @@
     </core:states>
 
     <s:BitmapImage width="100%" height="100%" source="@Embed(source='/bg_pattern.png')" fillMode="repeat"/>
+
+    <s:SWFLoader visible="{!isLoginSuccess}"
+                 horizontalCenter="0" top="20" source="@Embed(source='/swf/lock.swf')"/>
+
+    <s:BitmapImage visible="{isLoginSuccess}"
+                   horizontalCenter="0" top="20" source="@Embed(source='/assets/unlock.png')"/>
 
     <s:VGroup width="100%" height="100%"
               gap="25" horizontalAlign="center"

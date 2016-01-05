@@ -6,6 +6,7 @@ import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.domain.store.FileStorage;
 import dittner.gsa.domain.user.User;
 import dittner.gsa.utils.AppInfo;
+import dittner.gsa.utils.delay.doLaterInMSec;
 
 import flash.events.MouseEvent;
 
@@ -23,6 +24,7 @@ public class LoginViewMediator extends WalterMediator {
 	public var fileStorage:FileStorage;
 
 	override protected function activate():void {
+		view.isLoginSuccess = false;
 		view.completeBtn.addEventListener(MouseEvent.CLICK, completeHandler);
 		view.passwordInput.addEventListener(FlexEvent.ENTER, completeHandler);
 		view.privacyLevelInput.addEventListener(FlexEvent.ENTER, completeHandler);
@@ -40,6 +42,7 @@ public class LoginViewMediator extends WalterMediator {
 	}
 
 	private function completeHandler(event:*):void {
+		if(view.isLoginSuccess) return;
 		if (view.passwordInput.text.length <= AppInfo.MIN_PWD_LEN) return;
 		var op:IAsyncOperation;
 		if (user.isRegistered)
@@ -73,12 +76,18 @@ public class LoginViewMediator extends WalterMediator {
 
 	private function dataBaseOpened(op:IAsyncOperation):void {
 		if (op.isSuccess) {
-			viewNavigator.navigate(ViewID.FILE_LIST);
+			view.isLoginSuccess = true;
+			doLaterInMSec(navigateToFileList, 1000);
+
 		}
 		else {
 			view.isLoginWithError = true;
 			view.errorLbl.text = op.error;
 		}
+	}
+
+	private function navigateToFileList():void {
+		viewNavigator.navigate(ViewID.FILE_LIST);
 	}
 
 	override protected function deactivate():void {

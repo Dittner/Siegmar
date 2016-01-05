@@ -13,7 +13,8 @@ import flashx.textLayout.formats.TextAlign;
 import mx.core.UIComponent;
 
 public class DocIconRender extends UIComponent {
-	private static const RAD:uint = 11;
+	private static const WID:uint = 22;
+	private static const HEI:uint = 22;
 
 	public function DocIconRender(color:uint = 0, letter:String = "X") {
 		super();
@@ -58,8 +59,8 @@ public class DocIconRender extends UIComponent {
 	//----------------------------------------------------------------------------------------------
 
 	override protected function measure():void {
-		measuredWidth = 2 * RAD;
-		measuredHeight = 2 * RAD;
+		measuredWidth = WID;
+		measuredHeight = HEI;
 	}
 
 	override protected function updateDisplayList(w:Number, h:Number):void {
@@ -67,18 +68,18 @@ public class DocIconRender extends UIComponent {
 		var g:Graphics = graphics;
 		g.clear();
 		g.beginFill(0, 1);
-		g.drawCircle(RAD, RAD, RAD);
+		g.drawRect(0, 0, WID, HEI);
 		g.endFill();
 
 		tf.text = letter;
 		tf.textColor = textColor;
 		tf.width = 21;
-		tf.y = (2 * RAD - tf.textHeight >> 1) - 1;
+		tf.y = (WID - tf.textHeight >> 1) - 1;
 	}
 
 	public function render():BitmapData {
 		validateDisplayList();
-		var bd:BitmapData = new BitmapData(2 * RAD, 2 * RAD, true, 0);
+		var bd:BitmapData = new BitmapData(WID, HEI, true, 0);
 		bd.draw(this, null, null, null, null, true);
 		return bd;
 	}

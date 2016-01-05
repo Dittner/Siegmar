@@ -132,7 +132,7 @@
                  mouseChildren="false" mouseEnabled="false" paddingBottom="50"
                  color="{AppColors.TEXT_WHITE}"/>
 
-        <s:Label text="Wählen Sie bitte den Typ des Dokuments aus:"
+        <s:Label text="Wählen Sie bitte den Typ der Datei aus"
                  visible="{isAddMode}" includeInLayout="{isAddMode}"
                  width="100%" paddingBottom="0" textAlign="center"
                  fontFamily="{FontName.ARIAL}" fontSize="18"

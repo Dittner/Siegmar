@@ -39,6 +39,7 @@
                 useColorBtn.selected = !action.useBg;
                 useBgBtn.selected = action.useBg;
                 colorChooser.selectedColor = action.bgColor;
+                colorEnabledCheckBox.selected = action.bgColorEnabled;
 
                 if (action.key == PaintingAction.DRAW_LINES)
                     drawLinesForm.action = action as DrawLinesAction;
@@ -61,6 +62,8 @@
         public function storeChanges():void {
             action.bgColor = colorChooser.selectedColor;
             action.useBg = useBgBtn.selected;
+            action.bgColorEnabled = colorEnabledCheckBox.selected;
+
             if (action.key == PaintingAction.DRAW_LINES) drawLinesForm.storeChanges();
             else if (action.key == PaintingAction.LINES_DISPLACEMENT) linesDisplacementForm.storeChanges();
         }
@@ -87,12 +90,13 @@
                        label="eine Farbe auszuwählen"
                        click="radioBtnClickHandler(event)"/>
 
+        <s:CheckBox id="colorEnabledCheckBox" selected="true"/>
+
         <s:Group click="showColorChooser()">
             <common:Background color="{colorChooser.selectedColor}"
                                strokeColor="#ffFFff" weight="1"
                                width="20" height="20"/>
         </s:Group>
-
         <s:Label text="{'#'+action.bgColor.toString(16)}" color="#ffFFff"/>
     </s:HGroup>
 

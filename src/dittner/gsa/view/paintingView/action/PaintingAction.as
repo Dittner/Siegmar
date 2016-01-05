@@ -24,6 +24,7 @@ public class PaintingAction {
 
 	public var useBg:Boolean = false;
 	public var bgColor:uint = 0;
+	public var bgColorEnabled:Boolean = true;
 
 	public function get key():String {return "";}
 
