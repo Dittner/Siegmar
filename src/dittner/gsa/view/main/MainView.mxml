@@ -40,7 +40,7 @@
     <s:BitmapImage width="100%" height="100%"
                    fillMode="scale"
                    scaleMode="zoom"
-                   source="@Embed('/assets/app_bg.jpg')"/>
+                   source="@Embed('/assets/app_bg.png')"/>
 
     <s:Group id="viewCont"
              width="100%"

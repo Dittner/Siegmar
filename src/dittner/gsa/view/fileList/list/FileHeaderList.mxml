@@ -21,7 +21,7 @@
                         fontFamily="{FontName.TAHOMA_MX}"
                         label="zurück"/>
 
-    <s:Scroller width="100%" top="50" bottom="50">
+    <s:Scroller width="100%" top="50" bottom="50" horizontalScrollPolicy="off">
         <list:SelectableDataGroup id="list"
                                   width="100%"
                                   itemRenderer="dittner.gsa.view.fileList.list.FileHeaderRenderer">
