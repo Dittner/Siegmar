@@ -5,6 +5,7 @@ import dittner.gsa.backend.sqlOperation.RemoveFileSQLOperation;
 import dittner.gsa.backend.sqlOperation.RunDataBaseSQLOperation;
 import dittner.gsa.backend.sqlOperation.SQLLib;
 import dittner.gsa.backend.sqlOperation.SelectFileBodySQLOperation;
+import dittner.gsa.backend.sqlOperation.SelectFileHeadersByTypeSQLOperation;
 import dittner.gsa.backend.sqlOperation.SelectFileHeadersSQLOperation;
 import dittner.gsa.backend.sqlOperation.StoreFileBodySQLOperation;
 import dittner.gsa.backend.sqlOperation.StoreFileHeaderSQLOperation;
@@ -13,9 +14,9 @@ import dittner.gsa.bootstrap.async.IAsyncCommand;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.async.SQLCommandManager;
 import dittner.gsa.bootstrap.walter.WalterProxy;
-import dittner.gsa.domain.fileSystem.header.FileHeader;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.domain.fileSystem.body.FileBody;
+import dittner.gsa.domain.fileSystem.header.FileHeader;
 
 import flash.data.SQLConnection;
 
@@ -83,7 +84,7 @@ public class FileStorage extends WalterProxy {
 		return cmd;
 	}
 
-	public function removeHeader(header:FileHeader):IAsyncOperation {
+	public function removeFile(header:FileHeader):IAsyncOperation {
 		var cmd:IAsyncCommand = new RemoveFileSQLOperation(wrapFileHeader(header));
 		cmd.addCompleteCallback(notifyFileStored);
 		sqlCmdManager.add(cmd);
@@ -91,7 +92,13 @@ public class FileStorage extends WalterProxy {
 	}
 
 	public function loadFileHeaders(parentFolderID:int):IAsyncOperation {
-		var cmd:IAsyncCommand = new SelectFileHeadersSQLOperation(this, parentFolderID, system);
+		var cmd:IAsyncCommand = new SelectFileHeadersSQLOperation(this, parentFolderID);
+		sqlCmdManager.add(cmd);
+		return cmd;
+	}
+
+	public function loadFileHeadersByType(fileType:uint):IAsyncOperation {
+		var cmd:IAsyncCommand = new SelectFileHeadersByTypeSQLOperation(this, fileType);
 		sqlCmdManager.add(cmd);
 		return cmd;
 	}
@@ -104,11 +111,6 @@ public class FileStorage extends WalterProxy {
 		var cmd:IAsyncCommand = new StoreFileBodySQLOperation(wrapFileBody(body));
 		sqlCmdManager.add(cmd);
 		return cmd;
-	}
-
-	public function removeBody(body:FileBody):IAsyncOperation {
-		var op:IAsyncOperation = new AsyncOperation();
-		return op;
 	}
 
 	public function loadFileBody(header:FileHeader):IAsyncOperation {

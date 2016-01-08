@@ -3,6 +3,7 @@ import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.navigator.ViewNavigator;
 import dittner.gsa.bootstrap.viewFactory.ViewID;
 import dittner.gsa.bootstrap.walter.WalterMediator;
+import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.domain.store.FileStorage;
 import dittner.gsa.domain.user.User;
 import dittner.gsa.utils.AppInfo;
@@ -22,6 +23,8 @@ public class LoginViewMediator extends WalterMediator {
 	public var user:User;
 	[Inject]
 	public var fileStorage:FileStorage;
+	[Inject]
+	public var system:GSAFileSystem;
 
 	override protected function activate():void {
 		view.isLoginSuccess = false;
@@ -42,7 +45,7 @@ public class LoginViewMediator extends WalterMediator {
 	}
 
 	private function completeHandler(event:*):void {
-		if(view.isLoginSuccess) return;
+		if (view.isLoginSuccess) return;
 		if (view.passwordInput.text.length <= AppInfo.MIN_PWD_LEN) return;
 		var op:IAsyncOperation;
 		if (user.isRegistered)
@@ -61,7 +64,8 @@ public class LoginViewMediator extends WalterMediator {
 		if (op.isSuccess) {
 			view.isLoginWithError = false;
 			view.errorLbl.text = "";
-			openDataBase();
+			var initOp:IAsyncOperation = system.initialize();
+			initOp.addCompleteCallback(systemInitialized);
 		}
 		else {
 			view.isLoginWithError = true;
@@ -69,16 +73,10 @@ public class LoginViewMediator extends WalterMediator {
 		}
 	}
 
-	private function openDataBase():void {
-		var op:IAsyncOperation = fileStorage.open(user.dataBasePwd);
-		op.addCompleteCallback(dataBaseOpened);
-	}
-
-	private function dataBaseOpened(op:IAsyncOperation):void {
+	private function systemInitialized(op:IAsyncOperation):void {
 		if (op.isSuccess) {
 			view.isLoginSuccess = true;
-			doLaterInMSec(navigateToFileList, 1000);
-
+			doLaterInMSec(navigateToFileList, 500);
 		}
 		else {
 			view.isLoginWithError = true;

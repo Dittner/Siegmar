@@ -130,7 +130,7 @@ public class FileHeader {
 	}
 
 	public function remove():IAsyncOperation {
-		return fileStorage.removeHeader(this);
+		return fileStorage.removeFile(this);
 	}
 }
 }

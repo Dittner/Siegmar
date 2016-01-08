@@ -59,8 +59,5 @@ public class FileBody {
 		return fileStorage.storeBody(this);
 	}
 
-	public function remove():IAsyncOperation {
-		return fileStorage.removeBody(this);
-	}
 }
 }

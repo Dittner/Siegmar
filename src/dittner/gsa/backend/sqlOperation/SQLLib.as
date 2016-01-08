@@ -60,6 +60,10 @@ public class SQLLib extends WalterProxy {
 	private static const SelectFileHeadersClass:Class;
 	public static const SELECT_FILE_HEADERS_SQL:String = new SelectFileHeadersClass();
 
+	[Embed(source="/dittner/gsa/backend/sqlOperation/sql/SelectFileHeadersByType.sql", mimeType="application/octet-stream")]
+	private static const SelectFileHeadersByTypeClass:Class;
+	public static const SELECT_FILE_HEADERS_BY_TYPE_SQL:String = new SelectFileHeadersByTypeClass();
+
 	[Embed(source="/dittner/gsa/backend/sqlOperation/sql/SelectAllFileHeaders.sql", mimeType="application/octet-stream")]
 	private static const SelectAllFilesHeadersClass:Class;
 	public static const SELECT_ALL_FILES_HEADERS:String = new SelectAllFilesHeadersClass();

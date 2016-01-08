@@ -8,18 +8,18 @@ import flash.data.SQLStatement;
 import flash.errors.SQLError;
 import flash.net.Responder;
 
-public class SelectFileHeadersSQLOperation extends AsyncCommand {
+public class SelectFileHeadersByTypeSQLOperation extends AsyncCommand {
 
-	public function SelectFileHeadersSQLOperation(storage:FileStorage, parentFolderID:int) {
-		this.parentFolderID = parentFolderID;
+	public function SelectFileHeadersByTypeSQLOperation(storage:FileStorage, fileType:uint) {
+		this.fileType = fileType;
 		this.storage = storage;
 	}
 
-	private var parentFolderID:int;
+	private var fileType:uint;
 	private var storage:FileStorage;
 
 	override public function execute():void {
-		var insertStmt:SQLStatement = SQLUtils.createSQLStatement(SQLLib.SELECT_FILE_HEADERS_SQL, {parentFolderID: parentFolderID}, FileHeader);
+		var insertStmt:SQLStatement = SQLUtils.createSQLStatement(SQLLib.SELECT_FILE_HEADERS_BY_TYPE_SQL, {fileType: fileType}, FileHeader);
 		insertStmt.sqlConnection = storage.sqlConnection;
 		insertStmt.execute(-1, new Responder(resultHandler, errorHandler));
 	}
