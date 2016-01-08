@@ -4,7 +4,7 @@
          xmlns:spinner="cosmoLib.components.spinner.*">
 
     <fx:Script><![CDATA[
-        import dittner.gsa.view.paintingView.action.LinesDisplacementAction;
+        import dittner.gsa.domain.fileSystem.body.picture.action.LinesDisplacementAction;
 
         //--------------------------------------
         //  actionChanged

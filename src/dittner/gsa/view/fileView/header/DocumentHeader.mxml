@@ -51,12 +51,12 @@
     <s:HGroup width="100%" gap="10" verticalAlign="middle">
         <list:DocIconRender id="docIconRender"/>
         <s:Label id="fileTitleLbl"
-                 fontFamily="{FontName.ARIAL}" fontSize="16"
+                 fontFamily="{FontName.MYRIAD}" fontSize="16"
                  mouseChildren="false" mouseEnabled="false"/>
 
         <s:Label id="authorNameLbl"
                  width="100%" textAlign="right"
-                 fontFamily="{FontName.ARIAL}" fontSize="16"
+                 fontFamily="{FontName.MYRIAD}" fontSize="16"
                  mouseChildren="false" mouseEnabled="false"
                  color="#ffFFff"/>
     </s:HGroup>

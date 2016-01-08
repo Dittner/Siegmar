@@ -1,5 +1,6 @@
-package dittner.gsa.domain.fileSystem.body {
-import dittner.gsa.view.paintingView.action.PaintingAction;
+package dittner.gsa.domain.fileSystem.body.picture {
+import dittner.gsa.domain.fileSystem.body.*;
+import dittner.gsa.domain.fileSystem.body.picture.action.PaintingAction;
 
 import flash.display.BitmapData;
 import flash.geom.Matrix;
@@ -53,7 +54,6 @@ public class PictureBody extends FileBody {
 	//  actions
 	//--------------------------------------
 	private var _actions:Array = [];
-	[Bindable("actionsChanged")]
 	public function get actions():Array {return _actions;}
 	public function set actions(value:Array):void {
 		if (_actions != value) {

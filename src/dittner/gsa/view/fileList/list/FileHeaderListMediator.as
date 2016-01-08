@@ -3,9 +3,11 @@ import dittner.gsa.bootstrap.navigator.ViewNavigator;
 import dittner.gsa.bootstrap.viewFactory.ViewID;
 import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.bootstrap.walter.message.WalterMessage;
-import dittner.gsa.domain.fileSystem.FileHeader;
+import dittner.gsa.domain.fileSystem.header.FileHeader;
 import dittner.gsa.domain.fileSystem.FileType;
+import dittner.gsa.domain.fileSystem.FileTypeName;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
+import dittner.gsa.domain.store.FileStorage;
 import dittner.gsa.view.common.list.SelectableDataGroupEvent;
 
 import flash.events.MouseEvent;
@@ -20,8 +22,16 @@ public class FileHeaderListMediator extends WalterMediator {
 	public var system:GSAFileSystem;
 	[Inject]
 	public var viewNavigator:ViewNavigator;
+	[Inject]
+	public var fileStorage:FileStorage;
 
 	override protected function activate():void {
+		if (fileStorage.isEmpty) {
+			var linksHeader:FileHeader = system.createFileHeader(FileType.BOOK_LINKS, true);
+			linksHeader.title = FileTypeName.BOOK_LINK;
+			linksHeader.store();
+		}
+
 		listenProxy(system, GSAFileSystem.HEADERS_UPDATED, headersUpdated);
 		listenProxy(system, GSAFileSystem.FOLDER_OPENED, folderOpened);
 		view.list.addEventListener(SelectableDataGroupEvent.SELECTED, viewListItemSelectedHandler);

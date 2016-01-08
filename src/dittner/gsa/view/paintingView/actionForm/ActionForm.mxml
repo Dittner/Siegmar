@@ -9,9 +9,9 @@
     <fx:Script><![CDATA[
         import dittner.gsa.view.common.colorChooser.SelectColorEvent;
         import dittner.gsa.view.common.popup.SimplePopup;
-        import dittner.gsa.view.paintingView.action.DrawLinesAction;
-        import dittner.gsa.view.paintingView.action.LinesDisplacementAction;
-        import dittner.gsa.view.paintingView.action.PaintingAction;
+        import dittner.gsa.domain.fileSystem.body.picture.action.DrawLinesAction;
+        import dittner.gsa.domain.fileSystem.body.picture.action.LinesDisplacementAction;
+        import dittner.gsa.domain.fileSystem.body.picture.action.PaintingAction;
 
         private static const USE_COLOR:String = "USE_COLOR";
         private static const USE_BG:String = "USE_BG";
@@ -67,6 +67,10 @@
             if (action.key == PaintingAction.DRAW_LINES) drawLinesForm.storeChanges();
             else if (action.key == PaintingAction.LINES_DISPLACEMENT) linesDisplacementForm.storeChanges();
         }
+
+        private function colorToHex(color:uint):String {
+            return '#' + color.toString(16);
+        }
         ]]></fx:Script>
 
     <fx:Declarations>
@@ -97,7 +101,7 @@
                                strokeColor="#ffFFff" weight="1"
                                width="20" height="20"/>
         </s:Group>
-        <s:Label text="{'#'+action.bgColor.toString(16)}" color="#ffFFff"/>
+        <s:Label text="{colorToHex(colorChooser.selectedColor)}" color="#ffFFff"/>
     </s:HGroup>
 
     <s:RadioButton id="useBgBtn"

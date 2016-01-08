@@ -6,7 +6,7 @@
          creationComplete="creationCompleteHandler(event)">
 
     <fx:Script><![CDATA[
-        import dittner.gsa.domain.fileSystem.FileHeader;
+        import dittner.gsa.domain.fileSystem.header.FileHeader;
         import dittner.gsa.domain.fileSystem.FileOptionKeys;
         import dittner.gsa.domain.fileSystem.FileType;
         import dittner.gsa.domain.fileSystem.FileTypeName;
@@ -128,14 +128,14 @@
 
         <s:Label text="{getTitle(mode)}"
                  width="100%"
-                 fontFamily="{FontName.ARIAL}" fontSize="16"
+                 fontFamily="{FontName.MYRIAD}" fontSize="16"
                  mouseChildren="false" mouseEnabled="false" paddingBottom="50"
                  color="{AppColors.TEXT_WHITE}"/>
 
         <s:Label text="Wählen Sie bitte den Typ der Datei aus"
                  visible="{isAddMode}" includeInLayout="{isAddMode}"
                  width="100%" paddingBottom="0" textAlign="center"
-                 fontFamily="{FontName.ARIAL}" fontSize="18"
+                 fontFamily="{FontName.MYRIAD}" fontSize="18"
                  mouseChildren="false" mouseEnabled="false"
                  color="{AppColors.HELL_TÜRKIS}"/>
 
@@ -205,7 +205,7 @@
         <s:Label id="removeLbl"
                  visible="{isRemoveMode}" includeInLayout="{isRemoveMode}"
                  width="100%" textAlign="center"
-                 fontFamily="{FontName.ARIAL}" fontSize="18"
+                 fontFamily="{FontName.MYRIAD}" fontSize="18"
                  mouseChildren="false" mouseEnabled="false"
                  color="{AppColors.TEXT_LIGHT}"/>
 

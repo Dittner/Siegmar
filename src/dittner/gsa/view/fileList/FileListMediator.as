@@ -12,7 +12,7 @@ public class FileListMediator extends WalterMediator {
 	override protected function activate():void {
 		registerMediator(view.fileHeaderList, new FileHeaderListMediator());
 		registerMediator(view.toolbar, new ToolbarMediator());
-		registerMediator(view.documentForm, new FileHeaderFormMediator());
+		registerMediator(view.fileHeaderForm, new FileHeaderFormMediator());
 	}
 
 	override protected function deactivate():void {}

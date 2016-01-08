@@ -1,6 +1,6 @@
 package dittner.gsa.backend.sqlOperation {
 import dittner.gsa.bootstrap.async.AsyncCommand;
-import dittner.gsa.domain.fileSystem.FileHeader;
+import dittner.gsa.domain.fileSystem.header.FileHeader;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.domain.store.FileStorage;
 

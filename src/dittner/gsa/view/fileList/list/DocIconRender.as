@@ -18,7 +18,7 @@ public class DocIconRender extends UIComponent {
 
 	public function DocIconRender(color:uint = 0, letter:String = "X") {
 		super();
-		tf = TextFieldFactory.create(new TextFormat(FontName.ARIAL_MX, 12, textColor, null, null, null, null, null, TextAlign.CENTER));
+		tf = TextFieldFactory.create(new TextFormat(FontName.MYRIAD_MX, 12, textColor, null, null, null, null, null, TextAlign.CENTER));
 		addChild(tf);
 		_textColor = color;
 		_letter = letter;

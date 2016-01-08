@@ -1,4 +1,5 @@
-package dittner.gsa.domain.fileSystem {
+package dittner.gsa.domain.fileSystem.header {
+import dittner.gsa.domain.fileSystem.*;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.walter.Walter;
 import dittner.gsa.bootstrap.walter.walter_namespace;
@@ -51,6 +52,17 @@ public class FileHeader {
 	}
 
 	//--------------------------------------
+	//  isReserved
+	//--------------------------------------
+	private var _isReserved:Boolean = false;
+	public function get isReserved():Boolean {return _isReserved;}
+	public function set isReserved(value:Boolean):void {
+		if (_isReserved != value) {
+			_isReserved = value;
+		}
+	}
+
+	//--------------------------------------
 	//  fileTypeName
 	//--------------------------------------
 	public function get fileTypeName():String {
@@ -89,6 +101,8 @@ public class FileHeader {
 				return AppColors.DOC_NOTEBOOK;
 			case FileType.PICTURE :
 				return AppColors.DOC_PICTURE;
+			case FileType.BOOK_LINKS :
+				return AppColors.DOC_BOOK_LINKS;
 			default :
 				return AppColors.FOLDER;
 		}
@@ -104,6 +118,8 @@ public class FileHeader {
 				return "N";
 			case FileType.PICTURE :
 				return "B";
+			case FileType.BOOK_LINKS :
+				return "H";
 			default :
 				return "?";
 		}

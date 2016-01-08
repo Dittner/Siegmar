@@ -57,6 +57,10 @@ public class RunDataBaseSQLOperation extends AsyncCommand {
 		}
 	}
 
+	public static function existsDataBaseFile():Boolean {
+		return File.documentsDirectory.resolvePath(AppInfo.dbRootPath).exists;
+	}
+
 	private function openHandler(event:SQLEvent):void {
 		createTables();
 	}

@@ -18,7 +18,7 @@
                         bgColor="{AppColors.BG_DARK}"
                         textColor="#ffFFff"
                         fontSize="12"
-                        fontFamily="{FontName.TAHOMA_MX}"
+                        fontFamily="{FontName.MYRIAD_MX}"
                         label="zurück"/>
 
     <s:Scroller width="100%" top="50" bottom="50" horizontalScrollPolicy="off">

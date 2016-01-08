@@ -12,8 +12,8 @@ import flashx.textLayout.formats.TextAlign;
 
 public class NotebookItemRenderer extends ItemRendererBase {
 
-	private static const TEXT_FORMAT:TextFormat = new TextFormat(FontName.TAHOMA_MX, 20, AppColors.TEXT_BLACK);
-	private static const INDEX_FORMAT:TextFormat = new TextFormat(FontName.TAHOMA_MX, 14, AppColors.HELL_TÜRKIS);
+	private static const TEXT_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 20, AppColors.TEXT_BLACK);
+	private static const INDEX_FORMAT:TextFormat = new TextFormat(FontName.MYRIAD_MX, 14, AppColors.HELL_TÜRKIS);
 
 	private static const TEXT_DEFAULT_OFFSET:uint = 2;
 	private static const INDEX_COLUMN_WID:uint = 40;

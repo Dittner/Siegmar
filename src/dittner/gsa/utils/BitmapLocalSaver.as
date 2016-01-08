@@ -4,6 +4,7 @@ import dittner.gsa.bootstrap.async.IAsyncOperation;
 
 import flash.display.BitmapData;
 import flash.events.Event;
+import flash.events.IOErrorEvent;
 import flash.filesystem.File;
 import flash.filesystem.FileMode;
 import flash.filesystem.FileStream;
@@ -36,6 +37,7 @@ public class BitmapLocalSaver {
 		else file = File.documentsDirectory;
 		try {
 			file.addEventListener(Event.SELECT, dirSelected);
+			file.addEventListener(IOErrorEvent.IO_ERROR, ioError);
 			file.browseForDirectory("Wählen Sie bitte den Ordner");
 		}
 		catch (error:Error) {
@@ -43,6 +45,10 @@ public class BitmapLocalSaver {
 		}
 
 		return curOp;
+	}
+
+	private static function ioError(event:Event):void {
+		curOp.dispatchError();
 	}
 
 	private static function dirSelected(event:Event):void {

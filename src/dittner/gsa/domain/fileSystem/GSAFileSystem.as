@@ -6,7 +6,10 @@ import dittner.gsa.bootstrap.walter.walter_namespace;
 import dittner.gsa.domain.fileSystem.body.DictionaryBody;
 import dittner.gsa.domain.fileSystem.body.FileBody;
 import dittner.gsa.domain.fileSystem.body.NotebookBody;
-import dittner.gsa.domain.fileSystem.body.PictureBody;
+import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
+import dittner.gsa.domain.fileSystem.body.picture.PictureBody;
+import dittner.gsa.domain.fileSystem.header.FileHeader;
+import dittner.gsa.domain.fileSystem.header.RootFolderHeader;
 import dittner.gsa.domain.store.FileStorage;
 
 use namespace walter_namespace;
@@ -125,10 +128,11 @@ public class GSAFileSystem extends WalterProxy {
 		return f;
 	}
 
-	public function createFileHeader(fileType:int):FileHeader {
+	public function createFileHeader(fileType:int, isReserved:Boolean = false):FileHeader {
 		var header:FileHeader = new FileHeader();
-		header.parentID = openedFolderHeader.fileID;
+		header.parentID = isReserved ? rootFolderHeader.fileID : openedFolderHeader.fileID;
 		header.fileType = fileType;
+		header.isReserved = isReserved;
 		return header;
 	}
 
@@ -144,6 +148,9 @@ public class GSAFileSystem extends WalterProxy {
 			case FileType.PICTURE :
 				body = new PictureBody();
 				break;
+			case FileType.BOOK_LINKS :
+				body = new BookLinksBody();
+				break;
 			default :
 				throw new Error("Unknown doc type:" + header.fileType);
 		}
@@ -158,7 +165,7 @@ public class GSAFileSystem extends WalterProxy {
 
 	private function filesLoaded(op:IAsyncOperation):void {
 		var files:Array = op.isSuccess ? op.result as Array : [];
-		files.sortOn(["fileType", "title"]);
+		files.sortOn(["fileType", "title"], [Array.NUMERIC, Array.CASEINSENSITIVE]);
 		setAvailableHeaders(files);
 		selectedFileHeader = null;
 	}

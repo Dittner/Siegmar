@@ -14,7 +14,7 @@ import spark.components.supportClasses.StyleableTextField;
 
 [Event(name="colorSelected", type="dittner.gsa.view.common.colorChooser.SelectColorEvent")]
 public class ColorChooser extends UIComponent {
-	private static const FORMAT:TextFormat = new TextFormat(FontName.TAHOMA_MX, 14, 0xffFFff);
+	private static const FORMAT:TextFormat = new TextFormat(FontName.MYRIAD_MX, 14, 0xffFFff);
 	private static const PICKER_SIZE:uint = 20;
 	private static const GAP:uint = 10;
 

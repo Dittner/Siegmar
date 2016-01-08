@@ -1,5 +1,5 @@
 package dittner.gsa.view.fileList.list {
-import dittner.gsa.domain.fileSystem.FileHeader;
+import dittner.gsa.domain.fileSystem.header.FileHeader;
 import dittner.gsa.view.common.renderer.ItemRendererBase;
 import dittner.gsa.view.common.utils.AppColors;
 import dittner.gsa.view.common.utils.FontName;
@@ -12,7 +12,7 @@ import flash.text.TextFormat;
 
 public class FileHeaderRenderer extends ItemRendererBase {
 
-	private static const TITLE_FORMAT:TextFormat = new TextFormat(FontName.TAHOMA_MX, 20, AppColors.LILA);
+	private static const TITLE_FORMAT:TextFormat = new TextFormat(FontName.MYRIAD_MX, 20, AppColors.LILA);
 
 	private static const HPAD:Number = 10;
 	private static const TEXT_PAd_LEFT:uint = 40;

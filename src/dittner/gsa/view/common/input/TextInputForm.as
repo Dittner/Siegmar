@@ -1,9 +1,7 @@
 package dittner.gsa.view.common.input {
 import flash.events.Event;
 
-import spark.components.TextInput;
-
-public class TextInputForm extends TextInput {
+public class TextInputForm extends HistoryTextInput {
 	public function TextInputForm() {
 		super();
 	}
@@ -36,6 +34,20 @@ public class TextInputForm extends TextInput {
 				skin.invalidateDisplayList();
 			}
 			dispatchEvent(new Event("showTitleChanged"));
+		}
+	}
+
+	//--------------------------------------
+	//  isValidInput
+	//--------------------------------------
+	private var _isValidInput:Boolean = true;
+	[Bindable("isValidInputChanged")]
+	public function get isValidInput():Boolean {return _isValidInput;}
+	public function set isValidInput(value:Boolean):void {
+		if (_isValidInput != value) {
+			_isValidInput = value;
+			dispatchEvent(new Event("isValidInputChanged"));
+			if (skin) skin.invalidateDisplayList();
 		}
 	}
 }

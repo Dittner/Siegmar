@@ -1,7 +1,7 @@
 package dittner.gsa.view.fileList.form {
 import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.bootstrap.walter.message.WalterMessage;
-import dittner.gsa.domain.fileSystem.FileHeader;
+import dittner.gsa.domain.fileSystem.header.FileHeader;
 import dittner.gsa.domain.fileSystem.FileOptionKeys;
 import dittner.gsa.domain.fileSystem.FileType;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;

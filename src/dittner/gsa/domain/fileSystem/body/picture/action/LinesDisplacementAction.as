@@ -1,9 +1,9 @@
-package dittner.gsa.view.paintingView.action {
+package dittner.gsa.domain.fileSystem.body.picture.action {
 import flash.display.BitmapData;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
-[RemoteClass(alias="dittner.gsa.view.paintingView.action.LinesDisplacementAction")]
+[RemoteClass(alias="dittner.gsa.domain.fileSystem.body.picture.action.LinesDisplacementAction")]
 public class LinesDisplacementAction extends PaintingAction {
 	public function LinesDisplacementAction() {
 		super();

@@ -1,42 +1,54 @@
-package dittner.gsa.view.paintingView.action {
+package dittner.gsa.domain.fileSystem.body.picture.action {
+import dittner.gsa.view.common.list.SelectableDataGroupEvent;
 import dittner.gsa.view.common.renderer.*;
 import dittner.gsa.view.common.utils.AppColors;
 import dittner.gsa.view.common.utils.FontName;
 
-import flash.display.GradientType;
+import flash.display.DisplayObject;
 import flash.display.Graphics;
-import flash.geom.Matrix;
+import flash.events.MouseEvent;
 import flash.text.TextField;
 import flash.text.TextFormat;
 
-public class PaintingActionKeyRenderer extends ItemRendererBase {
-	private static const FORMAT:TextFormat = new TextFormat(FontName.ARIAL_MX, 14, AppColors.TEXT_BLACK);
-	private static const SELECTED_FORMAT:TextFormat = new TextFormat(FontName.ARIAL_MX, 14, AppColors.TEXT_WHITE);
+import spark.components.DataGroup;
+
+public class PaintingActionRenderer extends ItemRendererBase {
+	private static const FORMAT:TextFormat = new TextFormat(FontName.MYRIAD_MX, 14, AppColors.TEXT_BLACK);
 	private static const VPAD:uint = 5;
 	private static const HPAD:uint = 5;
 
+	[Embed(source="/assets/btn/delete_white_btn.png")]
+	private static const DeleteBtnIconClass:Class;
 
-	public function PaintingActionKeyRenderer() {
+	public function PaintingActionRenderer() {
 		super();
 		percentWidth = 100;
+		addEventListener(MouseEvent.MOUSE_DOWN, downHandler);
+		mouseChildren = false;
 	}
 
 	private var tf:TextField;
+	private var deleteBtnIcon:DisplayObject;
 	private var text:String = "";
 
 	override public function set data(value:Object):void {
 		super.data = value;
-		text = PaintingAction.keyToName(data as String || "");
+		if (data is PaintingAction)
+			text = PaintingAction.keyToName((data as PaintingAction).key);
+		else text = "";
 	}
 
 	override protected function createChildren():void {
 		super.createChildren();
 		tf = createTextField(format);
 		addChild(tf);
+
+		deleteBtnIcon = new DeleteBtnIconClass();
+		deleteBtnIcon.visible = false;
+		addChild(deleteBtnIcon);
 	}
 
 	protected function get format():TextFormat {return FORMAT;}
-	protected function get selectedFormat():TextFormat {return SELECTED_FORMAT;}
 	protected function get verPad():uint {return VPAD;}
 	protected function get horPad():uint {return HPAD;}
 
@@ -54,22 +66,18 @@ public class PaintingActionKeyRenderer extends ItemRendererBase {
 		measuredHeight = tf.textHeight + 5 + 2 * verPad;
 	}
 
-	private var matr:Matrix = new Matrix();
 	override protected function updateDisplayList(w:Number, h:Number):void {
 		super.updateDisplayList(w, h);
 		var g:Graphics = graphics;
 		g.clear();
 
 		if (selected) {
-			tf.setTextFormat(selectedFormat);
 			tf.alpha = 1;
-			matr.createGradientBox(w, h, Math.PI / 2);
-			g.beginGradientFill(GradientType.LINEAR, AppColors.LIST_ITEM_SELECTION, [1, 1], [0, 255], matr);
+			g.beginFill(AppColors.HELL_TÜRKIS);
 			g.drawRect(0, 0, w, h);
 			g.endFill();
 		}
 		else if (hovered) {
-			tf.setTextFormat(format);
 			tf.alpha = 1;
 			g.beginFill(0xffFFff, 0.00001);
 			g.drawRect(0, 0, w, h);
@@ -81,8 +89,6 @@ public class PaintingActionKeyRenderer extends ItemRendererBase {
 		}
 		else {
 			tf.alpha = 0.6;
-			tf.setTextFormat(format);
-
 			g.beginFill(0xffFFff, 0.00001);
 			g.drawRect(0, 0, w, h);
 			g.endFill();
@@ -96,7 +102,16 @@ public class PaintingActionKeyRenderer extends ItemRendererBase {
 		tf.y = verPad;
 		tf.width = w - 2 * horPad;
 		tf.height = h - 2 * verPad;
+
+		deleteBtnIcon.visible = selected;
+		deleteBtnIcon.x = w - horPad - 20;
+		deleteBtnIcon.y = (h - 20 >> 1) + 1;
 	}
 
+	private function downHandler(event:MouseEvent):void {
+		if (selected && event.localX >= deleteBtnIcon.x)
+			if (parent is DataGroup) dispatchEvent(new SelectableDataGroupEvent(SelectableDataGroupEvent.REMOVE, data, itemIndex));
+			else event.stopImmediatePropagation();
+	}
 }
 }

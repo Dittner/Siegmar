@@ -13,7 +13,7 @@ import dittner.gsa.bootstrap.async.IAsyncCommand;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.async.SQLCommandManager;
 import dittner.gsa.bootstrap.walter.WalterProxy;
-import dittner.gsa.domain.fileSystem.FileHeader;
+import dittner.gsa.domain.fileSystem.header.FileHeader;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.domain.fileSystem.body.FileBody;
 
@@ -23,7 +23,9 @@ public class FileStorage extends WalterProxy {
 
 	public static const FILE_STORED:String = "stored";
 
-	public function FileStorage() {}
+	public function FileStorage() {
+		_isEmpty = !RunDataBaseSQLOperation.existsDataBaseFile();
+	}
 
 	[Inject]
 	public var encryptionService:EncryptionService;
@@ -34,6 +36,9 @@ public class FileStorage extends WalterProxy {
 
 	private var _sqlConnection:SQLConnection;
 	public function get sqlConnection():SQLConnection {return _sqlConnection;}
+
+	private var _isEmpty:Boolean = true;
+	public function get isEmpty():Boolean {return _isEmpty;}
 
 	//----------------------------------------------------------------------------------------------
 	//
@@ -70,6 +75,8 @@ public class FileStorage extends WalterProxy {
 	//--------------------------------------
 
 	public function storeHeader(header:FileHeader):IAsyncOperation {
+		if (isEmpty) _isEmpty = false;
+
 		var cmd:IAsyncCommand = new StoreFileHeaderSQLOperation(wrapFileHeader(header));
 		cmd.addCompleteCallback(notifyFileStored);
 		sqlCmdManager.add(cmd);

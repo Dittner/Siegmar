@@ -1,4 +1,4 @@
-package dittner.gsa.domain.fileSystem {
+package dittner.gsa.domain.fileSystem.header {
 import dittner.gsa.bootstrap.async.AsyncOperation;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 

@@ -1,6 +1,6 @@
 package dittner.gsa.backend.sqlOperation {
 import dittner.gsa.backend.encryption.EncryptionService;
-import dittner.gsa.domain.fileSystem.FileHeader;
+import dittner.gsa.domain.fileSystem.header.FileHeader;
 import dittner.gsa.domain.fileSystem.body.FileBody;
 
 import flash.data.SQLConnection;
@@ -17,6 +17,7 @@ public class FileSQLWrapper {
 		res.parentID = header.parentID;
 		res.fileType = header.fileType;
 		res.title = header.title;
+		res.isReserved = header.isReserved;
 		res.options = header.options;
 		return res;
 	}

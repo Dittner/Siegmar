@@ -25,7 +25,7 @@ public class ToolbarMediator extends WalterMediator {
 	}
 
 	private function fileSelected(msg:WalterMessage):void {
-		view.editBtn.enabled = view.removeBtn.enabled = system.selectedFileHeader != null;
+		view.editBtn.enabled = view.removeBtn.enabled = system.selectedFileHeader != null && !system.selectedFileHeader.isReserved;
 	}
 
 	private function noteSelected(msg:WalterMessage):void {

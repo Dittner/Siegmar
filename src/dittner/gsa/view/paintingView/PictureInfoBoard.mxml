@@ -4,9 +4,8 @@
          xmlns:button="dittner.gsa.view.common.button.*">
 
     <fx:Script><![CDATA[
-        import dittner.gsa.domain.fileSystem.body.PictureBody;
+        import dittner.gsa.domain.fileSystem.body.picture.PictureBody;
         import dittner.gsa.view.common.utils.AppColors;
-        import dittner.gsa.view.common.utils.FontName;
 
         //--------------------------------------
         //  picture
@@ -79,13 +78,13 @@
     <s:HGroup width="100%" gap="10">
         <s:Label text="Name:"
                  width="40%"
-                 fontFamily="{FontName.ARIAL}" fontSize="16" fontWeight="bold"
+                 fontSize="16" fontWeight="bold"
                  mouseChildren="false" mouseEnabled="false"
                  color="{AppColors.HELL_TÜRKIS}"/>
 
         <s:Label text="{title}"
                  width="60%"
-                 fontFamily="{FontName.ARIAL}" fontSize="18"
+                 fontSize="18"
                  mouseChildren="false" mouseEnabled="false"
                  color="{AppColors.HELL_TÜRKIS}"/>
     </s:HGroup>
@@ -93,14 +92,14 @@
     <s:HGroup width="100%" gap="10">
         <s:Label text="Bildgröße:"
                  width="40%"
-                 fontFamily="{FontName.ARIAL}" fontSize="16" fontWeight="bold"
+                 fontSize="16" fontWeight="bold"
                  mouseChildren="false" mouseEnabled="false"
                  color="{AppColors.HELL_TÜRKIS}"/>
 
         <s:Label id="sizeLbl"
                  text="{pictureSize}"
                  width="60%"
-                 fontFamily="{FontName.ARIAL}" fontSize="18"
+                 fontSize="18"
                  mouseChildren="false" mouseEnabled="false"
                  color="{AppColors.HELL_TÜRKIS}"/>
     </s:HGroup>

@@ -18,14 +18,28 @@
 }
 
 @font-face {
-    src: url("/fonts/tahoma.ttf");
-    font-family: Tahoma;
+    src: url("/fonts/georgia-italic.ttf");
+    font-family: Georgia;
+    fontStyle: italic;
     embedAsCFF: true;
 }
 
 @font-face {
-    src: url("/fonts/tahomab.ttf");
-    font-family: Tahoma;
+    src: url("/fonts/MyriadPro-It.otf");
+    font-family: MyriadPro;
+    fontStyle: italic;
+    embedAsCFF: true;
+}
+
+@font-face {
+    src: url("/fonts/MyriadPro-Regular.otf");
+    font-family: MyriadPro;
+    embedAsCFF: true;
+}
+
+@font-face {
+    src: url("/fonts/MyriadPro-Semibold.otf");
+    font-family: MyriadPro;
     fontWeight: bold;
     embedAsCFF: true;
 }
@@ -46,14 +60,28 @@
 }
 
 @font-face {
-    src: url("/fonts/tahoma.ttf");
-    font-family: TahomaMX;
+    src: url("/fonts/georgia-italic.ttf");
+    font-family: GeorgiaMX;
+    fontStyle: italic;
     embedAsCFF: false;
 }
 
 @font-face {
-    src: url("/fonts/tahomab.ttf");
-    font-family: TahomaMX;
+    src: url("/fonts/MyriadPro-It.otf");
+    font-family: MyriadProMX;
+    fontStyle: italic;
+    embedAsCFF: false;
+}
+
+@font-face {
+    src: url("/fonts/MyriadPro-Regular.otf");
+    font-family: MyriadProMX;
+    embedAsCFF: false;
+}
+
+@font-face {
+    src: url("/fonts/MyriadPro-Semibold.otf");
+    font-family: MyriadProMX;
     fontWeight: bold;
     embedAsCFF: false;
 }
@@ -66,55 +94,54 @@ global {
     contentBackgroundAlpha: 0;
     backgroundColor: 0;
     backgroundAlpha: 0;
+    fontFamily: MyriadPro;
 }
 
-s|Button {
+s|Label, s|Button{
     fontSize: 14px;
     fontWeight: normal;
-}
-
-s|Label {
-    fontSize: 14px;
-    fontWeight: normal;
+    fontFamily: MyriadPro;
 }
 
 /************************** INPUT **************************/
 
 input|TextInputForm {
-    skinClass: ClassReference("dittner.gsa.view.common.input.TextInputFormSkin");
+    skinClass: ClassReference("dittner.gsa.view.common.input.DesktopTextInputFormSkin");
     borderVisible: false;
     focusSkin: ClassReference("mx.core.UIComponent");
-    fontFamily: TahomaMX;
-    fontSize: 14px;
+    fontSize: 20px;
     color: #333333;
 }
 
 s|TextInput.loginInput {
     fontSize: 30px;
     color: #b2d2e6;
-    fontFamily: TahomaMX;
+    fontFamily: MyriadProMX;
     fontWeight: normal;
     borderVisible: false;
     focusSkin: ClassReference("mx.core.UIComponent");
     skinClass: ClassReference("dittner.gsa.view.common.input.LoginTextInputSkin");
 }
 
-s|TextArea.loginInput {
-    fontSize: 20px;
-    color: #050f25;
-    fontFamily: TahomaMX;
-    fontWeight: normal;
+s|TextArea {
     borderVisible: false;
     focusSkin: ClassReference("mx.core.UIComponent");
-    skinClass: ClassReference("dittner.gsa.view.common.input.LoginTextAreaSkin");
+    skinClass: ClassReference("spark.skins.spark.TextAreaSkin");
+    horizontalScrollPolicy: off;
+    focusedTextSelectionColor: #ffcc00;
+
+    fontSize: 16px;
+    color: #050f25;
+    fontWeight: normal;
 }
+
 
 /************************** LIST **************************/
 list|ListForm {
     skinClass: ClassReference("dittner.gsa.view.common.list.ListFormSkin");
     borderVisible: false;
     focusSkin: ClassReference("mx.core.UIComponent");
-    fontFamily: TahomaMX;
+    fontFamily: MyriadProMX;
     fontSize: 16px;
     color: #333333;
 }
@@ -170,6 +197,5 @@ spinner|CustomSpinner {
     skin-class: ClassReference("dittner.gsa.view.common.spinner.CustomSpinnerSkin");
     fontSize: 14px;
     color: #4e4f61;
-    fontFamily: Tahoma;
 }
 

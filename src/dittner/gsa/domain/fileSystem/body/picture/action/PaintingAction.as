@@ -1,7 +1,7 @@
-package dittner.gsa.view.paintingView.action {
+package dittner.gsa.domain.fileSystem.body.picture.action {
 import flash.display.BitmapData;
 
-[RemoteClass(alias="dittner.gsa.view.paintingView.action.PaintingAction")]
+[RemoteClass(alias="dittner.gsa.domain.fileSystem.body.picture.action.PaintingAction")]
 public class PaintingAction {
 	public static const LINES_DISPLACEMENT:String = "LINES_DISPLACEMENT";
 	public static const DRAW_LINES:String = "DRAW_LINES";

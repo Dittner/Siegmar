@@ -24,7 +24,7 @@
         ]]></fx:Script>
 
     <s:HGroup width="100%" height="100%" gap="0"
-              mouseChildren="{!documentForm.visible}">
+              mouseChildren="{!fileHeaderForm.visible}">
         <list2:FileHeaderList id="fileHeaderList"
                               width="50%" height="100%"/>
 
@@ -36,9 +36,9 @@
 
     </s:HGroup>
 
-    <common:Background visible="{documentForm.visible}"
+    <common:Background visible="{fileHeaderForm.visible}"
                        width="100%" height="100%" color="0" alpha=".25"/>
-    <form:FileHeaderForm id="documentForm"
+    <form:FileHeaderForm id="fileHeaderForm"
                          verticalCenter="0" horizontalCenter="0"
                          width="50%" height="75%" visible="false"/>
 

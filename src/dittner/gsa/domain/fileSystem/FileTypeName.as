@@ -7,6 +7,7 @@ public class FileTypeName {
 	public static const NOTEBOOK:String = "Notizbuch";
 	public static const ALBUM:String = "Album";
 	public static const PICTURE:String = "Bild";
+	public static const BOOK_LINK:String = "Literaturhinweise";
 
 	public static function getNameByType(fileType:uint):String {
 		switch (fileType) {
@@ -22,6 +23,8 @@ public class FileTypeName {
 				return ALBUM;
 			case FileType.PICTURE:
 				return PICTURE;
+			case FileType.BOOK_LINKS:
+				return BOOK_LINK;
 			default:
 				throw new Error("Unknown file type number: " + fileType);
 		}

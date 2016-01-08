@@ -1,0 +1,71 @@
+package dittner.gsa.domain.fileSystem.body.links {
+import dittner.gsa.domain.fileSystem.body.*;
+
+import flash.utils.ByteArray;
+
+public class BookLinksBody extends FileBody {
+	public function BookLinksBody() {
+		super();
+	}
+
+	public var bookLinks:Array = [];
+	private var bookLinkHash:Object = {};
+
+	public function addLink(link:BookLink):void {
+		bookLinks.push(link);
+		bookLinkHash[link.id] = link;
+		store();
+	}
+
+	public function getLink(bookID:String):BookLink {
+		return bookLinkHash[bookID];
+	}
+
+	public function replaceLink(srcLink:BookLink, newLink:BookLink):void {
+		for each(var b:BookLink in bookLinks)
+			if (b.id == srcLink.id) {
+				b.authorName = newLink.authorName;
+				b.bookName = newLink.bookName;
+				b.publicationPlace = newLink.publicationPlace;
+				b.publicationYear = newLink.publicationYear;
+				b.publisherName = newLink.publisherName;
+				b.pagesNum = newLink.pagesNum;
+				store();
+				break;
+			}
+	}
+
+	public function removeLink(link:BookLink):void {
+		if (!bookLinkHash[link.id]) return;
+		for (var i:int = 0; i < bookLinks.length; i++) {
+			var b:BookLink = bookLinks[i];
+			if (b.id == link.id) {
+				bookLinks.splice(i, 1);
+				delete bookLinkHash[b.id];
+				store();
+				break;
+			}
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------
+	//
+	//  Methods
+	//
+	//----------------------------------------------------------------------------------------------
+
+	override public function serialize():ByteArray {
+		var byteArray:ByteArray = new ByteArray();
+		byteArray.writeObject(bookLinks);
+		byteArray.position = 0;
+		return byteArray;
+	}
+
+	override public function deserialize(ba:ByteArray):void {
+		bookLinks = ba.readObject() as Array || [];
+		for each(var b:BookLink in bookLinks)
+			bookLinkHash[b.id] = b;
+	}
+
+}
+}

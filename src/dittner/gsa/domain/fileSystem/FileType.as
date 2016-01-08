@@ -7,5 +7,7 @@ public class FileType {
 	public static const NOTEBOOK:uint = 3;
 	public static const ALBUM:uint = 4;
 	public static const PICTURE:uint = 5;
+
+	public static const BOOK_LINKS:uint = 10;
 }
 }

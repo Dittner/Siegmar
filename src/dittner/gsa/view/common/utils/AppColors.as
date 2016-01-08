@@ -27,14 +27,16 @@ public class AppColors {
 	public static const TEXT_YELLOW:uint = 0xccAA00;
 
 	public static const LIST_ITEM_SELECTION:Array = [0x575762, 0];
+	public static const INVALID_INPUT_BORDER:uint = 0xe33333;
 
 	public static const INPUT_BORDER:uint = 0xc7c7cf;
 	public static const INPUT_CONTENT:uint = 0xffFFff;
 
-	public static const DOC_DICTIONARY:uint = 0x93acd5;
+	public static const DOC_DICTIONARY:uint = 0xa2cddb;
 	public static const DOC_NOTEBOOK:uint = 0xe7e2cb;
 	public static const DOC_ARTICLE:uint = 0xa18ec5;
 	public static const DOC_PICTURE:uint = 0xee7fae;
+	public static const DOC_BOOK_LINKS:uint = 0xc0c4ec;
 	public static const FOLDER:uint = 0x9e769b;
 
 
