@@ -91,7 +91,7 @@ public class FileHeader {
 		}
 	}
 
-	public function get textColor():uint {
+	public function get color():uint {
 		switch (fileType) {
 			case FileType.ARTICLE :
 				return AppColors.DOC_ARTICLE;

@@ -4,9 +4,8 @@ import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.walter.WalterProxy;
 import dittner.gsa.bootstrap.walter.message.WalterMessage;
 import dittner.gsa.bootstrap.walter.walter_namespace;
-import dittner.gsa.domain.fileSystem.body.DictionaryBody;
 import dittner.gsa.domain.fileSystem.body.FileBody;
-import dittner.gsa.domain.fileSystem.body.NotebookBody;
+import dittner.gsa.domain.fileSystem.body.NoteListBody;
 import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
 import dittner.gsa.domain.fileSystem.body.picture.PictureBody;
 import dittner.gsa.domain.fileSystem.header.FileHeader;
@@ -194,10 +193,9 @@ public class GSAFileSystem extends WalterProxy {
 		var body:FileBody;
 		switch (header.fileType) {
 			case FileType.DICTIONARY :
-				body = new DictionaryBody();
-				break;
 			case FileType.NOTEBOOK :
-				body = new NotebookBody();
+			case FileType.ARTICLE :
+				body = new NoteListBody();
 				break;
 			case FileType.PICTURE :
 				body = new PictureBody();

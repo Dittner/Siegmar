@@ -23,10 +23,10 @@
         private function updateData():void {
             if (!file) return;
 
-            docIconRender.textColor = file.header.textColor;
+            docIconRender.textColor = file.header.color;
             docIconRender.letter = file.header.symbol;
             fileTitleLbl.text = file.header.title;
-            fileTitleLbl.setStyle("color", file.header.textColor);
+            fileTitleLbl.setStyle("color", file.header.color);
             authorNameLbl.text = file.header.options[FileOptionKeys.AUTHOR];
             //file.header.options[FileOptionKeys.DATE_CREATED];
             authorNameLbl.text = file.header.options[FileOptionKeys.AUTHOR];

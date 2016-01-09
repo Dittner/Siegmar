@@ -157,7 +157,6 @@
             <s:RadioButton id="articleRadioBtn"
                            groupName="radioBar"
                            width="200"
-                           enabled="false"
                            value="{FileType.ARTICLE}"
                            label="{FileTypeName.ARTICLE}"
                            click="radioBtnClickHandler(event)"/>

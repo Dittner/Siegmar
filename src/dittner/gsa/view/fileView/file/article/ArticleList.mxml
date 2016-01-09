@@ -21,7 +21,7 @@
                            width="100%"
                            clickableArea="40"
                            deselectEnabled="true"
-                           itemRenderer="dittner.gsa.view.fileView.file.notebook.NotebookItemRenderer">
+                           itemRenderer="dittner.gsa.view.fileView.file.article.ArticleNoteItemRenderer">
             <list:layout>
                 <s:VerticalLayout gap="0" useVirtualLayout="true"/>
             </list:layout>

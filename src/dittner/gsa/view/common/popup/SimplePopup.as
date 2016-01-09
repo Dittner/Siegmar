@@ -20,9 +20,9 @@ public class SimplePopup extends EventDispatcher {
 
 	public function SimplePopup() {
 		if (instance) throw Error('Singleton error in SimplePopup');
-		interactiveLayer = new UIComponent();
-		interactiveLayer.visible = false;
-		interactiveLayer.addEventListener(MouseEvent.MOUSE_DOWN, interactiveLayerMouseDownHandler);
+		modalWindowBg = new UIComponent();
+		modalWindowBg.visible = false;
+		modalWindowBg.addEventListener(MouseEvent.MOUSE_DOWN, function (event:Event):void {event.stopImmediatePropagation()});
 	}
 
 	//--------------------------------------------------------------------------
@@ -34,11 +34,10 @@ public class SimplePopup extends EventDispatcher {
 	public static var modalWindowColor:uint = 0;
 	public static var container:Group = new Group();
 	public static var modalWindowAlpha:Number = 0.5;
-	public static var isModal:Boolean = false;
 
 	private static var content:IVisualElement;
 	private static var closeCallbackFunc:Function = null;
-	private static var interactiveLayer:UIComponent;
+	private static var modalWindowBg:UIComponent;
 
 	//----------------------------------------------------------------------------------------------
 	//
@@ -70,7 +69,7 @@ public class SimplePopup extends EventDispatcher {
 	//  isModalWindowShown
 	//--------------------------------------
 	[Bindable("isShownChanged")]
-	public function get isModalWindowShown():Boolean {return isShown && isModal;}
+	public function get isModalWindowShown():Boolean {return isShown && modalWindowBg.visible;}
 
 	//--------------------------------------
 	//  content
@@ -89,19 +88,21 @@ public class SimplePopup extends EventDispatcher {
 		if (instance.isShown) close();
 		content = element;
 		closeCallbackFunc = closeCallback;
-		isModal = modal;
-
-		interactiveLayer.graphics.clear();
-		interactiveLayer.graphics.beginFill(modalWindowColor, modal ? modalWindowAlpha : 0);
-		interactiveLayer.graphics.drawRect(0, 0, container.stage.width, container.stage.height);
-		interactiveLayer.graphics.endFill();
-		interactiveLayer.visible = true;
-		if (!interactiveLayer.parent) {
-			interactiveLayer.percentHeight = 100;
-			interactiveLayer.percentWidth = 100;
-			container.addElement(interactiveLayer);
+		modalWindowBg.graphics.clear();
+		if (modal) {
+			modalWindowBg.graphics.beginFill(modalWindowColor, modalWindowAlpha);
+			modalWindowBg.graphics.drawRect(0, 0, container.stage.width, container.stage.height);
+			modalWindowBg.graphics.endFill();
+			modalWindowBg.visible = true;
+			if (!modalWindowBg.parent) {
+				modalWindowBg.percentHeight = 100;
+				modalWindowBg.percentWidth = 100;
+				container.addElement(modalWindowBg);
+			}
 		}
-
+		else {
+			container.stage.addEventListener(MouseEvent.MOUSE_DOWN, container_mouseDownHandler, true);
+		}
 		container.addElement(content);
 		instance.isShown = true;
 	}
@@ -114,22 +115,23 @@ public class SimplePopup extends EventDispatcher {
 		if (instance.isShown) {
 			instance.isShown = false;
 			container.removeElement(content);
+			container.stage.removeEventListener(MouseEvent.MOUSE_DOWN, container_mouseDownHandler, true);
 			content = null;
-			isModal = false;
-			interactiveLayer.visible = false;
+			modalWindowBg.visible = false;
 			if (closeCallbackFunc != null) closeCallbackFunc();
 			closeCallbackFunc = null;
 		}
 	}
 
 	private static var leftTopPos:Point = new Point(0, 0);
-	private static function interactiveLayerMouseDownHandler(event:MouseEvent):void {
+	private static function container_mouseDownHandler(event:MouseEvent):void {
 		var leftTop:Point = (content as DisplayObject).localToGlobal(leftTopPos);
 		var rightBottom:Point = (content as DisplayObject).localToGlobal(new Point(content.width, content.height));
 		if (event.stageX < leftTop.x || event.stageX > rightBottom.x || event.stageY < leftTop.y || event.stageY > rightBottom.y) {
 			close();
 			event.stopImmediatePropagation();
 		}
+
 	}
 }
 }

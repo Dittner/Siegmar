@@ -34,7 +34,7 @@ public class AppColors {
 
 	public static const DOC_DICTIONARY:uint = 0xa2cddb;
 	public static const DOC_NOTEBOOK:uint = 0xe7e2cb;
-	public static const DOC_ARTICLE:uint = 0xa18ec5;
+	public static const DOC_ARTICLE:uint = 0xccCCdd;
 	public static const DOC_PICTURE:uint = 0xee7fae;
 	public static const DOC_BOOK_LINKS:uint = 0xc0c4ec;
 	public static const FOLDER:uint = 0x9e769b;

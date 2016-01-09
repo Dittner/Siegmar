@@ -89,7 +89,7 @@ public class FileHeaderRenderer extends ItemRendererBase {
 		fileIcon.y = h - fileIcon.height >> 1;
 
 		tf.x = TEXT_PAd_LEFT;
-		tf.textColor = fileHeader.textColor;
+		tf.textColor = fileHeader.color;
 		tf.y = (h - tf.textHeight) / 2 - 2;
 		adjustSize(tf, w - HPAD - tf.x);
 	}
@@ -102,7 +102,7 @@ public class FileHeaderRenderer extends ItemRendererBase {
 			return folderIcon;
 		}
 		if (!iconsHash[fileHeader.symbol]) {
-			var fileIconRender:DocIconRender = new DocIconRender(fileHeader.textColor, fileHeader.symbol);
+			var fileIconRender:DocIconRender = new DocIconRender(fileHeader.color, fileHeader.symbol);
 			iconsHash[fileHeader.symbol] = fileIconRender.render();
 		}
 		return iconsHash[fileHeader.symbol];

@@ -15,6 +15,7 @@
         public function activate(file:GSAFile, toolAction:String):IAsyncOperation {
             switch (file.header.fileType) {
                 case FileType.ARTICLE :
+                    curBodyForm = articleBodyForm;
                     setCurrentState("article");
                     break;
                 case FileType.DICTIONARY :
@@ -79,5 +80,10 @@
                                 includeInLayout="false" visible="false"
                                 includeInLayout.bookLinks="true" visible.bookLinks="true"
                                 left="10" top="10" bottom="10" right="10"/>
+
+    <bodyForm:ArticleBodyForm id="articleBodyForm"
+                              includeInLayout="false" visible="false"
+                              includeInLayout.article="true" visible.article="true"
+                              left="10" top="10" bottom="10" right="10"/>
 
 </s:Group>

@@ -8,7 +8,8 @@
                xmlns:notebook="dittner.gsa.view.fileView.file.notebook.*"
                xmlns:header="dittner.gsa.view.fileView.header.*"
                xmlns:common="cosmoLib.components.styleComponents.*"
-               xmlns:booklinks="dittner.gsa.view.fileView.file.bookLinks.*">
+               xmlns:booklinks="dittner.gsa.view.fileView.file.bookLinks.*"
+               xmlns:article="dittner.gsa.view.fileView.file.article.*">
 
     <fx:Script><![CDATA[
         import dittner.gsa.bootstrap.async.IAsyncOperation;
@@ -18,13 +19,13 @@
         import dittner.gsa.view.common.popup.SimplePopup;
         import dittner.gsa.view.common.utils.AppColors;
 
-        import mx.collections.ArrayCollection;
-
         public function activate(file:GSAFile):void {
+            bg.color = file.header.color;
             header.file = file;
             dictionary.list.addEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
             notebook.list.addEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
-            bookLinks.list.addEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
+            bookLinkList.list.addEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
+            articleList.list.addEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
             switch (file.header.fileType) {
                 case FileType.DICTIONARY :
                     setCurrentState("dictionary");
@@ -35,21 +36,28 @@
                     notebook.activate(file);
                     break;
                 case FileType.BOOK_LINKS :
-                    setCurrentState("bookLinks");
-                    bookLinks.activate(file);
+                    setCurrentState("links");
+                    bookLinkList.activate(file);
+                    break;
+                case FileType.ARTICLE :
+                    setCurrentState("article");
+                    articleList.activate(file);
                     break;
             }
         }
 
         public function refresh():void {
-            if (dictionary.visible) (dictionary.list.dataProvider as ArrayCollection).refresh()
-            else if (notebook.visible) (notebook.list.dataProvider as ArrayCollection).refresh()
-            else if (bookLinks.visible) (bookLinks.list.dataProvider as ArrayCollection).refresh()
+            if (dictionary.visible) dictionary.list.refresh()
+            else if (notebook.visible) notebook.list.refresh()
+            else if (bookLinkList.visible) bookLinkList.list.refresh()
+            else if (articleList.visible) articleList.list.refresh();
         }
 
         public function clear():void {
             dictionary.list.removeEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
             notebook.list.removeEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
+            bookLinkList.list.removeEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
+            articleList.list.removeEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
         }
 
         private function noteSelected(event:SelectableDataGroupEvent):void {
@@ -64,25 +72,24 @@
 
         public function closeForm():void {
             SimplePopup.close();
+            form.clear();
         }
         ]]></fx:Script>
 
     <fx:Declarations>
         <form:FileBodyForm id="form"
                            verticalCenter="0" horizontalCenter="0"
-                           width="50%" height="50%"/>
+                           width="50%" height="75%"/>
     </fx:Declarations>
 
     <view:states>
         <s:State name="notebook"/>
         <s:State name="dictionary"/>
-        <s:State name="bookLinks"/>
+        <s:State name="links"/>
+        <s:State name="article"/>
     </view:states>
 
-    <common:Background width="100%" height="100%"
-                       color.notebook="{AppColors.DOC_NOTEBOOK}"
-                       color.dictionary="{AppColors.DOC_DICTIONARY}"
-                       color.bookLinks="{AppColors.DOC_BOOK_LINKS}"/>
+    <common:Background id="bg" width="100%" height="100%"/>
     <common:Background width="40" height="100%" color="{AppColors.BG_DARK}"/>
 
     <s:VGroup height="100%" left="0" right="40"
@@ -100,9 +107,14 @@
                                includeInLayout.dictionary="true" visible.dictionary="true"
                                width="100%" height="100%"/>
 
-        <booklinks:BookLinks id="bookLinks"
+        <booklinks:BookLinkList id="bookLinkList"
+                                includeInLayout="false" visible="false"
+                                includeInLayout.links="true" visible.links="true"
+                                width="100%" height="100%"/>
+
+        <article:ArticleList id="articleList"
                              includeInLayout="false" visible="false"
-                             includeInLayout.bookLinks="true" visible.bookLinks="true"
+                             includeInLayout.article="true" visible.article="true"
                              width="100%" height="100%"/>
     </s:VGroup>
 

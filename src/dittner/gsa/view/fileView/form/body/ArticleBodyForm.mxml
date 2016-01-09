@@ -10,7 +10,8 @@
         import dittner.gsa.bootstrap.async.IAsyncOperation;
         import dittner.gsa.domain.fileSystem.GSAFile;
         import dittner.gsa.domain.fileSystem.body.NoteListBody;
-        import dittner.gsa.domain.fileSystem.body.note.TitledNote;
+        import dittner.gsa.domain.fileSystem.body.note.ArticleNote;
+        import dittner.gsa.domain.fileSystem.body.note.NoteType;
         import dittner.gsa.view.common.utils.AppColors;
         import dittner.gsa.view.common.utils.FontName;
 
@@ -27,7 +28,6 @@
             operation = new AsyncOperation();
             this.file = file;
             this.fileBody = file.body as NoteListBody;
-            reservedTitleHash = getReservedTitleHash();
             currentState = "add";
             return operation;
         }
@@ -36,10 +36,26 @@
             operation = new AsyncOperation();
             this.file = file;
             this.fileBody = file.body as NoteListBody;
-            reservedTitleHash = getReservedTitleHash();
-            var titledNote:TitledNote = file.selectedNote as TitledNote;
-            titleInput.text = titledNote.title;
-            contentInput.text = titledNote.text;
+            var articleNote:ArticleNote = file.selectedNote as ArticleNote;
+            textInput.text = articleNote.text;
+            textBtn.selected = titleBtn.selected = subtitleBtn.selected = epigraphBtn.selected = citationBtn.selected = false;
+            switch (articleNote.noteType) {
+                case NoteType.TEXT :
+                    textBtn.selected = true;
+                    break;
+                case NoteType.TITLE :
+                    titleBtn.selected = true;
+                    break;
+                case NoteType.SUBTITLE :
+                    subtitleBtn.selected = true;
+                    break;
+                case NoteType.EPIGRAPH :
+                    epigraphBtn.selected = true;
+                    break;
+                case NoteType.CITATION :
+                    citationBtn.selected = true;
+                    break;
+            }
             currentState = "edit";
             return operation;
         }
@@ -48,18 +64,17 @@
             operation = new AsyncOperation();
             this.file = file;
             this.fileBody = file.body as NoteListBody;
-            var titledNote:TitledNote = file.selectedNote as TitledNote;
+            var articleNote:ArticleNote = file.selectedNote as ArticleNote;
             removeLbl.text = "Sind Sie sicher, das Sie entfernen möchten?\n\n";
-            removeLbl.text += titledNote.title + "\n" + titledNote.text;
+            removeLbl.text += articleNote.text;
             currentState = "remove";
             return operation;
         }
 
         public function clear():void {
-            titleInput.text = "";
-            contentInput.text = "";
+            textInput.text = "";
             operation = null;
-            reservedTitleHash = null;
+            textBtn.selected = true;
         }
 
         //----------------------------------------------------------------------------------------------
@@ -67,19 +82,6 @@
         //  Private Methods
         //
         //----------------------------------------------------------------------------------------------
-
-        private var reservedTitleHash:Object;
-        private function getReservedTitleHash():Object {
-            var hash:Object = {};
-            for each(var note:TitledNote in (file.body as NoteListBody).items)
-                hash[note.title] = note != file.selectedNote;
-            return hash;
-        }
-
-        private function isApplyBtnEnabled(currentState:String, docTitle:String, docContent:String):Boolean {
-            if (currentState == "remove") return true;
-            else return docContent && docTitle && !reservedTitleHash[docTitle];
-        }
 
         private function cancelBtnClickHandler():void {
             operation.dispatchSuccess(false);
@@ -98,10 +100,14 @@
             operation.dispatchSuccess(true);
         }
 
-        private function getNote():TitledNote {
-            var res:TitledNote = new TitledNote();
-            res.title = titleInput.text;
-            res.text = contentInput.text;
+        private function getNote():ArticleNote {
+            var res:ArticleNote = new ArticleNote();
+            res.text = textInput.text;
+            if (textBtn.selected) res.noteType = NoteType.TEXT;
+            else if (titleBtn.selected) res.noteType = NoteType.TITLE;
+            else if (subtitleBtn.selected) res.noteType = NoteType.SUBTITLE;
+            else if (epigraphBtn.selected) res.noteType = NoteType.EPIGRAPH;
+            else if (citationBtn.selected) res.noteType = NoteType.CITATION;
             return res;
         }
         ]]></fx:Script>
@@ -124,17 +130,48 @@
              mouseChildren="false" mouseEnabled="false" paddingBottom="30"
              color="{AppColors.TEXT_WHITE}"/>
 
-    <input:TextInputForm id="titleInput"
-                         visible.remove="false" includeInLayout.remove="false"
-                         width="100%" title="Titel:"/>
+    <s:Group width="100%" visible.remove="false" includeInLayout.remove="false">
+        <s:layout>
+            <s:TileLayout verticalGap="0" horizontalGap="10" paddingBottom="0" paddingTop="0"
+                          requestedColumnCount="3" rowHeight="50"
+                          columnWidth="200"/>
+        </s:layout>
 
-    <input:TextInputForm id="contentInput"
-                         visible.remove="false" includeInLayout.remove="false"
-                         width="100%" title="Inhalt:"/>
+        <s:RadioButton id="textBtn"
+                       groupName="radioBar"
+                       width="200"
+                       selected="true"
+                       label="Text"/>
+
+        <s:RadioButton id="titleBtn"
+                       groupName="radioBar"
+                       width="200"
+                       label="Titel"/>
+
+        <s:RadioButton id="subtitleBtn"
+                       groupName="radioBar"
+                       width="200"
+                       label="Untertitel"/>
+
+        <s:RadioButton id="epigraphBtn"
+                       groupName="radioBar"
+                       width="200"
+                       label="Motto"/>
+
+        <s:RadioButton id="citationBtn"
+                       groupName="radioBar"
+                       width="200"
+                       label="Zitat"/>
+
+    </s:Group>
+
+    <input:TextAreaForm id="textInput"
+                        visible.remove="false" includeInLayout.remove="false"
+                        width="100%" height="100%" title="Inhalt:"/>
 
     <s:Label id="removeLbl"
-             visible="false"
-             visible.remove="true"
+             visible="false" visible.remove="true"
+             includeInLayout="false" includeInLayout.remove="true"
              width="100%" height="100%" textAlign="center" verticalAlign="middle"
              fontFamily="{FontName.MYRIAD}" fontSize="18"
              mouseChildren="false" mouseEnabled="false"
@@ -150,7 +187,7 @@
         <button:BlackButton id="applyBtn"
                             width="100%"
                             label="Bestätigen"
-                            enabled="{isApplyBtnEnabled(currentState, titleInput.text, contentInput.text)}"
+                            enabled="{textInput.text}"
                             click="applyBtnClickHandler()"/>
     </s:HGroup>
 

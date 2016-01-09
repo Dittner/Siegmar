@@ -5,12 +5,12 @@
 
     <fx:Script><![CDATA[
         import dittner.gsa.domain.fileSystem.GSAFile;
-        import dittner.gsa.domain.fileSystem.body.DictionaryBody;
+        import dittner.gsa.domain.fileSystem.body.NoteListBody;
 
         import mx.collections.ArrayCollection;
 
         public function activate(file:GSAFile):void {
-            list.dataProvider = new ArrayCollection((file.body as DictionaryBody).items);
+            list.dataProvider = new ArrayCollection((file.body as NoteListBody).items);
         }
         ]]></fx:Script>
 

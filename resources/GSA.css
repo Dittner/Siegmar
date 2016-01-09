@@ -190,6 +190,7 @@ s|CheckBox {
 }
 
 s|RadioButton {
+    fontSize: 14px;
     skinClass: ClassReference("dittner.gsa.view.common.radioButton.CustomRadioButtonSkin");
 }
 

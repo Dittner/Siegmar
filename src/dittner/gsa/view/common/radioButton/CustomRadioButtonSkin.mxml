@@ -54,7 +54,6 @@
     <s:Label id="labelDisplay"
              left="28" right="0" verticalCenter="1"
              fontFamily="{FontName.MYRIAD}"
-             fontSize="18"
              color="{AppColors.TEXT_WHITE}"
              maxDisplayedLines="1"/>
 
