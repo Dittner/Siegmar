@@ -15,5 +15,22 @@ public class BookLink {
 	public var publicationYear:String = "";
 	public var pagesNum:String = "";
 
+	public function toString():String {
+		return authorName + ", " + bookName + ", " + publicationYear;
+	}
+
+	public function toHtmlText():String {
+		var txt:String = "";
+		txt += "<i>" + authorName + "</i> ";
+		txt += bookName + ". – ";
+		if (publicationPlace && publisherName) {
+			txt += publicationPlace + ": ";
+			txt += publisherName + ", ";
+		}
+		txt += publicationYear + ". – ";
+		txt += pagesNum + " с.";
+		return txt;
+	}
+
 }
 }

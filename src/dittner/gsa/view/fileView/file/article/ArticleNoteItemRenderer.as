@@ -1,6 +1,8 @@
 package dittner.gsa.view.fileView.file.article {
+import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
 import dittner.gsa.domain.fileSystem.body.note.ArticleNote;
 import dittner.gsa.domain.fileSystem.body.note.NoteType;
+import dittner.gsa.view.common.list.SelectableDataGroup;
 import dittner.gsa.view.common.renderer.ItemRendererBase;
 import dittner.gsa.view.common.utils.AppColors;
 import dittner.gsa.view.common.utils.FontName;
@@ -14,10 +16,10 @@ import flashx.textLayout.formats.TextAlign;
 public class ArticleNoteItemRenderer extends ItemRendererBase {
 
 	private static const TITLE_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 30, AppColors.TEXT_BLACK, true, false, null, null, null, "center");
-	private static const SUBTITLE_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 20, AppColors.TEXT_BLACK, true, false, null, null, null, "left");
+	private static const SUBTITLE_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 24, AppColors.TEXT_BLACK, true, false, null, null, null, "left");
 	private static const EPIGRAPH_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 18, AppColors.TEXT_BLACK, false, true, null, null, null, "right");
-	private static const CITATION_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 18, AppColors.TEXT_GRAY, false, false, null, null, null, "left");
-	private static const TEXT_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 18, AppColors.TEXT_BLACK, false, false, null, null, null, "left");
+	private static const CITATION_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 20, 0x252787, false, false, null, null, null, "left");
+	private static const TEXT_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 20, AppColors.TEXT_BLACK, false, false, null, null, null, "left");
 	private static const INDEX_FORMAT:TextFormat = new TextFormat(FontName.MYRIAD_MX, 14, AppColors.HELL_TÜRKIS);
 
 	private static const TEXT_DEFAULT_OFFSET:uint = 2;
@@ -37,6 +39,11 @@ public class ArticleNoteItemRenderer extends ItemRendererBase {
 
 	private function get note():ArticleNote {
 		return data as ArticleNote;
+	}
+
+	private function get links():BookLinksBody {
+		var g:SelectableDataGroup = parent is SelectableDataGroup ? parent as SelectableDataGroup : null;
+		return g && g.renderData is BookLinksBody ? g.renderData as BookLinksBody : null;
 	}
 
 	override protected function createChildren():void {
@@ -79,6 +86,14 @@ public class ArticleNoteItemRenderer extends ItemRendererBase {
 		}
 
 		textTf.text = note.text;
+		if (note.noteType == NoteType.CITATION) {
+			if (note.bookLinkId && links && links.hasLink(note.bookLinkId)) {
+				textTf.text += "\n(" + links.getLink(note.bookLinkId).toString() + ")";
+			}
+			else if (note.author) {
+				textTf.text += "\n(" + note.author + ")";
+			}
+		}
 	}
 
 	override protected function measure():void {

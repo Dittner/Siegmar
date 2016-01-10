@@ -10,11 +10,26 @@
         import dittner.gsa.bootstrap.async.IAsyncOperation;
         import dittner.gsa.domain.fileSystem.GSAFile;
         import dittner.gsa.domain.fileSystem.body.NoteListBody;
+        import dittner.gsa.domain.fileSystem.body.links.BookLink;
         import dittner.gsa.domain.fileSystem.body.note.ArticleNote;
         import dittner.gsa.domain.fileSystem.body.note.NoteType;
         import dittner.gsa.view.common.utils.AppColors;
         import dittner.gsa.view.common.utils.FontName;
 
+        import mx.collections.ArrayCollection;
+
+        //--------------------------------------
+        //  bookLinks
+        //--------------------------------------
+        private var _bookLinks:ArrayCollection;
+        [Bindable("bookLinksChanged")]
+        public function get bookLinks():ArrayCollection {return _bookLinks;}
+        public function set bookLinks(value:ArrayCollection):void {
+            if (_bookLinks != value) {
+                _bookLinks = value;
+                dispatchEvent(new Event("bookLinksChanged"));
+            }
+        }
         //----------------------------------------------------------------------------------------------
         //
         //  Interface Methods
@@ -56,8 +71,19 @@
                     citationBtn.selected = true;
                     break;
             }
+            authorInput.text = articleNote.author;
+            if (articleNote.bookLinkId) selectBookLink(articleNote.bookLinkId);
+
             currentState = "edit";
             return operation;
+        }
+
+        private function selectBookLink(id:String):void {
+            for each(var link:BookLink in bookLinks)
+                if (link.id == id) {
+                    linksBox.selectedItem = link;
+                    break;
+                }
         }
 
         public function removeNote(file:GSAFile):IAsyncOperation {
@@ -103,11 +129,17 @@
         private function getNote():ArticleNote {
             var res:ArticleNote = new ArticleNote();
             res.text = textInput.text;
+            res.author = "";
+            res.bookLinkId = "";
             if (textBtn.selected) res.noteType = NoteType.TEXT;
             else if (titleBtn.selected) res.noteType = NoteType.TITLE;
             else if (subtitleBtn.selected) res.noteType = NoteType.SUBTITLE;
             else if (epigraphBtn.selected) res.noteType = NoteType.EPIGRAPH;
-            else if (citationBtn.selected) res.noteType = NoteType.CITATION;
+            else if (citationBtn.selected) {
+                res.noteType = NoteType.CITATION;
+                res.author = authorBtn.selected ? authorInput.text : "";
+                res.bookLinkId = linkBtn.selected && linksBox.selectedItem ? (linksBox.selectedItem as BookLink).id : "";
+            }
             return res;
         }
         ]]></fx:Script>
@@ -134,7 +166,7 @@
         <s:layout>
             <s:TileLayout verticalGap="0" horizontalGap="10" paddingBottom="0" paddingTop="0"
                           requestedColumnCount="3" rowHeight="50"
-                          columnWidth="200"/>
+                          columnWidth="200" verticalAlign="top"/>
         </s:layout>
 
         <s:RadioButton id="textBtn"
@@ -163,7 +195,41 @@
                        width="200"
                        label="Zitat"/>
 
+        <s:HGroup visible="{citationBtn.selected}" includeInLayout="{citationBtn.selected}">
+            <s:VGroup gap="10" height="50%">
+                <s:RadioButton id="linkBtn"
+                               selected="true"
+                               groupName="citationBar"
+                               width="200"
+                               label="Hinweise des Zitates"/>
+
+                <s:Spacer height="100%"/>
+
+                <s:RadioButton id="authorBtn"
+                               groupName="citationBar"
+                               width="200"
+                               label="Author des Zitates"/>
+            </s:VGroup>
+            <s:VGroup gap="10" height="50%">
+                <s:DropDownList id="linksBox"
+                                dataProvider="{bookLinks}"
+                                visible="{linkBtn.selected}"
+                                width="300" height="25"
+                                color="#ffFFff"
+                                skinClass="cosmoLib.components.dropdown.DropDownListSkin"
+                                itemRenderer="dittner.gsa.view.fileView.form.body.ArticleBodyBookLinkRenderer"/>
+
+                <s:Spacer height="100%"/>
+
+                <input:TextInputForm id="authorInput"
+                                     showTitle="false" height="25"
+                                     fontSize="14"
+                                     visible="{authorBtn.selected}"
+                                     width="100%"/>
+            </s:VGroup>
+        </s:HGroup>
     </s:Group>
+
 
     <input:TextAreaForm id="textInput"
                         visible.remove="false" includeInLayout.remove="false"

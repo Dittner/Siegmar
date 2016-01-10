@@ -28,7 +28,7 @@ public class TextInputFormSkin extends TextInputSkin {
 
 	override protected function measure():void {
 		super.measure();
-		measuredHeight = hostInput.showTitle ? TITLE_HEIGHT + 30 : 30;
+		measuredHeight = hostInput.showTitle ? TITLE_HEIGHT + 25 : 25;
 	}
 
 	override protected function drawBackground(w:Number, h:Number):void {}

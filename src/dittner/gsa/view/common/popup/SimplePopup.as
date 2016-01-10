@@ -91,7 +91,7 @@ public class SimplePopup extends EventDispatcher {
 		modalWindowBg.graphics.clear();
 		if (modal) {
 			modalWindowBg.graphics.beginFill(modalWindowColor, modalWindowAlpha);
-			modalWindowBg.graphics.drawRect(0, 0, container.stage.width, container.stage.height);
+			modalWindowBg.graphics.drawRect(0, 0, container.stage.width * 3, container.stage.height * 3);
 			modalWindowBg.graphics.endFill();
 			modalWindowBg.visible = true;
 			if (!modalWindowBg.parent) {

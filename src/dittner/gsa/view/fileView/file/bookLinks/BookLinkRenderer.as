@@ -47,23 +47,8 @@ public class BookLinkRenderer extends ItemRendererBase {
 		super.commitProperties();
 		if (dataChanged) {
 			dataChanged = false;
-			updateData();
+			textTf.htmlText = bookLink ? bookLink.toHtmlText() : "";
 		}
-	}
-
-	private function updateData():void {
-		var txt:String = "";
-		if (bookLink) {
-			txt += "<i>" + bookLink.authorName + "</i> ";
-			txt += bookLink.bookName + ". – ";
-			if (bookLink.publicationPlace && bookLink.publisherName) {
-				txt += bookLink.publicationPlace + ": ";
-				txt += bookLink.publisherName + ", ";
-			}
-			txt += bookLink.publicationYear + ". – ";
-			txt += bookLink.pagesNum + " с.";
-		}
-		textTf.htmlText = txt;
 	}
 
 	override protected function measure():void {

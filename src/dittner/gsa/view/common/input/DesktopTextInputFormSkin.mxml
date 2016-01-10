@@ -6,9 +6,6 @@
 
     <fx:Metadata>
     <![CDATA[
-        /**
-         * @copy spark.skins.spark.ApplicationSkin#hostComponent
-         */
         [HostComponent("dittner.gsa.view.common.input.TextInputForm")]
         ]]>
     </fx:Metadata>
@@ -22,10 +19,8 @@
 
         private var paddingChanged:Boolean;
 
-        /* Define the skin elements that should not be colorized. */
         static private const exclusions:Array = ["background", "textDisplay", "promptDisplay", "border"];
 
-        /* exclusions before Flex 4.5 for backwards-compatibility purposes */
         static private const exclusions_4_0:Array = ["background", "textDisplay", "promptDisplay"];
 
         override public function get colorizeExclusions():Array {
@@ -77,7 +72,6 @@
              width="100%" fontFamily="{FontName.MYRIAD}" fontSize="14" color="{AppColors.TEXT_LIGHT}"/>
 
     <s:RichEditableText id="textDisplay"
-                        fontSize="16"
                         left="5" right="5"/>
 
 </s:SparkSkin>

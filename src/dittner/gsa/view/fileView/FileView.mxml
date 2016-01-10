@@ -15,9 +15,12 @@
         import dittner.gsa.bootstrap.async.IAsyncOperation;
         import dittner.gsa.domain.fileSystem.FileType;
         import dittner.gsa.domain.fileSystem.GSAFile;
+        import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
         import dittner.gsa.view.common.list.SelectableDataGroupEvent;
         import dittner.gsa.view.common.popup.SimplePopup;
         import dittner.gsa.view.common.utils.AppColors;
+
+        import mx.collections.ICollectionView;
 
         public function activate(file:GSAFile):void {
             bg.color = file.header.color;
@@ -46,10 +49,26 @@
             }
         }
 
+        //--------------------------------------
+        //  bookLinksBody
+        //--------------------------------------
+        private var _bookLinksBody:BookLinksBody;
+        [Bindable("bookLinksBodyChanged")]
+        public function get bookLinksBody():BookLinksBody {return _bookLinksBody;}
+        public function set bookLinksBody(value:BookLinksBody):void {
+            if (_bookLinksBody != value) {
+                _bookLinksBody = value;
+                dispatchEvent(new Event("bookLinksBodyChanged"));
+            }
+        }
+
         public function refresh():void {
             if (dictionary.visible) dictionary.list.refresh()
             else if (notebook.visible) notebook.list.refresh()
-            else if (bookLinkList.visible) bookLinkList.list.refresh()
+            else if (bookLinkList.visible) {
+                bookLinkList.list.refresh();
+                (bookLinkList.list.dataProvider as ICollectionView).refresh();
+            }
             else if (articleList.visible) articleList.list.refresh();
         }
 
@@ -79,7 +98,7 @@
     <fx:Declarations>
         <form:FileBodyForm id="form"
                            verticalCenter="0" horizontalCenter="0"
-                           width="50%" height="75%"/>
+                           width="75%" height="75%"/>
     </fx:Declarations>
 
     <view:states>
@@ -113,6 +132,7 @@
                                 width="100%" height="100%"/>
 
         <article:ArticleList id="articleList"
+                             bookLinksBody="{bookLinksBody}"
                              includeInLayout="false" visible="false"
                              includeInLayout.article="true" visible.article="true"
                              width="100%" height="100%"/>

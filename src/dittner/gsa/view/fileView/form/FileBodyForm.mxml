@@ -10,6 +10,21 @@
         import dittner.gsa.view.common.form.IBodyForm;
         import dittner.gsa.view.fileList.toolbar.ToolAction;
 
+        import mx.collections.ArrayCollection;
+
+        //--------------------------------------
+        //  bookLinks
+        //--------------------------------------
+        private var _bookLinks:ArrayCollection;
+        [Bindable("bookLinksChanged")]
+        public function get bookLinks():ArrayCollection {return _bookLinks;}
+        public function set bookLinks(value:ArrayCollection):void {
+            if (_bookLinks != value) {
+                _bookLinks = value;
+                dispatchEvent(new Event("bookLinksChanged"));
+            }
+        }
+
         private var curBodyForm:IBodyForm;
 
         public function activate(file:GSAFile, toolAction:String):IAsyncOperation {
@@ -82,6 +97,7 @@
                                 left="10" top="10" bottom="10" right="10"/>
 
     <bodyForm:ArticleBodyForm id="articleBodyForm"
+                              bookLinks="{bookLinks}"
                               includeInLayout="false" visible="false"
                               includeInLayout.article="true" visible.article="true"
                               left="10" top="10" bottom="10" right="10"/>

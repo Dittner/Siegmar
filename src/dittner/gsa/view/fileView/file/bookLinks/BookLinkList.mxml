@@ -5,12 +5,40 @@
 
     <fx:Script><![CDATA[
         import dittner.gsa.domain.fileSystem.GSAFile;
+        import dittner.gsa.domain.fileSystem.body.links.BookLink;
         import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
 
         import mx.collections.ArrayCollection;
+        import mx.collections.Sort;
 
         public function activate(file:GSAFile):void {
-            list.dataProvider = new ArrayCollection((file.body as BookLinksBody).bookLinks);
+            var coll:ArrayCollection = new ArrayCollection((file.body as BookLinksBody).bookLinks);
+            coll.sort = getLinksSort();
+            list.dataProvider = coll;
+        }
+
+        private static var linksSort:Sort;
+        public static function getLinksSort():Sort {
+            if (!linksSort) {
+                linksSort = new Sort();
+                linksSort.compareFunction = linkCompareFunction;
+            }
+            return linksSort;
+        }
+
+        private static function linkCompareFunction(a:BookLink, b:BookLink, fields:Array = null):int {
+            var result:int = 0;
+            if (a.authorName > b.authorName) {
+                result = 1;
+            }
+            else if (a.authorName == b.authorName) {
+                if (a.bookName > b.bookName) result = 1;
+                else if (a.bookName == b.bookName) result = 0;
+                else result = -1;
+            }
+            else result = -1;
+
+            return result;
         }
         ]]></fx:Script>
 

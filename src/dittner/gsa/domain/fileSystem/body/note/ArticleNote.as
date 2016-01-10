@@ -3,7 +3,7 @@ package dittner.gsa.domain.fileSystem.body.note {
 public class ArticleNote extends Note {
 
 	public var noteType:String = NoteType.TEXT;
-	public var citationId:String = "";
+	public var bookLinkId:String = "";
 	public var author:String = "";
 
 	override public function copyFrom(src:Note):void {
@@ -11,7 +11,7 @@ public class ArticleNote extends Note {
 		if (src is ArticleNote) {
 			var note:ArticleNote = src as ArticleNote;
 			noteType = note.noteType;
-			citationId = note.citationId;
+			bookLinkId = note.bookLinkId;
 			author = note.author;
 		}
 	}

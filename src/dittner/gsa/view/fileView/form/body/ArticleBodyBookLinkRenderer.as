@@ -1,5 +1,6 @@
-package dittner.gsa.domain.fileSystem.body.picture.action {
-import dittner.gsa.view.common.renderer.*;
+package dittner.gsa.view.fileView.form.body {
+import dittner.gsa.domain.fileSystem.body.links.BookLink;
+import dittner.gsa.view.common.renderer.ItemRendererBase;
 import dittner.gsa.view.common.utils.AppColors;
 import dittner.gsa.view.common.utils.FontName;
 
@@ -7,27 +8,27 @@ import flash.display.Graphics;
 import flash.text.TextField;
 import flash.text.TextFormat;
 
-public class PaintingActionKeyRenderer extends ItemRendererBase {
+public class ArticleBodyBookLinkRenderer extends ItemRendererBase {
+
 	private static const FORMAT:TextFormat = new TextFormat(FontName.MYRIAD_MX, 14, AppColors.TEXT_BLACK);
-	private static const VPAD:uint = 5;
+
+	private static const VPAD:uint = 10;
 	private static const HPAD:uint = 5;
 
-	public function PaintingActionKeyRenderer() {
+	public function ArticleBodyBookLinkRenderer() {
 		super();
 		percentWidth = 100;
 	}
 
 	private var tf:TextField;
-	private var text:String = "";
 
-	override public function set data(value:Object):void {
-		super.data = value;
-		text = PaintingAction.keyToName(data as String || "");
+	private function get bookLink():BookLink {
+		return data as BookLink;
 	}
 
 	override protected function createChildren():void {
 		super.createChildren();
-		tf = createTextField(FORMAT);
+		tf = createMultilineTextField(FORMAT);
 		addChild(tf);
 	}
 
@@ -35,18 +36,25 @@ public class PaintingActionKeyRenderer extends ItemRendererBase {
 		super.commitProperties();
 		if (dataChanged) {
 			dataChanged = false;
-			tf.text = text;
+			tf.text = bookLink ? bookLink.toString() : "";
 		}
 	}
 
 	override protected function measure():void {
-		measuredMinWidth = measuredWidth = parent ? parent.width : 50;
-		minHeight = 10;
-		measuredHeight = tf.textHeight + 5 + 2 * VPAD;
+		measuredWidth = Math.max(50, parent.width);
+		tf.width = measuredWidth - 2 * HPAD;
+		measuredHeight = tf.textHeight + 2 * VPAD + 5;
 	}
 
 	override protected function updateDisplayList(w:Number, h:Number):void {
 		super.updateDisplayList(w, h);
+
+		if (w != measuredWidth || h != measuredHeight) {
+			invalidateSize();
+			invalidateDisplayList();
+			return;
+		}
+
 		var g:Graphics = graphics;
 		g.clear();
 

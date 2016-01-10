@@ -17,8 +17,12 @@ public class BookLinksBody extends FileBody {
 		store();
 	}
 
-	public function getLink(bookID:String):BookLink {
-		return bookLinkHash[bookID];
+	public function hasLink(linkID:String):Boolean {
+		return bookLinkHash[linkID] != null;
+	}
+
+	public function getLink(linkID:String):BookLink {
+		return bookLinkHash[linkID];
 	}
 
 	public function replaceLink(srcLink:BookLink, newLink:BookLink):void {
@@ -63,6 +67,7 @@ public class BookLinksBody extends FileBody {
 
 	override public function deserialize(ba:ByteArray):void {
 		bookLinks = ba.readObject() as Array || [];
+		bookLinks.sortOn("authorName");
 		for each(var b:BookLink in bookLinks)
 			bookLinkHash[b.id] = b;
 	}

@@ -102,6 +102,19 @@ public class SelectableDataGroup extends DataGroup {
 		}
 	}
 
+	//--------------------------------------
+	//  renderData
+	//--------------------------------------
+	private var _renderData:*;
+	[Bindable("renderDataChanged")]
+	public function get renderData():* {return _renderData;}
+	public function set renderData(value:*):void {
+		if (_renderData != value) {
+			_renderData = value;
+			dispatchEvent(new Event("renderDataChanged"));
+		}
+	}
+
 	//--------------------------------------------------------------------------
 	//
 	//  Overriden
