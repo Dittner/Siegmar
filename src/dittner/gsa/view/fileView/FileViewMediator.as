@@ -5,11 +5,10 @@ import dittner.gsa.bootstrap.viewFactory.ViewID;
 import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.bootstrap.walter.message.WalterMessage;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
+import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
 import dittner.gsa.domain.user.User;
 import dittner.gsa.view.common.list.SelectableDataGroupEvent;
 import dittner.gsa.view.fileList.toolbar.ToolAction;
-
-import mx.collections.ArrayCollection;
 
 public class FileViewMediator extends WalterMediator {
 
@@ -22,16 +21,15 @@ public class FileViewMediator extends WalterMediator {
 	[Inject]
 	public var user:User;
 
+	private var bookLinksBody:BookLinksBody;
+
 	override protected function activate():void {
 		var op:IAsyncOperation = system.fileStorage.loadFileBody(system.bookLinksFileHeader);
 		op.addCompleteCallback(linksLoaded);
 	}
 
 	private function linksLoaded(op:IAsyncOperation):void {
-		if (op.isSuccess) {
-			view.bookLinksBody = op.result;
-			view.form.bookLinks = new ArrayCollection(view.bookLinksBody.bookLinks);
-		}
+		if (op.isSuccess) bookLinksBody = op.result;
 
 		listenProxy(system, GSAFileSystem.FILE_OPENED, fileOpened);
 		system.openSelectedFile();
@@ -39,7 +37,7 @@ public class FileViewMediator extends WalterMediator {
 
 	private function fileOpened(msg:WalterMessage):void {
 		if (system.openedFile) {
-			view.activate(system.openedFile);
+			view.activate(system.openedFile, bookLinksBody);
 			view.addEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
 			view.toolbar.selectedOpCallBack = actionHandler;
 		}

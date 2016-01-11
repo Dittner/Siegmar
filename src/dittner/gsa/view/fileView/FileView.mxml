@@ -19,64 +19,48 @@
         import dittner.gsa.view.common.list.SelectableDataGroupEvent;
         import dittner.gsa.view.common.popup.SimplePopup;
         import dittner.gsa.view.common.utils.AppColors;
+        import dittner.gsa.view.fileView.file.IFileContent;
 
         import mx.collections.ICollectionView;
 
-        public function activate(file:GSAFile):void {
+        private var activeFile:IFileContent;
+        public function activate(file:GSAFile, bookLinksBody:BookLinksBody):void {
+            form.bookLinksBody = bookLinksBody;
             bg.color = file.header.color;
             header.file = file;
-            dictionary.list.addEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
-            notebook.list.addEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
-            bookLinkList.list.addEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
-            articleList.list.addEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
             switch (file.header.fileType) {
                 case FileType.DICTIONARY :
                     setCurrentState("dictionary");
-                    dictionary.activate(file);
+                    activeFile = dictionary;
                     break;
                 case FileType.NOTEBOOK :
                     setCurrentState("notebook");
-                    notebook.activate(file);
+                    activeFile = notebook;
                     break;
                 case FileType.BOOK_LINKS :
                     setCurrentState("links");
-                    bookLinkList.activate(file);
+                    activeFile = bookLinkList;
                     break;
                 case FileType.ARTICLE :
                     setCurrentState("article");
-                    articleList.activate(file);
+                    activeFile = articleList;
                     break;
             }
-        }
 
-        //--------------------------------------
-        //  bookLinksBody
-        //--------------------------------------
-        private var _bookLinksBody:BookLinksBody;
-        [Bindable("bookLinksBodyChanged")]
-        public function get bookLinksBody():BookLinksBody {return _bookLinksBody;}
-        public function set bookLinksBody(value:BookLinksBody):void {
-            if (_bookLinksBody != value) {
-                _bookLinksBody = value;
-                dispatchEvent(new Event("bookLinksBodyChanged"));
-            }
+            activeFile.bookLinksBody = bookLinksBody;
+            activeFile.file = file;
+            activeFile.fileBodyList.addEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
         }
 
         public function refresh():void {
-            if (dictionary.visible) dictionary.list.refresh()
-            else if (notebook.visible) notebook.list.refresh()
-            else if (bookLinkList.visible) {
-                bookLinkList.list.refresh();
-                (bookLinkList.list.dataProvider as ICollectionView).refresh();
+            if (activeFile) {
+                activeFile.fileBodyList.refresh();
+                (activeFile.fileBodyList.dataProvider as ICollectionView).refresh();
             }
-            else if (articleList.visible) articleList.list.refresh();
         }
 
         public function clear():void {
-            dictionary.list.removeEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
-            notebook.list.removeEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
-            bookLinkList.list.removeEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
-            articleList.list.removeEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
+            if (activeFile) activeFile.fileBodyList.removeEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
         }
 
         private function noteSelected(event:SelectableDataGroupEvent):void {
@@ -132,7 +116,6 @@
                                 width="100%" height="100%"/>
 
         <article:ArticleList id="articleList"
-                             bookLinksBody="{bookLinksBody}"
                              includeInLayout="false" visible="false"
                              includeInLayout.article="true" visible.article="true"
                              width="100%" height="100%"/>

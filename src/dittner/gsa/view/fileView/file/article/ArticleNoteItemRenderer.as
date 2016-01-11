@@ -2,7 +2,7 @@ package dittner.gsa.view.fileView.file.article {
 import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
 import dittner.gsa.domain.fileSystem.body.note.ArticleNote;
 import dittner.gsa.domain.fileSystem.body.note.NoteType;
-import dittner.gsa.view.common.list.SelectableDataGroup;
+import dittner.gsa.view.common.list.FileBodyList;
 import dittner.gsa.view.common.renderer.ItemRendererBase;
 import dittner.gsa.view.common.utils.AppColors;
 import dittner.gsa.view.common.utils.FontName;
@@ -42,8 +42,8 @@ public class ArticleNoteItemRenderer extends ItemRendererBase {
 	}
 
 	private function get links():BookLinksBody {
-		var g:SelectableDataGroup = parent is SelectableDataGroup ? parent as SelectableDataGroup : null;
-		return g && g.renderData is BookLinksBody ? g.renderData as BookLinksBody : null;
+		var list:FileBodyList = parent is FileBodyList ? parent as FileBodyList : null;
+		return list && list.bookLinksBody ? list.bookLinksBody : null;
 	}
 
 	override protected function createChildren():void {

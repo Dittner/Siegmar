@@ -1,16 +1,55 @@
 <?xml version="1.0"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
          xmlns:s="library://ns.adobe.com/flex/spark"
-         xmlns:list="dittner.gsa.view.common.list.*">
+         xmlns:list="dittner.gsa.view.common.list.*"
+         implements="dittner.gsa.view.fileView.file.IFileContent">
 
     <fx:Script><![CDATA[
         import dittner.gsa.domain.fileSystem.GSAFile;
         import dittner.gsa.domain.fileSystem.body.NoteListBody;
+        import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
 
         import mx.collections.ArrayCollection;
+        //--------------------------------------
+        //  bookLinksBody
+        //--------------------------------------
+        private var _bookLinksBody:BookLinksBody;
+        [Bindable("bookLinksBodyChanged")]
+        public function get bookLinksBody():BookLinksBody {return _bookLinksBody;}
+        public function set bookLinksBody(value:BookLinksBody):void {
+            if (_bookLinksBody != value) {
+                _bookLinksBody = value;
+                dispatchEvent(new Event("bookLinksBodyChanged"));
+            }
+        }
 
-        public function activate(file:GSAFile):void {
-            list.dataProvider = new ArrayCollection((file.body as NoteListBody).items);
+        //--------------------------------------
+        //  fileBodyList
+        //--------------------------------------
+        public function get fileBodyList():FileBodyList {return list;}
+
+        //--------------------------------------
+        //  file
+        //--------------------------------------
+        private var fileChanged:Boolean = false;
+        private var _file:GSAFile;
+        [Bindable("fileChanged")]
+        public function get file():GSAFile {return _file;}
+        public function set file(value:GSAFile):void {
+            if (_file != value) {
+                _file = value;
+                fileChanged = true;
+                invalidateProperties()
+                dispatchEvent(new Event("fileChanged"));
+            }
+        }
+
+        override protected function commitProperties():void {
+            super.commitProperties();
+            if (fileChanged) {
+                fileChanged = false;
+                list.dataProvider = new ArrayCollection((file.body as NoteListBody).items);
+            }
         }
         ]]></fx:Script>
 
@@ -19,6 +58,7 @@
                 horizontalScrollPolicy="off" verticalScrollPolicy="on">
         <list:FileBodyList id="list"
                            width="100%"
+                           bookLinksBody="{bookLinksBody}"
                            clickableArea="40"
                            deselectEnabled="true"
                            itemRenderer="dittner.gsa.view.fileView.file.dictionary.DictionaryItemRenderer">

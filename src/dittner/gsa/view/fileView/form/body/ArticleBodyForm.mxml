@@ -11,6 +11,7 @@
         import dittner.gsa.domain.fileSystem.GSAFile;
         import dittner.gsa.domain.fileSystem.body.NoteListBody;
         import dittner.gsa.domain.fileSystem.body.links.BookLink;
+        import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
         import dittner.gsa.domain.fileSystem.body.note.ArticleNote;
         import dittner.gsa.domain.fileSystem.body.note.NoteType;
         import dittner.gsa.view.common.utils.AppColors;
@@ -19,17 +20,29 @@
         import mx.collections.ArrayCollection;
 
         //--------------------------------------
-        //  bookLinks
+        //  bookLinksBody
         //--------------------------------------
-        private var _bookLinks:ArrayCollection;
-        [Bindable("bookLinksChanged")]
-        public function get bookLinks():ArrayCollection {return _bookLinks;}
-        public function set bookLinks(value:ArrayCollection):void {
-            if (_bookLinks != value) {
-                _bookLinks = value;
-                dispatchEvent(new Event("bookLinksChanged"));
+        private var bookLinksBodyChanged:Boolean = false;
+        private var _bookLinksBody:BookLinksBody;
+        [Bindable("bookLinksBodyChanged")]
+        public function get bookLinksBody():BookLinksBody {return _bookLinksBody;}
+        public function set bookLinksBody(value:BookLinksBody):void {
+            if (_bookLinksBody != value) {
+                _bookLinksBody = value;
+                bookLinksBodyChanged = true;
+                invalidateProperties();
+                dispatchEvent(new Event("bookLinksBodyChanged"));
             }
         }
+
+        override protected function commitProperties():void {
+            super.commitProperties();
+            if (bookLinksBodyChanged) {
+                bookLinksBodyChanged = false;
+                linksBox.dataProvider = new ArrayCollection(bookLinksBody ? bookLinksBody.bookLinks : []);
+            }
+        }
+
         //----------------------------------------------------------------------------------------------
         //
         //  Interface Methods
@@ -79,7 +92,8 @@
         }
 
         private function selectBookLink(id:String):void {
-            for each(var link:BookLink in bookLinks)
+            if (!bookLinksBody) return;
+            for each(var link:BookLink in bookLinksBody.bookLinks)
                 if (link.id == id) {
                     linksBox.selectedItem = link;
                     break;
@@ -212,7 +226,6 @@
             </s:VGroup>
             <s:VGroup gap="10" height="50%">
                 <s:DropDownList id="linksBox"
-                                dataProvider="{bookLinks}"
                                 visible="{linkBtn.selected}"
                                 width="300" height="25"
                                 color="#ffFFff"
@@ -229,7 +242,6 @@
             </s:VGroup>
         </s:HGroup>
     </s:Group>
-
 
     <input:TextAreaForm id="textInput"
                         visible.remove="false" includeInLayout.remove="false"

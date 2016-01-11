@@ -7,21 +7,20 @@
         import dittner.gsa.bootstrap.async.IAsyncOperation;
         import dittner.gsa.domain.fileSystem.FileType;
         import dittner.gsa.domain.fileSystem.GSAFile;
+        import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
         import dittner.gsa.view.common.form.IBodyForm;
         import dittner.gsa.view.fileList.toolbar.ToolAction;
 
-        import mx.collections.ArrayCollection;
-
         //--------------------------------------
-        //  bookLinks
+        //  bookLinksBody
         //--------------------------------------
-        private var _bookLinks:ArrayCollection;
-        [Bindable("bookLinksChanged")]
-        public function get bookLinks():ArrayCollection {return _bookLinks;}
-        public function set bookLinks(value:ArrayCollection):void {
-            if (_bookLinks != value) {
-                _bookLinks = value;
-                dispatchEvent(new Event("bookLinksChanged"));
+        private var _bookLinksBody:BookLinksBody;
+        [Bindable("bookLinksBodyChanged")]
+        public function get bookLinksBody():BookLinksBody {return _bookLinksBody;}
+        public function set bookLinksBody(value:BookLinksBody):void {
+            if (_bookLinksBody != value) {
+                _bookLinksBody = value;
+                dispatchEvent(new Event("bookLinksBodyChanged"));
             }
         }
 
@@ -97,7 +96,7 @@
                                 left="10" top="10" bottom="10" right="10"/>
 
     <bodyForm:ArticleBodyForm id="articleBodyForm"
-                              bookLinks="{bookLinks}"
+                              bookLinksBody="{bookLinksBody}"
                               includeInLayout="false" visible="false"
                               includeInLayout.article="true" visible.article="true"
                               left="10" top="10" bottom="10" right="10"/>
