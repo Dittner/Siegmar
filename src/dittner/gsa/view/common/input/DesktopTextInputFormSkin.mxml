@@ -40,8 +40,8 @@
             var bgVerOffset:Number = hostComponent.showTitle ? TITLE_HEIGHT : 0;
             var g:Graphics = graphics;
             g.clear();
-            g.lineStyle(1, hostComponent.isValidInput ? AppColors.INPUT_BORDER : AppColors.INVALID_INPUT_BORDER);
-            g.beginFill(AppColors.INPUT_CONTENT);
+            g.lineStyle(1, hostComponent.isValidInput ? getStyle("borderColor") : AppColors.INVALID_INPUT_BORDER);
+            g.beginFill(AppColors.INPUT_CONTENT, getStyle("contentBackgroundAlpha"));
             g.drawRect(0, bgVerOffset, w - 1, h - bgVerOffset - 1);
             g.endFill();
 

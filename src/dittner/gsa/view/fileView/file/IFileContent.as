@@ -11,6 +11,7 @@ public interface IFileContent extends IUIComponent {
 	function set bookLinksBody(value:BookLinksBody):void;
 
 	function get fileBodyList():FileBodyList;
+	function filterNotes(txt:String):void;
 
 }
 }

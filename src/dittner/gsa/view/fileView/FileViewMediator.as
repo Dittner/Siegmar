@@ -10,6 +10,8 @@ import dittner.gsa.domain.user.User;
 import dittner.gsa.view.common.list.SelectableDataGroupEvent;
 import dittner.gsa.view.fileList.toolbar.ToolAction;
 
+import spark.events.TextOperationEvent;
+
 public class FileViewMediator extends WalterMediator {
 
 	[Inject]
@@ -39,6 +41,7 @@ public class FileViewMediator extends WalterMediator {
 		if (system.openedFile) {
 			view.activate(system.openedFile, bookLinksBody);
 			view.addEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
+			view.header.filterInput.addEventListener(TextOperationEvent.CHANGE, filterChanged);
 			view.toolbar.selectedOpCallBack = actionHandler;
 		}
 	}
@@ -73,12 +76,18 @@ public class FileViewMediator extends WalterMediator {
 		view.toolbar.editBtn.enabled = view.toolbar.removeBtn.enabled = event.data != null;
 	}
 
+	private function filterChanged(event:TextOperationEvent):void {
+		view.filterNotes(view.header.filterInput.text.toLowerCase());
+	}
+
 	override protected function deactivate():void {
 		view.toolbar.selectedOpCallBack = null;
 
 		view.clear();
 		view.removeEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
+		view.header.filterInput.removeEventListener(TextOperationEvent.CHANGE, filterChanged);
 
+		view.header.filterInput.text = "";
 		view.form.clear();
 		view.toolbar.editBtn.enabled = view.toolbar.removeBtn.enabled = false;
 	}

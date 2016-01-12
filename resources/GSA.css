@@ -107,9 +107,10 @@ s|Label, s|Button {
 
 input|TextInputForm {
     skinClass: ClassReference("dittner.gsa.view.common.input.DesktopTextInputFormSkin");
-    borderVisible: false;
+    contentBackgroundAlpha: 1;
+    borderColor: #c7c7cf;
     focusSkin: ClassReference("mx.core.UIComponent");
-    fontSize: 16px;
+    fontSize: 14px;
     color: #333333;
 }
 

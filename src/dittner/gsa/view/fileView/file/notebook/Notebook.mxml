@@ -8,6 +8,7 @@
         import dittner.gsa.domain.fileSystem.GSAFile;
         import dittner.gsa.domain.fileSystem.body.NoteListBody;
         import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
+        import dittner.gsa.domain.fileSystem.body.note.Note;
 
         import mx.collections.ArrayCollection;
         //--------------------------------------
@@ -48,8 +49,22 @@
             super.commitProperties();
             if (fileChanged) {
                 fileChanged = false;
-                list.dataProvider = new ArrayCollection((file.body as NoteListBody).items);
+                var coll:ArrayCollection = new ArrayCollection((file.body as NoteListBody).items);
+                coll.filterFunction = filterFunction;
+                list.dataProvider = coll;
             }
+        }
+
+        private var filterText:String = "";
+        public function filterNotes(txt:String):void {
+            filterText = txt;
+            if (list && list.dataProvider)
+                (list.dataProvider as ArrayCollection).refresh();
+        }
+
+        private function filterFunction(item:Object):Boolean {
+            if (!filterText) return true;
+            return item is Note ? (item as Note).text.toLowerCase().indexOf(filterText) != -1 : true;
         }
         ]]></fx:Script>
 

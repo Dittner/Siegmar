@@ -52,6 +52,11 @@
             activeFile.fileBodyList.addEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
         }
 
+        public function filterNotes(txt:String):void {
+            if (activeFile)
+                activeFile.filterNotes(txt);
+        }
+
         public function refresh():void {
             if (activeFile) {
                 activeFile.fileBodyList.refresh();
@@ -60,7 +65,10 @@
         }
 
         public function clear():void {
-            if (activeFile) activeFile.fileBodyList.removeEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
+            if (activeFile) {
+                activeFile.filterNotes("");
+                activeFile.fileBodyList.removeEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
+            }
         }
 
         private function noteSelected(event:SelectableDataGroupEvent):void {

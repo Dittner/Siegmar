@@ -1,6 +1,6 @@
 package dittner.gsa.view.common.input {
 import flash.events.Event;
-
+[Style(name="borderColor", type="uint", format="Color", inherit="no")]
 public class TextInputForm extends HistoryTextInput {
 	public function TextInputForm() {
 		super();
