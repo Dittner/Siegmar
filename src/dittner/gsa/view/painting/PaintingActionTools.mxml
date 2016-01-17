@@ -4,7 +4,7 @@
          xmlns:button="dittner.gsa.view.common.button.*"
          xmlns:list="dittner.gsa.view.common.list.*"
          xmlns:common="cosmoLib.components.styleComponents.*"
-         xmlns:actionform="dittner.gsa.view.paintingView.actionForm.*">
+         xmlns:actionform="dittner.gsa.view.painting.actionForm.*">
     <fx:Script><![CDATA[
         import dittner.gsa.view.common.popup.SimplePopup;
         import dittner.gsa.domain.fileSystem.body.picture.action.PaintingAction;

@@ -1,8 +1,9 @@
 package dittner.gsa.domain.fileSystem.header {
-import dittner.gsa.domain.fileSystem.*;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.walter.Walter;
 import dittner.gsa.bootstrap.walter.walter_namespace;
+import dittner.gsa.domain.fileSystem.file.FileType;
+import dittner.gsa.domain.fileSystem.file.FileTypeName;
 import dittner.gsa.domain.store.FileStorage;
 import dittner.gsa.view.common.utils.AppColors;
 

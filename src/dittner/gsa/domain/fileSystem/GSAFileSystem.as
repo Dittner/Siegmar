@@ -1,5 +1,4 @@
 package dittner.gsa.domain.fileSystem {
-import dittner.gsa.bootstrap.async.AsyncOperation;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.walter.WalterProxy;
 import dittner.gsa.bootstrap.walter.message.WalterMessage;
@@ -8,6 +7,9 @@ import dittner.gsa.domain.fileSystem.body.FileBody;
 import dittner.gsa.domain.fileSystem.body.NoteListBody;
 import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
 import dittner.gsa.domain.fileSystem.body.picture.PictureBody;
+import dittner.gsa.domain.fileSystem.body.settings.SettingsBody;
+import dittner.gsa.domain.fileSystem.file.FileType;
+import dittner.gsa.domain.fileSystem.file.GSAFile;
 import dittner.gsa.domain.fileSystem.header.FileHeader;
 import dittner.gsa.domain.fileSystem.header.RootFolderHeader;
 import dittner.gsa.domain.store.FileStorage;
@@ -95,6 +97,38 @@ public class GSAFileSystem extends WalterProxy {
 	private var _bookLinksFileHeader:FileHeader;
 	public function get bookLinksFileHeader():FileHeader {return _bookLinksFileHeader;}
 
+	//--------------------------------------
+	//  settingsFileHeader
+	//--------------------------------------
+	private var _settingsFileHeader:FileHeader;
+	public function get settingsFileHeader():FileHeader {return _settingsFileHeader;}
+
+	//----------------------------------------------------------------------------------------------
+	//
+	//  Methods
+	//
+	//----------------------------------------------------------------------------------------------
+
+	private var initOp:IAsyncOperation;
+	public function initialize():IAsyncOperation {
+		if (initOp && initOp.isProcessing) return initOp;
+		initOp = new GSAFileSystemInitializeOp(this);
+		initOp.addCompleteCallback(initializeComplete);
+		return initOp;
+	}
+
+	private function initializeComplete(op:GSAFileSystemInitializeOp):void {
+		if (op.isSuccess) {
+			_rootFolderHeader = createRootFolderHeader();
+			_bookLinksFileHeader = op.bookLinksFileHeader;
+			_settingsFileHeader = op.settingsFileHeader;
+
+			listenProxy(fileStorage, FileStorage.FILE_STORED, fileStored);
+		}
+	}
+
+	override protected function activate():void {}
+
 	public function openSelectedFile():void {
 		if (selectedFileHeader && !selectedFileHeader.isFolder) {
 			var op:IAsyncOperation = fileStorage.loadFileBody(selectedFileHeader);
@@ -115,63 +149,8 @@ public class GSAFileSystem extends WalterProxy {
 		}
 	}
 
-	//----------------------------------------------------------------------------------------------
-	//
-	//  Methods
-	//
-	//----------------------------------------------------------------------------------------------
-
-	//--------------------------------------
-	//  START INIT
-	//--------------------------------------
-	private var initOp:AsyncOperation;
-	public function initialize():IAsyncOperation {
-		if (initOp && initOp.isProcessing) return initOp;
-		initOp = new AsyncOperation();
-		openDataBase();
-		return initOp;
-	}
-
-	private function openDataBase():void {
-		var op:IAsyncOperation = fileStorage.open(user.dataBasePwd);
-		op.addCompleteCallback(dataBaseOpened);
-	}
-
-	private function dataBaseOpened(op:IAsyncOperation):void {
-		if (op.isSuccess) loadBookLinksFileHeader();
-		else initOp.dispatchError(op.error);
-	}
-
-	private function loadBookLinksFileHeader():void {
-		if (fileStorage.isEmpty) {
-			_bookLinksFileHeader = createFileHeader(FileType.BOOK_LINKS, true);
-			_bookLinksFileHeader.title = FileTypeName.BOOK_LINK;
-			_bookLinksFileHeader.store();
-			finishInitialize();
-		}
-		else {
-			var op:IAsyncOperation = fileStorage.loadFileHeadersByType(FileType.BOOK_LINKS);
-			op.addCompleteCallback(function (op:IAsyncOperation):void {
-				_bookLinksFileHeader = op.isSuccess ? op.result[0] : null;
-				finishInitialize();
-			});
-		}
-	}
-
-	private function finishInitialize():void {
-		_rootFolderHeader = createRootFolderHeader();
-		listenProxy(fileStorage, FileStorage.FILE_STORED, fileStored);
-		initOp.dispatchSuccess();
-	}
-
-	//--------------------------------------
-	//  END INIT
-	//--------------------------------------
-
-	override protected function activate():void {}
-
 	private function fileStored(msg:WalterMessage):void {
-		if(!initOp || !initOp.isProcessing) loadFileHeaders();
+		if (!initOp || !initOp.isProcessing) loadFileHeaders();
 	}
 
 	private function createRootFolderHeader():FileHeader {
@@ -202,6 +181,9 @@ public class GSAFileSystem extends WalterProxy {
 				break;
 			case FileType.BOOK_LINKS :
 				body = new BookLinksBody();
+				break;
+			case FileType.SETTINGS :
+				body = new SettingsBody();
 				break;
 			default :
 				throw new Error("Unknown doc type:" + header.fileType);

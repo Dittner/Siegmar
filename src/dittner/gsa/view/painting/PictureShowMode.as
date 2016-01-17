@@ -1,4 +1,4 @@
-package dittner.gsa.view.paintingView {
+package dittner.gsa.view.painting {
 public class PictureShowMode {
 	public function PictureShowMode() {}
 	public static const IMAGE:String = "Bild";

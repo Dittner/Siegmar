@@ -1,4 +1,4 @@
-package dittner.gsa.domain.fileSystem {
+package dittner.gsa.domain.fileSystem.file {
 import dittner.gsa.domain.fileSystem.body.FileBody;
 import dittner.gsa.domain.fileSystem.header.FileHeader;
 

@@ -1,5 +1,5 @@
 package dittner.gsa.view.fileView.file {
-import dittner.gsa.domain.fileSystem.GSAFile;
+import dittner.gsa.domain.fileSystem.file.GSAFile;
 import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
 import dittner.gsa.view.common.list.FileBodyList;
 

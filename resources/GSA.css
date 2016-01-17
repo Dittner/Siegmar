@@ -5,6 +5,12 @@
 @namespace cap "dittner.gsa.view.common.scroll.cap.*";
 
 @font-face {
+    src: url("/fonts/Courier-New.ttf");
+    font-family: Mono;
+    embedAsCFF: true;
+}
+
+@font-face {
     src: url("/fonts/georgia.ttf");
     font-family: Georgia;
     embedAsCFF: true;
@@ -45,6 +51,12 @@
 }
 
 /**************************** MX **************************/
+
+@font-face {
+    src: url("/fonts/Courier-New.ttf");
+    font-family: Mono_MX;
+    embedAsCFF: false;
+}
 
 @font-face {
     src: url("/fonts/georgia.ttf");

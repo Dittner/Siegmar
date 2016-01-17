@@ -4,7 +4,8 @@ import dittner.gsa.view.common.view.ViewBase;
 import dittner.gsa.view.fileList.FileListView;
 import dittner.gsa.view.fileView.FileView;
 import dittner.gsa.view.login.LoginView;
-import dittner.gsa.view.paintingView.PaintingView;
+import dittner.gsa.view.painting.PaintingView;
+import dittner.gsa.view.settings.SettingsView;
 
 public class ViewFactory extends WalterProxy implements IViewFactory {
 
@@ -22,8 +23,11 @@ public class ViewFactory extends WalterProxy implements IViewFactory {
 			case ViewID.FILE_VIEW :
 				view = new FileView();
 				break;
-			case ViewID.PAINTING_VIEW :
+			case ViewID.PAINTING :
 				view = new PaintingView();
+				break;
+			case ViewID.SETTINGS :
+				view = new SettingsView();
 				break;
 			default :
 				throw new Error("Unknown view ID:" + viewID);

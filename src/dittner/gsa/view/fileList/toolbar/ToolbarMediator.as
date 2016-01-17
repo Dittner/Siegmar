@@ -43,6 +43,10 @@ public class ToolbarMediator extends WalterMediator {
 				system.closeOpenedFile();
 				viewNavigator.navigate(ViewID.FILE_LIST);
 				break;
+			case ToolAction.SETTINGS:
+				system.closeOpenedFile();
+				viewNavigator.navigate(ViewID.SETTINGS);
+				break;
 			case ToolAction.LOGOUT:
 				user.logout();
 				viewNavigator.navigate(ViewID.LOGIN);

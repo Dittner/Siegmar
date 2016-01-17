@@ -6,6 +6,7 @@ import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.domain.store.FileStorage;
 import dittner.gsa.domain.user.User;
+import dittner.gsa.message.MediatorMsg;
 import dittner.gsa.utils.AppInfo;
 import dittner.gsa.utils.delay.doLaterInMSec;
 
@@ -53,6 +54,7 @@ public class LoginViewMediator extends WalterMediator {
 		else
 			op = user.register(enteredName, enteredPwd, enteredPL, enteredDataBasePwd);
 		op.addCompleteCallback(loginHandler);
+		sendMessage(MediatorMsg.LOCK);
 	}
 
 	private function get enteredPwd():String {return view.passwordInput.text;}
@@ -85,6 +87,7 @@ public class LoginViewMediator extends WalterMediator {
 	}
 
 	private function navigateToFileList():void {
+		sendMessage(MediatorMsg.UNLOCK);
 		viewNavigator.navigate(ViewID.FILE_LIST);
 	}
 

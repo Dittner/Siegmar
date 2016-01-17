@@ -1,7 +1,7 @@
 package dittner.gsa.backend.sqlOperation.phase {
 import dittner.gsa.backend.sqlOperation.FileSQLWrapper;
 import dittner.gsa.bootstrap.async.AsyncCommand;
-import dittner.gsa.bootstrap.async.CompositeOperation;
+import dittner.gsa.bootstrap.async.CompositeCommand;
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 
 public class RemoveFileHeadersAndBodiesPhaseOperation extends AsyncCommand {
@@ -13,7 +13,7 @@ public class RemoveFileHeadersAndBodiesPhaseOperation extends AsyncCommand {
 	private var headerWrapper:FileSQLWrapper;
 
 	override public function execute():void {
-		var compositeOp:CompositeOperation = new CompositeOperation();
+		var compositeOp:CompositeCommand = new CompositeCommand();
 		compositeOp.addCompleteCallback(compositeOpHandler);
 
 		try {

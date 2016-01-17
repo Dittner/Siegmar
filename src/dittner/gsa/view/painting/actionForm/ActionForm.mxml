@@ -3,7 +3,7 @@
          xmlns:s="library://ns.adobe.com/flex/spark"
          xmlns:colorchooser="dittner.gsa.view.common.colorChooser.*"
          xmlns:common="cosmoLib.components.styleComponents.*"
-         xmlns:actionform="dittner.gsa.view.paintingView.actionForm.*"
+         xmlns:actionform="dittner.gsa.view.painting.actionForm.*"
          xmlns:button="dittner.gsa.view.common.button.*">
 
     <fx:Script><![CDATA[

@@ -5,8 +5,8 @@
 
     <fx:Script><![CDATA[
         import dittner.gsa.bootstrap.async.IAsyncOperation;
-        import dittner.gsa.domain.fileSystem.FileType;
-        import dittner.gsa.domain.fileSystem.GSAFile;
+        import dittner.gsa.domain.fileSystem.file.FileType;
+        import dittner.gsa.domain.fileSystem.file.GSAFile;
         import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
         import dittner.gsa.view.common.form.IBodyForm;
         import dittner.gsa.view.fileList.toolbar.ToolAction;

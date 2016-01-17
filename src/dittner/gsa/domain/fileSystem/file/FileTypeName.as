@@ -1,4 +1,4 @@
-package dittner.gsa.domain.fileSystem {
+package dittner.gsa.domain.fileSystem.file {
 public class FileTypeName {
 
 	public static const FOLDER:String = "Ordner";
@@ -8,6 +8,7 @@ public class FileTypeName {
 	public static const ALBUM:String = "Album";
 	public static const PICTURE:String = "Bild";
 	public static const BOOK_LINK:String = "Literaturhinweise";
+	public static const SETTINGS:String = "Einstellungen";
 
 	public static function getNameByType(fileType:uint):String {
 		switch (fileType) {
@@ -25,6 +26,8 @@ public class FileTypeName {
 				return PICTURE;
 			case FileType.BOOK_LINKS:
 				return BOOK_LINK;
+			case FileType.SETTINGS:
+				return SETTINGS;
 			default:
 				throw new Error("Unknown file type number: " + fileType);
 		}

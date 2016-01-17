@@ -6,7 +6,7 @@
 
     <fx:Script><![CDATA[
         import dittner.gsa.domain.fileSystem.FileOptionKeys;
-        import dittner.gsa.domain.fileSystem.GSAFile;
+        import dittner.gsa.domain.fileSystem.file.GSAFile;
         import dittner.gsa.view.common.utils.FontName;
 
         //--------------------------------------

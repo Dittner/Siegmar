@@ -3,7 +3,7 @@ import dittner.gsa.backend.sqlOperation.FileSQLWrapper;
 import dittner.gsa.backend.sqlOperation.SQLLib;
 import dittner.gsa.backend.sqlOperation.SQLUtils;
 import dittner.gsa.bootstrap.async.AsyncCommand;
-import dittner.gsa.domain.fileSystem.FileType;
+import dittner.gsa.domain.fileSystem.file.FileType;
 
 import flash.data.SQLResult;
 import flash.data.SQLStatement;

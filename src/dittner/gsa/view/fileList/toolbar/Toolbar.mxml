@@ -34,6 +34,18 @@
                 dispatchEvent(new Event("showCloseBtnChanged"));
             }
         }
+        //--------------------------------------
+        //  showSettingsBtn
+        //--------------------------------------
+        private var _showSettingsBtn:Boolean = true;
+        [Bindable("showSettingsBtnChanged")]
+        public function get showSettingsBtn():Boolean {return _showSettingsBtn;}
+        public function set showSettingsBtn(value:Boolean):void {
+            if (_showSettingsBtn != value) {
+                _showSettingsBtn = value;
+                dispatchEvent(new Event("showSettingsBtnChanged"));
+            }
+        }
 
         private function btnClickHandler(event:MouseEvent):void {
             if (selectedOpCallBack != null) {
@@ -41,13 +53,19 @@
             }
         }
         ]]></fx:Script>
-    <common:Background width="100%" height="100%" color="{AppColors.BG_DARK}"/>
+    <common:Background width="100%" height="100%" color="{AppColors.TOOLBAR}"/>
 
     <s:VGroup width="100%" height="100%" verticalAlign="bottom"
               paddingLeft="5" paddingRight="5" paddingTop="10" paddingBottom="10" gap="10">
 
         <button:ToolButton toolId="{ToolAction.LOGOUT}"
                            image="@Embed(source='/assets/btn/logout_btn.png')"
+                           click="btnClickHandler(event)"/>
+
+        <button:ToolButton toolId="{ToolAction.SETTINGS}"
+                           image="@Embed(source='/assets/btn/settings_btn.png')"
+                           visible="{showSettingsBtn}"
+                           includeInLayout="{showSettingsBtn}"
                            click="btnClickHandler(event)"/>
 
         <button:ToolButton toolId="{ToolAction.CLOSE}"

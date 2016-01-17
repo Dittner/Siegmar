@@ -19,7 +19,7 @@
         <button:ColorButton id="backBtn"
                             width="100%"
                             height="50"
-                            bgColor="{AppColors.BG_DARK}"
+                            bgColor="{AppColors.TOOLBAR}"
                             textColor="#ffFFff"
                             fontSize="12"
                             fontFamily="{FontName.MYRIAD_MX}"

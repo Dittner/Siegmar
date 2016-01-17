@@ -3,7 +3,7 @@
                xmlns:s="library://ns.adobe.com/flex/spark"
                xmlns:view="dittner.gsa.view.common.view.*"
                xmlns:toolbar="dittner.gsa.view.fileList.toolbar.*"
-               xmlns:paintingview="dittner.gsa.view.paintingView.*">
+               xmlns:paintingview="dittner.gsa.view.painting.*">
 
     <view:layout>
         <s:HorizontalLayout gap="0"/>

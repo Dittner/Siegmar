@@ -1,4 +1,4 @@
-package dittner.gsa.domain.fileSystem {
+package dittner.gsa.domain.fileSystem.file {
 public class FileType {
 
 	public static const FOLDER:uint = 0;
@@ -8,6 +8,9 @@ public class FileType {
 	public static const ALBUM:uint = 4;
 	public static const PICTURE:uint = 5;
 
+	/*reserved*/
+
 	public static const BOOK_LINKS:uint = 10;
+	public static const SETTINGS:uint = 11;
 }
 }

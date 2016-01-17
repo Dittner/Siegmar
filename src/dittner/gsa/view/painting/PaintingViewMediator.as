@@ -1,10 +1,10 @@
-package dittner.gsa.view.paintingView {
+package dittner.gsa.view.painting {
 import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.navigator.ViewNavigator;
 import dittner.gsa.bootstrap.viewFactory.ViewID;
 import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.bootstrap.walter.message.WalterMessage;
-import dittner.gsa.domain.fileSystem.GSAFile;
+import dittner.gsa.domain.fileSystem.file.GSAFile;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
 import dittner.gsa.domain.fileSystem.body.picture.PictureBody;
 import dittner.gsa.utils.BitmapLocalSaver;
