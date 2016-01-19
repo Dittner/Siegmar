@@ -1,23 +1,17 @@
 package dittner.gsa.view.fileView.file.dictionary {
 import dittner.gsa.domain.fileSystem.body.note.TitledNote;
-import dittner.gsa.view.common.renderer.ItemRendererBase;
 import dittner.gsa.view.common.utils.AppColors;
 import dittner.gsa.view.common.utils.FontName;
+import dittner.gsa.view.fileView.file.DraggableNoteItemRenderer;
 
 import flash.display.Graphics;
 import flash.text.TextField;
 import flash.text.TextFormat;
 
-import flashx.textLayout.formats.TextAlign;
-
-public class DictionaryItemRenderer extends ItemRendererBase {
+public class DictionaryItemRenderer extends DraggableNoteItemRenderer {
 
 	private static const TITLE_FORMAT:TextFormat = new TextFormat(FontName.MYRIAD_MX, 24, AppColors.TEXT_BLACK, true);
 	private static const DESCRIPTION_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 20, AppColors.TEXT_BLACK);
-	private static const INDEX_FORMAT:TextFormat = new TextFormat(FontName.MYRIAD_MX, 14, AppColors.HELL_TÜRKIS);
-
-	private static const TEXT_DEFAULT_OFFSET:uint = 2;
-	private static const INDEX_COLUMN_WID:uint = 40;
 
 	private static const PAD:uint = 20;
 	private static const GAP:uint = 10;
@@ -31,8 +25,10 @@ public class DictionaryItemRenderer extends ItemRendererBase {
 
 	private var titleTf:TextField;
 	private var descriptionTf:TextField;
-	private var indexTf:TextField;
 
+	//--------------------------------------
+	//  note
+	//--------------------------------------
 	private function get note():TitledNote {
 		return data as TitledNote;
 	}
@@ -43,9 +39,6 @@ public class DictionaryItemRenderer extends ItemRendererBase {
 		addChild(descriptionTf);
 		titleTf = createMultilineTextField(TITLE_FORMAT, true);
 		addChild(titleTf);
-		INDEX_FORMAT.align = TextAlign.CENTER;
-		indexTf = createTextField(INDEX_FORMAT);
-		addChild(indexTf);
 	}
 
 	override protected function commitProperties():void {
@@ -88,24 +81,9 @@ public class DictionaryItemRenderer extends ItemRendererBase {
 	override protected function updateDisplayList(w:Number, h:Number):void {
 		super.updateDisplayList(w, h);
 		var g:Graphics = graphics;
-		g.clear();
-
-		if (w != measuredWidth) {
-			invalidateSize();
-			invalidateDisplayList();
-			return;
-		}
-
-		g.beginFill(0xffFFff, selected ? .25 : 0);
-		g.drawRect(0, 0, w, h - 1);
-		g.endFill();
 		g.lineStyle(1, SEP_COLOR, 0.25);
 		g.moveTo(INDEX_COLUMN_WID, h - 1);
 		g.lineTo(w, h - 1);
-
-		indexTf.text = (itemIndex + 1).toString();
-		adjustSize(indexTf, INDEX_COLUMN_WID);
-		indexTf.y = PAD + TEXT_DEFAULT_OFFSET;
 
 		descriptionTf.visible = selected;
 

@@ -52,7 +52,7 @@ public class FtpCommand extends ProgressCommand {
 	}
 
 	protected function onSocketError(e:IOErrorEvent):void {
-		dispatchError("Socket error: " + e.toString())
+		dispatchError(e.text);
 	}
 	protected function onSecurityError(e:IOErrorEvent):void {
 		dispatchError("Socket security error: " + e.toString())

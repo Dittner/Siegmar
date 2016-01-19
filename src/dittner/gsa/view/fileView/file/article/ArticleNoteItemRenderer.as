@@ -1,29 +1,20 @@
 package dittner.gsa.view.fileView.file.article {
-import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
 import dittner.gsa.domain.fileSystem.body.note.ArticleNote;
 import dittner.gsa.domain.fileSystem.body.note.NoteType;
-import dittner.gsa.view.common.list.FileBodyList;
-import dittner.gsa.view.common.renderer.ItemRendererBase;
 import dittner.gsa.view.common.utils.AppColors;
 import dittner.gsa.view.common.utils.FontName;
+import dittner.gsa.view.fileView.file.DraggableNoteItemRenderer;
 
-import flash.display.Graphics;
 import flash.text.TextField;
 import flash.text.TextFormat;
 
-import flashx.textLayout.formats.TextAlign;
-
-public class ArticleNoteItemRenderer extends ItemRendererBase {
+public class ArticleNoteItemRenderer extends DraggableNoteItemRenderer {
 
 	private static const TITLE_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 30, AppColors.TEXT_BLACK, true, false, null, null, null, "center");
 	private static const SUBTITLE_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 24, AppColors.TEXT_BLACK, true, false, null, null, null, "left");
 	private static const EPIGRAPH_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 18, AppColors.TEXT_BLACK, false, true, null, null, null, "right");
 	private static const CITATION_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 20, 0x252787, false, false, null, null, null, "left");
 	private static const TEXT_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 20, AppColors.TEXT_BLACK, false, false, null, null, null, "left");
-	private static const INDEX_FORMAT:TextFormat = new TextFormat(FontName.MYRIAD_MX, 14, AppColors.HELL_TÜRKIS);
-
-	private static const TEXT_DEFAULT_OFFSET:uint = 2;
-	private static const INDEX_COLUMN_WID:uint = 40;
 
 	private static const PAD:uint = 10;
 	private static const MAX_WIDTH:uint = 1000;
@@ -35,24 +26,18 @@ public class ArticleNoteItemRenderer extends ItemRendererBase {
 	}
 
 	private var textTf:TextField;
-	private var indexTf:TextField;
 
+	//--------------------------------------
+	//  note
+	//--------------------------------------
 	private function get note():ArticleNote {
 		return data as ArticleNote;
-	}
-
-	private function get links():BookLinksBody {
-		var list:FileBodyList = parent is FileBodyList ? parent as FileBodyList : null;
-		return list && list.bookLinksBody ? list.bookLinksBody : null;
 	}
 
 	override protected function createChildren():void {
 		super.createChildren();
 		textTf = createMultilineTextField(TEXT_FORMAT, true);
 		addChild(textTf);
-		INDEX_FORMAT.align = TextAlign.CENTER;
-		indexTf = createTextField(INDEX_FORMAT);
-		addChild(indexTf);
 	}
 
 	override protected function commitProperties():void {
@@ -64,10 +49,9 @@ public class ArticleNoteItemRenderer extends ItemRendererBase {
 	}
 
 	private function updateData():void {
-		if (!note) {
-			textTf.text = "";
-			return;
-		}
+		textTf.text = "";
+		if (!note) return;
+
 		switch (note.noteType) {
 			case NoteType.TITLE :
 				textTf.defaultTextFormat = TITLE_FORMAT;
@@ -110,22 +94,6 @@ public class ArticleNoteItemRenderer extends ItemRendererBase {
 
 	override protected function updateDisplayList(w:Number, h:Number):void {
 		super.updateDisplayList(w, h);
-		var g:Graphics = graphics;
-		g.clear();
-
-		if (w != measuredWidth) {
-			invalidateSize();
-			invalidateDisplayList();
-			return;
-		}
-
-		g.beginFill(0xffFFff, selected ? .25 : 0);
-		g.drawRect(0, 0, w, h - 1);
-		g.endFill();
-
-		indexTf.text = (itemIndex + 1).toString();
-		adjustSize(indexTf, INDEX_COLUMN_WID);
-		indexTf.y = PAD + TEXT_DEFAULT_OFFSET;
 
 		textTf.x = (w - textTf.width >> 1) + INDEX_COLUMN_WID;
 		textTf.y = PAD - TEXT_DEFAULT_OFFSET;

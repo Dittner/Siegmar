@@ -30,6 +30,9 @@ public class BookLinkRenderer extends ItemRendererBase {
 	private var textTf:TextField;
 	private var indexTf:TextField;
 
+	//--------------------------------------
+	//  bookLink
+	//--------------------------------------
 	private function get bookLink():BookLink {
 		return data as BookLink;
 	}

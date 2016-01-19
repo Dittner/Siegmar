@@ -1,12 +1,14 @@
 package dittner.gsa.view.common.list {
 import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
+import dittner.gsa.view.common.utils.TapEventKit;
 
 import flash.display.DisplayObject;
 import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Point;
+import flash.geom.Rectangle;
 
-public class FileBodyList extends SelectableDataGroup {
+public class FileBodyList extends ReordableList {
 	public function FileBodyList() {
 		super();
 	}
@@ -42,5 +44,13 @@ public class FileBodyList extends SelectableDataGroup {
 		point = globalToLocal(point);
 		if (point.x <= clickableArea) super.renderer_clickHandler(event);
 	}
+
+	override protected function addedToStageHandler(event:Event):void {
+		removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+		addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+		addEventListener(MouseEvent.RELEASE_OUTSIDE, outsideHandler);
+		TapEventKit.registerLongTapListener(this, longTapPressed, clickableArea ? new Rectangle(0, 0, clickableArea, 2000) : null);
+	}
+
 }
 }

@@ -10,6 +10,8 @@ import dittner.gsa.domain.user.User;
 import dittner.gsa.view.common.list.SelectableDataGroupEvent;
 import dittner.gsa.view.fileList.toolbar.ToolAction;
 
+import flash.events.Event;
+
 import spark.events.TextOperationEvent;
 
 public class FileViewMediator extends WalterMediator {
@@ -41,6 +43,7 @@ public class FileViewMediator extends WalterMediator {
 		if (system.openedFile) {
 			view.activate(system.openedFile, bookLinksBody);
 			view.addEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
+			view.addEventListener("orderChanged", notesOrderChanged);
 			view.header.filterInput.addEventListener(TextOperationEvent.CHANGE, filterChanged);
 			view.toolbar.selectedOpCallBack = actionHandler;
 		}
@@ -80,12 +83,17 @@ public class FileViewMediator extends WalterMediator {
 		view.filterNotes(view.header.filterInput.text.toLowerCase());
 	}
 
+	private function notesOrderChanged(event:Event):void {
+		system.openedFile.body.store();
+	}
+
 	override protected function deactivate():void {
 		view.toolbar.selectedOpCallBack = null;
 
 		view.clear();
 		view.removeEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
 		view.header.filterInput.removeEventListener(TextOperationEvent.CHANGE, filterChanged);
+		view.removeEventListener("orderChanged", notesOrderChanged);
 
 		view.header.filterInput.text = "";
 		view.form.clear();

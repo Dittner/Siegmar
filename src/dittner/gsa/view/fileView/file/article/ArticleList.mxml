@@ -5,10 +5,10 @@
          implements="dittner.gsa.view.fileView.file.IFileContent">
 
     <fx:Script><![CDATA[
-        import dittner.gsa.domain.fileSystem.file.GSAFile;
         import dittner.gsa.domain.fileSystem.body.NoteListBody;
         import dittner.gsa.domain.fileSystem.body.links.BookLinksBody;
         import dittner.gsa.domain.fileSystem.body.note.Note;
+        import dittner.gsa.domain.fileSystem.file.GSAFile;
 
         import mx.collections.ArrayCollection;
 

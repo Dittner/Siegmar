@@ -21,7 +21,7 @@ public class FTimer {
 		if (index == int.MAX_VALUE) resetIndexes();
 		index++;
 		functions[index] = func;
-		runDelays.push(delayFrames + totalFrames);
+		runDelays.push(delayFrames / 2 + totalFrames);
 		indexes.push(index);
 		return index;
 	}
