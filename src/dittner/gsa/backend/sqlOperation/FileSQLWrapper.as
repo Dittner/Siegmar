@@ -17,7 +17,8 @@ public class FileSQLWrapper {
 		res.parentID = header.parentID;
 		res.fileType = header.fileType;
 		res.title = header.title;
-		res.isReserved = header.isReserved;
+		res.isReserved = header.isReserved ? 1 : 0;
+		res.isFavorite = header.isFavorite ? 1 : 0;
 		res.options = header.options;
 		return res;
 	}

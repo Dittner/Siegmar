@@ -18,6 +18,8 @@ public class ToolbarMediator extends WalterMediator {
 	[Inject]
 	public var system:GSAFileSystem;
 
+	public static const FAVORITE_FILES_CHANGED_KEY:String = "FAVORITE_FILES_CHANGED_KEY";
+
 	override protected function activate():void {
 		listenProxy(system, GSAFileSystem.FILE_SELECTED, fileSelected);
 		listenMediator(MediatorMsg.NOTE_SELECTED, noteSelected);
@@ -26,6 +28,7 @@ public class ToolbarMediator extends WalterMediator {
 
 	private function fileSelected(msg:WalterMessage):void {
 		view.editBtn.enabled = view.removeBtn.enabled = system.selectedFileHeader != null && !system.selectedFileHeader.isReserved;
+		view.favoriteBtn.enabled = system.selectedFileHeader != null && !system.selectedFileHeader.isFavorite;
 	}
 
 	private function noteSelected(msg:WalterMessage):void {
@@ -34,10 +37,15 @@ public class ToolbarMediator extends WalterMediator {
 
 	private function actionHandler(action:String):void {
 		switch (action) {
-			case ToolAction.ADD:
+			case ToolAction.CREATE:
 			case ToolAction.EDIT:
 			case ToolAction.REMOVE:
 				sendMessage(MediatorMsg.START_EDIT, action);
+				break;
+			case ToolAction.ADD_TO_FAVORITE:
+				system.selectedFileHeader.isFavorite = true;
+				system.selectedFileHeader.store();
+				sendMessage(FAVORITE_FILES_CHANGED_KEY, system.selectedFileHeader);
 				break;
 			case ToolAction.CLOSE:
 				system.closeOpenedFile();

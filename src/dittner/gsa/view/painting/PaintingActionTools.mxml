@@ -39,7 +39,7 @@
                                           width="100%"
                                           dataProvider="{new ArrayCollection(PaintingAction.ALL)}"
                                           selectedItemChange="availableActionListItemSelectedHandler(event)"
-                                          itemRenderer="dittner.gsa.domain.fileSystem.body.picture.action.PaintingActionKeyRenderer">
+                                          itemRenderer="dittner.gsa.view.painting.renderer.PaintingActionKeyRenderer">
                     <list:layout>
                         <s:VerticalLayout gap="0" useVirtualLayout="false"/>
                     </list:layout>
@@ -71,7 +71,7 @@
             <list:SelectableDataGroup id="actionList"
                                       width="100%"
                                       deselectEnabled="true"
-                                      itemRenderer="dittner.gsa.domain.fileSystem.body.picture.action.PaintingActionRenderer">
+                                      itemRenderer="dittner.gsa.view.painting.renderer.PaintingActionRenderer">
                 <list:layout>
                     <s:VerticalLayout gap="0" useVirtualLayout="false"/>
                 </list:layout>

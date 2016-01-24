@@ -23,6 +23,19 @@
         }
 
         //--------------------------------------
+        //  showFavoriteBtn
+        //--------------------------------------
+        private var _showFavoriteBtn:Boolean = false;
+        [Bindable("showFavoriteBtnChanged")]
+        public function get showFavoriteBtn():Boolean {return _showFavoriteBtn;}
+        public function set showFavoriteBtn(value:Boolean):void {
+            if (_showFavoriteBtn != value) {
+                _showFavoriteBtn = value;
+                dispatchEvent(new Event("showFavoriteBtnChanged"));
+            }
+        }
+
+        //--------------------------------------
         //  showCloseBtn
         //--------------------------------------
         private var _showCloseBtn:Boolean = true;
@@ -77,7 +90,7 @@
         <s:Spacer height="100%"/>
 
         <button:ToolButton id="addBtn"
-                           toolId="{ToolAction.ADD}"
+                           toolId="{ToolAction.CREATE}"
                            image="@Embed(source='/assets/btn/add_btn.png')"
                            click="btnClickHandler(event)"
                            visible="{showNoteBtns}"/>
@@ -93,6 +106,14 @@
                            image="@Embed(source='/assets/btn/delete_btn.png')"
                            click="btnClickHandler(event)"
                            visible="{showNoteBtns}"/>
+
+        <button:ToolButton id="favoriteBtn"
+                           enabled="false"
+                           toolId="{ToolAction.ADD_TO_FAVORITE}"
+                           image="@Embed(source='/assets/btn/favorite_btn.png')"
+                           click="btnClickHandler(event)"
+                           visible="{showFavoriteBtn}"
+                           includeInLayout="{showFavoriteBtn}"/>
     </s:VGroup>
 
 </s:Group>

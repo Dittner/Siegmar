@@ -64,6 +64,17 @@ public class FileHeader {
 	}
 
 	//--------------------------------------
+	//  isFavorite
+	//--------------------------------------
+	private var _isFavorite:Boolean = false;
+	public function get isFavorite():Boolean {return _isFavorite;}
+	public function set isFavorite(value:Boolean):void {
+		if (_isFavorite != value) {
+			_isFavorite = value;
+		}
+	}
+
+	//--------------------------------------
 	//  fileTypeName
 	//--------------------------------------
 	public function get fileTypeName():String {

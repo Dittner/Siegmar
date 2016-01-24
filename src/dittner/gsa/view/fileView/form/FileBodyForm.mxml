@@ -49,7 +49,7 @@
             }
 
             switch (toolAction) {
-                case ToolAction.ADD :
+                case ToolAction.CREATE :
                     return curBodyForm.createNote(file);
                 case ToolAction.EDIT :
                     return curBodyForm.editNote(file);

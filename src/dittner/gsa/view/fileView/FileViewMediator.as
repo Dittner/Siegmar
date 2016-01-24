@@ -51,7 +51,7 @@ public class FileViewMediator extends WalterMediator {
 
 	private function actionHandler(action:String):void {
 		switch (action) {
-			case ToolAction.ADD:
+			case ToolAction.CREATE:
 			case ToolAction.EDIT:
 			case ToolAction.REMOVE:
 				var completeOp:IAsyncOperation = view.showForm(system.openedFile, action);

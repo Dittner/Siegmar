@@ -27,7 +27,7 @@ public class FileHeaderFormMediator extends WalterMediator {
 
 	private function startEdit(msg:WalterMessage):void {
 		switch (msg.data) {
-			case ToolAction.ADD:
+			case ToolAction.CREATE:
 				view.add(getReservedTitleHash());
 				break;
 			case ToolAction.EDIT:

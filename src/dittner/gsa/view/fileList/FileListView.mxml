@@ -5,7 +5,8 @@
                xmlns:toolbar="dittner.gsa.view.fileList.toolbar.*"
                xmlns:form="dittner.gsa.view.fileList.form.*"
                xmlns:list2="dittner.gsa.view.fileList.list.*"
-               xmlns:common="cosmoLib.components.styleComponents.*">
+               xmlns:common="cosmoLib.components.styleComponents.*"
+               xmlns:favorites="dittner.gsa.view.fileList.favorites.*">
     <fx:Script><![CDATA[
         import mx.collections.ArrayCollection;
 
@@ -28,12 +29,13 @@
         <list2:FileHeaderList id="fileHeaderList"
                               width="50%" height="100%"/>
 
-        <s:Spacer width="50%"/>
+        <favorites:FavoriteFileHeaderList id="favoritesList"
+                                          width="50%" height="100%"/>
 
         <toolbar:Toolbar id="toolbar"
+                         showFavoriteBtn="true"
                          showCloseBtn="false"
                          height="100%"/>
-
     </s:HGroup>
 
     <common:Background visible="{fileHeaderForm.visible}"

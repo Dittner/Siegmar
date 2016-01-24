@@ -4,6 +4,7 @@ import dittner.gsa.backend.sqlOperation.FileSQLWrapper;
 import dittner.gsa.backend.sqlOperation.RemoveFileSQLOperation;
 import dittner.gsa.backend.sqlOperation.RunDataBaseSQLOperation;
 import dittner.gsa.backend.sqlOperation.SQLLib;
+import dittner.gsa.backend.sqlOperation.SelectFavoriteFileHeadersSQLOperation;
 import dittner.gsa.backend.sqlOperation.SelectFileBodySQLOperation;
 import dittner.gsa.backend.sqlOperation.SelectFileHeadersByTypeSQLOperation;
 import dittner.gsa.backend.sqlOperation.SelectFileHeadersSQLOperation;
@@ -99,6 +100,12 @@ public class FileStorage extends WalterProxy {
 
 	public function loadFileHeadersByType(fileType:uint):IAsyncOperation {
 		var cmd:IAsyncCommand = new SelectFileHeadersByTypeSQLOperation(this, fileType);
+		sqlCmdManager.add(cmd);
+		return cmd;
+	}
+
+	public function loadFavoriteFileHeaders():IAsyncOperation {
+		var cmd:IAsyncCommand = new SelectFavoriteFileHeadersSQLOperation(this);
 		sqlCmdManager.add(cmd);
 		return cmd;
 	}

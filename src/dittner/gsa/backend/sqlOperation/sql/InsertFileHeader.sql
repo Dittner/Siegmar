@@ -4,6 +4,7 @@ INSERT INTO header
 	fileType,
 	title,
 	isReserved,
+	isFavorite,
 	options
 )
 VALUES
@@ -12,5 +13,6 @@ VALUES
 	:fileType,
 	:title,
 	:isReserved,
+	:isFavorite,
 	:options
 )

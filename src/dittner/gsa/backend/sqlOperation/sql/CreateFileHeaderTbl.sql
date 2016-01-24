@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS header
 	parentID int,
 	fileType int,
 	isReserved int,
+	isFavorite int,
 	title String NOT NULL,
 	options Object
 )

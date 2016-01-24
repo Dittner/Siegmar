@@ -14,8 +14,8 @@ public class FileHeaderRenderer extends ItemRendererBase {
 
 	private static const TITLE_FORMAT:TextFormat = new TextFormat(FontName.MYRIAD_MX, 20, AppColors.LILA);
 
-	private static const HPAD:Number = 10;
-	private static const TEXT_PAd_LEFT:uint = 40;
+	protected static const HPAD:Number = 10;
+	protected static const TEXT_PAd_LEFT:uint = 40;
 
 	[Embed(source='/assets/file/folder_icon.png')]
 	protected static var FolderIconClass:Class;
@@ -81,7 +81,7 @@ public class FileHeaderRenderer extends ItemRendererBase {
 		super.updateDisplayList(w, h);
 		var g:Graphics = graphics;
 		g.clear();
-		g.beginFill(AppColors.LILA, selected ? 0.2 : 0.0001);
+		g.beginFill(AppColors.LILA, selected ? 0.3 : 0.0001);
 		g.drawRect(0, 0, w, h);
 		g.endFill();
 
