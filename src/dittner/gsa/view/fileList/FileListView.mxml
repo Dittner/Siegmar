@@ -42,6 +42,6 @@
                        width="100%" height="100%" color="0" alpha=".25"/>
     <form:FileHeaderForm id="fileHeaderForm"
                          verticalCenter="0" horizontalCenter="0"
-                         width="50%" height="75%" visible="false"/>
+                         width="75%" height="90%" visible="false"/>
 
 </view:ViewBase>

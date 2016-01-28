@@ -1,15 +1,21 @@
 package dittner.gsa.view.fileList.form {
+import dittner.gsa.bootstrap.async.IAsyncOperation;
 import dittner.gsa.bootstrap.walter.WalterMediator;
 import dittner.gsa.bootstrap.walter.message.WalterMessage;
-import dittner.gsa.domain.fileSystem.header.FileHeader;
 import dittner.gsa.domain.fileSystem.FileOptionKeys;
-import dittner.gsa.domain.fileSystem.file.FileType;
 import dittner.gsa.domain.fileSystem.GSAFileSystem;
+import dittner.gsa.domain.fileSystem.file.FileType;
+import dittner.gsa.domain.fileSystem.header.FileHeader;
+import dittner.gsa.domain.store.FileStorage;
 import dittner.gsa.message.MediatorMsg;
 import dittner.gsa.view.common.form.FileFormMode;
+import dittner.gsa.view.common.list.SelectableDataGroupEvent;
+import dittner.gsa.view.common.utils.AppColors;
 import dittner.gsa.view.fileList.toolbar.ToolAction;
 
 import flash.events.MouseEvent;
+
+import mx.collections.ArrayCollection;
 
 public class FileHeaderFormMediator extends WalterMediator {
 
@@ -17,21 +23,91 @@ public class FileHeaderFormMediator extends WalterMediator {
 	public var view:FileHeaderForm;
 	[Inject]
 	public var system:GSAFileSystem;
+	[Inject]
+	public var fileStorage:FileStorage;
+
+	private var selectedFolder:FileHeader;
+	private var appliedFolder:FileHeader;
+	private var foldersStack:Array;
 
 	override protected function activate():void {
 		listenMediator(MediatorMsg.START_EDIT, startEdit);
 		listenMediator(MediatorMsg.END_EDIT, endEdit);
 		view.cancelBtn.addEventListener(MouseEvent.CLICK, cancelHandler);
 		view.applyBtn.addEventListener(MouseEvent.CLICK, applyHandler);
+		view.destinationFolderList.addEventListener(SelectableDataGroupEvent.DOUBLE_CLICKED, viewListDoubleClicked);
+		view.applyDestFolderBtn.addEventListener(MouseEvent.CLICK, destFolderApplied);
+		view.backBtn.addEventListener(MouseEvent.CLICK, backBtnClicked);
+		view.backBtn.enabled = false;
+	}
+
+	private function backBtnClicked(event:MouseEvent):void {
+		if (foldersStack.length > 1) {
+			foldersStack.pop();
+			var f:FileHeader = foldersStack.pop() as FileHeader;
+			selectFolder(f);
+		}
+	}
+
+	private function selectFolder(folder:FileHeader):void {
+		selectedFolder = folder;
+		foldersStack.push(folder);
+		var op:IAsyncOperation = fileStorage.loadFileHeaders(selectedFolder.fileID);
+		op.addCompleteCallback(filesLoaded);
+		updateListControls();
+	}
+
+	private function updateListControls():void {
+		view.backBtn.enabled = foldersStack.length > 1;
+		view.pathLbl.text = "Ausgewählter Ordner: " + openedFolderStackToString();
+		var isFileFolder:Boolean = appliedFolder ? appliedFolder.fileID == selectedFolder.fileID : system.openedFolderHeader.fileID == selectedFolder.fileID;
+		view.pathLbl.setStyle("color", isFileFolder ? AppColors.HELL_TÜRKIS : 0xffFFff);
+		view.applyDestFolderBtn.enabled = !isFileFolder;
+	}
+
+	private function viewListDoubleClicked(event:SelectableDataGroupEvent):void {
+		if (!event.data is FileHeader) return;
+
+		if ((event.data as FileHeader).isFolder) {
+			selectFolder(event.data as FileHeader)
+		}
+	}
+
+	private function destFolderApplied(event:MouseEvent):void {
+		appliedFolder = selectedFolder;
+		updateListControls();
+	}
+
+	public function openedFolderStackToString():String {
+		var res:String = "";
+		for each(var header:FileHeader in foldersStack)
+			res += header.title + " / ";
+		return res;
+	}
+
+	private function filesLoaded(op:IAsyncOperation):void {
+		var files:Array = op.isSuccess ? op.result as Array : [];
+		files.sortOn(["fileType", "title"], [Array.NUMERIC, Array.CASEINSENSITIVE]);
+		var coll:ArrayCollection = new ArrayCollection(files);
+		coll.filterFunction = fileFilterFunc;
+		coll.refresh();
+		view.destinationFolderColl = coll;
+	}
+
+	public function fileFilterFunc(header:FileHeader):Boolean {
+		return header.isFolder;
 	}
 
 	private function startEdit(msg:WalterMessage):void {
+		foldersStack = [];
+		appliedFolder = null;
 		switch (msg.data) {
 			case ToolAction.CREATE:
 				view.add(getReservedTitleHash());
 				break;
 			case ToolAction.EDIT:
 				if (system.selectedFileHeader) {
+					selectFolder(system.rootFolderHeader);
 					view.edit(system.selectedFileHeader, getReservedTitleHash(false));
 				}
 				break;
@@ -52,6 +128,7 @@ public class FileHeaderFormMediator extends WalterMediator {
 	}
 
 	private function applyHandler(event:MouseEvent):void {
+		if (appliedFolder) system.selectedFileHeader.parentID = appliedFolder.fileID;
 		if (view.mode == FileFormMode.ADD) createAndSaveNewFile();
 		else if (view.mode == FileFormMode.EDIT) updateAndSaveFile();
 		else if (view.mode == FileFormMode.REMOVE) removeFileHeader();
@@ -100,9 +177,13 @@ public class FileHeaderFormMediator extends WalterMediator {
 			hash[header.title] = includeSelectedHeader || system.selectedFileHeader != header;
 		return hash;
 	}
+
 	override protected function deactivate():void {
 		view.cancelBtn.removeEventListener(MouseEvent.CLICK, cancelHandler);
 		view.applyBtn.removeEventListener(MouseEvent.CLICK, applyHandler);
+		view.applyDestFolderBtn.removeEventListener(MouseEvent.CLICK, destFolderApplied);
+		view.backBtn.removeEventListener(MouseEvent.CLICK, backBtnClicked);
+		view.destinationFolderList.removeEventListener(SelectableDataGroupEvent.DOUBLE_CLICKED, viewListDoubleClicked);
 	}
 
 }

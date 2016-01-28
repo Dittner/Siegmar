@@ -3,21 +3,37 @@
          xmlns:s="library://ns.adobe.com/flex/spark"
          xmlns:input="dittner.gsa.view.common.input.*"
          xmlns:button="dittner.gsa.view.common.button.*"
+         xmlns:list="dittner.gsa.view.common.list.*"
+         xmlns:stylecomponents="cosmoLib.components.styleComponents.*"
          creationComplete="creationCompleteHandler(event)">
 
     <fx:Script><![CDATA[
-        import dittner.gsa.domain.fileSystem.header.FileHeader;
         import dittner.gsa.domain.fileSystem.FileOptionKeys;
         import dittner.gsa.domain.fileSystem.file.FileType;
         import dittner.gsa.domain.fileSystem.file.FileTypeName;
+        import dittner.gsa.domain.fileSystem.header.FileHeader;
         import dittner.gsa.view.common.form.FileFormMode;
         import dittner.gsa.view.common.utils.AppColors;
         import dittner.gsa.view.common.utils.FontName;
 
+        import mx.collections.ArrayCollection;
         import mx.events.FlexEvent;
         import mx.formatters.DateFormatter;
 
         private static var dateFormatter:DateFormatter;
+
+        //--------------------------------------
+        //  destinationFolderColl
+        //--------------------------------------
+        private var _destinationFolderColl:ArrayCollection;
+        [Bindable("destinationFolderCollChanged")]
+        public function get destinationFolderColl():ArrayCollection {return _destinationFolderColl;}
+        public function set destinationFolderColl(value:ArrayCollection):void {
+            if (_destinationFolderColl != value) {
+                _destinationFolderColl = value;
+                dispatchEvent(new Event("destinationFolderCollChanged"));
+            }
+        }
 
         //--------------------------------------
         //  mode
@@ -31,6 +47,9 @@
 
         [Bindable("modeChanged")]
         public function get isRemoveMode():Boolean {return _mode == FileFormMode.REMOVE;}
+
+        [Bindable("modeChanged")]
+        public function get isEditMode():Boolean {return _mode == FileFormMode.EDIT;}
 
         private function setFileType(fileType:uint):void {
             switch (fileType) {
@@ -208,7 +227,53 @@
                  mouseChildren="false" mouseEnabled="false"
                  color="{AppColors.TEXT_LIGHT}"/>
 
-        <s:Spacer height="100%"/>
+        <s:Spacer height="100%"
+                  visible="{isRemoveMode}" includeInLayout="{isRemoveMode}"/>
+
+        <s:Group width="100%" height="100%"
+                 visible="{isEditMode}" includeInLayout="{isEditMode}">
+            <stylecomponents:Background top="20" bottom="60" width="100%" color="#ffFFff"/>
+
+            <s:Label width="100%" maxDisplayedLines="1" height="20"
+                     paddingTop="4"
+                     text="Wählen Sie den Ordner aus, wenn Sie die Datei umsetzen wollen."
+                     fontSize="14"
+                     color="{AppColors.TEXT_LIGHT}"
+                     fontFamily="{FontName.MYRIAD}"/>
+
+            <s:Scroller top="20" bottom="60" width="100%"
+                        horizontalScrollPolicy="off">
+                <list:SelectableDataGroup id="destinationFolderList"
+                                          width="100%"
+                                          dataProvider="{destinationFolderColl}"
+                                          itemRenderer="dittner.gsa.view.fileList.list.FileHeaderRenderer">
+                    <list:layout>
+                        <s:VerticalLayout gap="0" useVirtualLayout="true" variableRowHeight="false"/>
+                    </list:layout>
+                </list:SelectableDataGroup>
+            </s:Scroller>
+
+            <s:HGroup width="100%" bottom="0" verticalAlign="middle">
+                <button:StrokeButton id="backBtn"
+                                     width="25%"
+                                     color="#ffFFff"
+                                     fontSize="12"
+                                     fontFamily="{FontName.MYRIAD_MX}"
+                                     label="Zurück"/>
+
+                <button:StrokeButton id="applyDestFolderBtn"
+                                     width="25%"
+                                     color="#ffFFff"
+                                     fontSize="12"
+                                     fontFamily="{FontName.MYRIAD_MX}"
+                                     label="Umsetzen"/>
+
+                <s:Label id="pathLbl"
+                         verticalAlign="middle"
+                         width="100%" height="50" fontSize="14"
+                         color="#ffFFff"/>
+            </s:HGroup>
+        </s:Group>
 
         <s:HGroup width="100%" gap="10">
             <button:GrayButton id="cancelBtn"
