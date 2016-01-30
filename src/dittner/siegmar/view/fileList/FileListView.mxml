@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<view:ViewBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+               xmlns:s="library://ns.adobe.com/flex/spark"
+               xmlns:view="dittner.siegmar.view.common.view.*"
+               xmlns:toolbar="dittner.siegmar.view.fileList.toolbar.*"
+               xmlns:form="dittner.siegmar.view.fileList.form.*"
+               xmlns:list2="dittner.siegmar.view.fileList.list.*"
+               xmlns:common="cosmoLib.components.styleComponents.*"
+               xmlns:favorites="dittner.siegmar.view.fileList.favorites.*">
+    <fx:Script><![CDATA[
+        import mx.collections.ArrayCollection;
+
+        //--------------------------------------
+        //  subjectListProvider
+        //--------------------------------------
+        private var _subjectListProvider:ArrayCollection;
+        [Bindable("subjectListProviderChanged")]
+        public function get subjectListProvider():ArrayCollection {return _subjectListProvider;}
+        public function set subjectListProvider(value:ArrayCollection):void {
+            if (_subjectListProvider != value) {
+                _subjectListProvider = value;
+                dispatchEvent(new Event("subjectListProviderChanged"));
+            }
+        }
+        ]]></fx:Script>
+
+    <s:HGroup width="100%" height="100%" gap="0"
+              mouseChildren="{!fileHeaderForm.visible}">
+        <list2:FileHeaderList id="fileHeaderList"
+                              width="50%" height="100%"/>
+
+        <favorites:FavoriteFileHeaderList id="favoritesList"
+                                          width="50%" height="100%"/>
+
+        <toolbar:Toolbar id="toolbar"
+                         showFavoriteBtn="true"
+                         showCloseBtn="false"
+                         height="100%"/>
+    </s:HGroup>
+
+    <common:Background visible="{fileHeaderForm.visible}"
+                       width="100%" height="100%" color="0" alpha=".25"/>
+    <form:FileHeaderForm id="fileHeaderForm"
+                         verticalCenter="0" horizontalCenter="0"
+                         width="75%" height="90%" visible="false"/>
+
+</view:ViewBase>

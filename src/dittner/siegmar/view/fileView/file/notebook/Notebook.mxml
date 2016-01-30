@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         xmlns:list="dittner.siegmar.view.common.list.*"
+         implements="dittner.siegmar.view.fileView.file.IFileContent">
+
+    <fx:Script><![CDATA[
+        import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
+        import dittner.siegmar.domain.fileSystem.body.NoteListBody;
+        import dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
+        import dittner.siegmar.domain.fileSystem.body.note.Note;
+
+        import mx.collections.ArrayCollection;
+
+        //--------------------------------------
+        //  bookLinksBody
+        //--------------------------------------
+        private var _bookLinksBody:BookLinksBody;
+        [Bindable("bookLinksBodyChanged")]
+        public function get bookLinksBody():BookLinksBody {return _bookLinksBody;}
+        public function set bookLinksBody(value:BookLinksBody):void {
+            if (_bookLinksBody != value) {
+                _bookLinksBody = value;
+                dispatchEvent(new Event("bookLinksBodyChanged"));
+            }
+        }
+
+        //--------------------------------------
+        //  fileBodyList
+        //--------------------------------------
+        public function get fileBodyList():FileBodyList {return list;}
+
+        //--------------------------------------
+        //  file
+        //--------------------------------------
+        private var fileChanged:Boolean = false;
+        private var _file:SiegmarFile;
+        [Bindable("fileChanged")]
+        public function get file():SiegmarFile {return _file;}
+        public function set file(value:SiegmarFile):void {
+            if (_file != value) {
+                _file = value;
+                fileChanged = true;
+                invalidateProperties()
+                dispatchEvent(new Event("fileChanged"));
+            }
+        }
+
+        override protected function commitProperties():void {
+            super.commitProperties();
+            if (fileChanged) {
+                fileChanged = false;
+                var coll:ArrayCollection = new ArrayCollection((file.body as NoteListBody).items);
+                coll.filterFunction = filterFunction;
+                list.dataProvider = coll;
+            }
+        }
+
+        private var filterText:String = "";
+        public function filterNotes(txt:String):void {
+            filterText = txt;
+            if (list && list.dataProvider)
+                (list.dataProvider as ArrayCollection).refresh();
+        }
+
+        private function filterFunction(item:Object):Boolean {
+            if (!filterText) return true;
+            return item is Note ? (item as Note).text.toLowerCase().indexOf(filterText) != -1 : true;
+        }
+        ]]></fx:Script>
+
+    <s:Scroller width="100%" height="100%"
+                styleName="cosmoScrollerStyle"
+                horizontalScrollPolicy="off" verticalScrollPolicy="on">
+        <list:FileBodyList id="list"
+                           width="100%"
+                           bookLinksBody="{bookLinksBody}"
+                           clickableArea="40"
+                           deselectEnabled="true"
+                           itemRenderer="dittner.siegmar.view.fileView.file.notebook.NotebookItemRenderer">
+            <list:layout>
+                <s:VerticalLayout gap="0" useVirtualLayout="true"/>
+            </list:layout>
+        </list:FileBodyList>
+    </s:Scroller>
+
+</s:Group>
