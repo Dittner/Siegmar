@@ -11,6 +11,7 @@
         import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
         import dittner.siegmar.domain.fileSystem.body.links.BookLink;
         import dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
+        import dittner.siegmar.utils.delay.invalidateOf;
         import dittner.siegmar.view.common.utils.AppColors;
         import dittner.siegmar.view.common.utils.FontName;
 
@@ -29,6 +30,7 @@
             this.fileBody = file.body as BookLinksBody;
             reservedTitleHash = getReservedTitleHash();
             currentState = "add";
+            invalidateOf(focusTextInput);
             return operation;
         }
 
@@ -46,7 +48,12 @@
             publicationYearInput.text = link.publicationYear;
             pagesNumInput.text = link.pagesNum;
             currentState = "edit";
+            invalidateOf(focusTextInput);
             return operation;
+        }
+
+        private function focusTextInput():void {
+            if(stage) stage.focus = authorNameInput;
         }
 
         public function removeNote(file:SiegmarFile):IAsyncOperation {

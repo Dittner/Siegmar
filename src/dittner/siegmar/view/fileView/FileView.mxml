@@ -13,9 +13,10 @@
 
     <fx:Script><![CDATA[
         import dittner.siegmar.bootstrap.async.IAsyncOperation;
+        import dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
         import dittner.siegmar.domain.fileSystem.file.FileType;
         import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
-        import dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
+        import dittner.siegmar.utils.delay.invalidateOf;
         import dittner.siegmar.view.common.list.SelectableDataGroupEvent;
         import dittner.siegmar.view.common.popup.SimplePopup;
         import dittner.siegmar.view.common.utils.AppColors;
@@ -61,6 +62,7 @@
             if (activeFile) {
                 activeFile.fileBodyList.refresh();
                 (activeFile.fileBodyList.dataProvider as ICollectionView).refresh();
+                invalidateOf(activeFile.fileBodyList.scrollToBottom);
             }
         }
 

@@ -34,7 +34,7 @@ public class FileHeaderListMediator extends WalterMediator {
 		view.backBtn.addEventListener(MouseEvent.CLICK, backBtnClicked);
 		view.linksFileHeaderRenderer.data = system.bookLinksFileHeader;
 		view.linksFileHeaderRenderer.addEventListener(MouseEvent.DOUBLE_CLICK, linksDoubleClicked);
-		system.openFolder(system.rootFolderHeader);
+		system.openFolder(system.openedFolderHeader ? system.openedFolderHeader : system.rootFolderHeader);
 	}
 
 	private function viewListItemSelectedHandler(event:SelectableDataGroupEvent):void {

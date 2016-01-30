@@ -205,9 +205,14 @@ public class SiegmarFileSystem extends WalterProxy {
 	}
 
 	public function openFolder(header:FileHeader):void {
-		if (header && header != openedFolderHeader && header.isFolder) {
-			openedFolderStack.push(header);
-			setOpenedFolderHeader(header);
+		if (header && header.isFolder) {
+			if (header != openedFolderHeader) {
+				openedFolderStack.push(header);
+				setOpenedFolderHeader(header);
+			}
+			else {
+				sendMessage(HEADERS_UPDATED, _availableHeaders);
+			}
 		}
 	}
 
@@ -225,9 +230,6 @@ public class SiegmarFileSystem extends WalterProxy {
 
 	public function closeOpenedFile():void {
 		_openedFile = null;
-		_openedFolderHeader = null;
-		openedFolderStack.length = 0;
-		availableHeaders.length = 0;
 	}
 
 	public function logout():void {

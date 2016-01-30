@@ -92,7 +92,7 @@
                  color="{AppColors.HELL_TÜRKIS}"
                  fontSize="38" width="100%" textAlign="center"
                  paddingBottom="60"
-                 text.authorization="Die Chiffriermaschine Siegmar"/>
+                 text="Die Chiffriermaschine Siegmar"/>
 
         <s:HGroup width="100%" gap="10" verticalAlign="middle"
                   visible.authorization="false" includeInLayout.authorization="false">

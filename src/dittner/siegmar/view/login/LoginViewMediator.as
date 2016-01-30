@@ -72,6 +72,7 @@ public class LoginViewMediator extends WalterMediator {
 		else {
 			view.isLoginWithError = true;
 			view.errorLbl.text = op.error;
+			sendMessage(MediatorMsg.UNLOCK);
 		}
 	}
 

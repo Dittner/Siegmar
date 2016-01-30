@@ -15,6 +15,7 @@
         import dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
         import dittner.siegmar.domain.fileSystem.body.note.ArticleNote;
         import dittner.siegmar.domain.fileSystem.body.note.NoteType;
+        import dittner.siegmar.utils.delay.invalidateOf;
         import dittner.siegmar.view.common.utils.AppColors;
         import dittner.siegmar.view.common.utils.FontName;
 
@@ -58,6 +59,7 @@
             this.file = file;
             this.fileBody = file.body as NoteListBody;
             currentState = "add";
+            invalidateOf(focusTextInput);
             return operation;
         }
 
@@ -89,7 +91,12 @@
             if (articleNote.bookLinkId) selectBookLink(articleNote.bookLinkId);
 
             currentState = "edit";
+            invalidateOf(focusTextInput);
             return operation;
+        }
+
+        private function focusTextInput():void {
+            if(stage) stage.focus = textInput;
         }
 
         private function selectBookLink(id:String):void {

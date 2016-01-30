@@ -66,10 +66,12 @@ public class FileHeaderFormMediator extends WalterMediator {
 	}
 
 	private function viewListDoubleClicked(event:SelectableDataGroupEvent):void {
-		if (!event.data is FileHeader) return;
+		var selectedFileHeader:FileHeader = event.data as FileHeader;
+		if (!selectedFileHeader) return;
 
-		if ((event.data as FileHeader).isFolder) {
-			selectFolder(event.data as FileHeader)
+		if (selectedFileHeader.isFolder) {
+			if (system.selectedFileHeader.fileID != selectedFileHeader.fileID)
+				selectFolder(event.data as FileHeader)
 		}
 	}
 

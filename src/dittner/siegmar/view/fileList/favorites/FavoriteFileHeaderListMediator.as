@@ -34,7 +34,6 @@ public class FavoriteFileHeaderListMediator extends WalterMediator {
 		view.list.addEventListener(SelectableDataGroupEvent.SELECTED, viewListItemSelectedHandler);
 		view.list.addEventListener(SelectableDataGroupEvent.DOUBLE_CLICKED, viewListDoubleClicked);
 		view.list.addEventListener(SelectableDataGroupEvent.REMOVE, favoriteHeaderRemoved);
-		system.openFolder(system.rootFolderHeader);
 		var op:IAsyncOperation = fileStorage.loadFavoriteFileHeaders();
 		op.addCompleteCallback(favoriteHeadersLoaded);
 	}

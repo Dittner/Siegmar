@@ -11,6 +11,7 @@
         import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
         import dittner.siegmar.domain.fileSystem.body.NoteListBody;
         import dittner.siegmar.domain.fileSystem.body.note.TitledNote;
+        import dittner.siegmar.utils.delay.invalidateOf;
         import dittner.siegmar.view.common.utils.AppColors;
         import dittner.siegmar.view.common.utils.FontName;
 
@@ -29,6 +30,7 @@
             this.fileBody = file.body as NoteListBody;
             reservedTitleHash = getReservedTitleHash();
             currentState = "add";
+            invalidateOf(focusTextInput);
             return operation;
         }
 
@@ -41,7 +43,12 @@
             titleInput.text = titledNote.title;
             contentInput.text = titledNote.text;
             currentState = "edit";
+            invalidateOf(focusTextInput);
             return operation;
+        }
+
+        private function focusTextInput():void {
+            if(stage) stage.focus = titleInput;
         }
 
         public function removeNote(file:SiegmarFile):IAsyncOperation {

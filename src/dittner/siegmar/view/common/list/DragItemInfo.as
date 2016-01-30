@@ -4,6 +4,7 @@ public class DragItemInfo {
 
 	public var isActive:Boolean = false;
 	public var data:Object;
+	public var srcItemInd:int = -1;
 	public var index:int = -1;
 }
 }

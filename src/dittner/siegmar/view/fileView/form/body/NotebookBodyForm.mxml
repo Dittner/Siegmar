@@ -11,6 +11,7 @@
         import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
         import dittner.siegmar.domain.fileSystem.body.NoteListBody;
         import dittner.siegmar.domain.fileSystem.body.note.Note;
+        import dittner.siegmar.utils.delay.invalidateOf;
         import dittner.siegmar.view.common.utils.AppColors;
 
         //----------------------------------------------------------------------------------------------
@@ -27,6 +28,7 @@
             this.file = file;
             this.fileBody = file.body as NoteListBody;
             currentState = "add";
+            invalidateOf(focusTextInput);
             return operation;
         }
 
@@ -37,7 +39,12 @@
             var note:Note = file.selectedNote;
             textInput.text = note.text;
             currentState = "edit";
+            invalidateOf(focusTextInput);
             return operation;
+        }
+
+        private function focusTextInput():void {
+            if(stage) stage.focus = textInput.area;
         }
 
         public function removeNote(file:SiegmarFile):IAsyncOperation {

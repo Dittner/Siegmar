@@ -1,4 +1,5 @@
 package dittner.siegmar.view.common.list {
+import dittner.siegmar.utils.delay.doLaterInMSec;
 import dittner.siegmar.view.common.utils.TapEventKit;
 
 import flash.display.Bitmap;
@@ -9,7 +10,6 @@ import flash.events.MouseEvent;
 import flash.geom.Point;
 
 import mx.collections.ArrayCollection;
-import mx.core.IDataRenderer;
 import mx.core.IUIComponent;
 import mx.core.IVisualElement;
 
@@ -123,6 +123,7 @@ public class ReordableList extends SelectableDataGroup {
 			dragItemInfo.isActive = true;
 			dragItemInfo.data = (pressedRenderer as IItemRenderer).data;
 			dragItemInfo.index = (pressedRenderer as IItemRenderer).itemIndex;
+			dragItemInfo.srcItemInd = itemToSrcIndex((pressedRenderer as IItemRenderer).data);
 
 			createDragProxy(pressedRenderer);
 			var pos:Point = pressedRenderer.localToGlobal(new Point(0, 0));
@@ -134,8 +135,16 @@ public class ReordableList extends SelectableDataGroup {
 
 			for each(var renderer:* in renderers)
 				if (renderer is IDraggable)(renderer as IDraggable).dragItemInfo = dragItemInfo;
-
 		}
+	}
+
+	private function itemToSrcIndex(item:*):int {
+		var src:Array = dataProvider is ArrayCollection ? (dataProvider as ArrayCollection).source : [];
+		for (var i:int = 0; i < src.length; i++)
+			if (item == src[i]) {
+				return i;
+			}
+		return -1;
 	}
 
 	private function createDragProxy(renderer:IUIComponent):void {
@@ -153,22 +162,36 @@ public class ReordableList extends SelectableDataGroup {
 		}
 	}
 
+	private var droppedItemIndex:int;
 	private function renderer_upHandler(event:MouseEvent):void {
 		pressedRenderer = null;
-		var renderer:IDataRenderer = event.currentTarget as IDataRenderer;
-		if (dragItemInfo.isActive && renderer && renderer.data != dragItemInfo.data) {
-			var newIndex:int = (renderer as IItemRenderer).itemIndex;
-			var src:Array = (dataProvider as ArrayCollection).source;
-			src.splice(dragItemInfo.index, 1);
+		var renderer:IItemRenderer = event.currentTarget as IItemRenderer;
+		var coll:ArrayCollection = dataProvider as ArrayCollection;
+		if (coll && dragItemInfo.isActive && renderer && renderer.data != dragItemInfo.data) {
+			var newIndex:int = itemToSrcIndex((renderer as IItemRenderer).data);
+			var src:Array = coll.source;
+			src.splice(dragItemInfo.srcItemInd, 1);
 			src.splice(newIndex, 0, dragItemInfo.data);
 
-			for each(var r:IItemRenderer in renderers) {
-				if (r) r.data = dataProvider.getItemAt(r.itemIndex);
-			}
+			droppedItemIndex = (renderer as IItemRenderer).itemIndex;
+			var filterFunc:Function = coll.filterFunction;
+			coll = new ArrayCollection(src);
+			coll.filterFunction = filterFunc;
+			coll.refresh();
+			dataProvider = coll;
+			doLaterInMSec(scrollToDroppedItem, 500);
+
 			dispatchEvent(new Event('orderChanged', true));
 		}
 
 		destroyDragProxy();
+	}
+
+	private function scrollToDroppedItem():void {
+		if (droppedItemIndex >= 0) {
+			var spDelta:Point = layout.getScrollPositionDeltaToElement(droppedItemIndex);
+			if (spDelta) verticalScrollPosition += spDelta.y;
+		}
 	}
 
 	private function destroyDragProxy():void {
