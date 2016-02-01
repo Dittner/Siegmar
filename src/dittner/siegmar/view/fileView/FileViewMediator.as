@@ -59,7 +59,7 @@ public class FileViewMediator extends WalterMediator {
 				completeOp.addCompleteCallback(function (op:IAsyncOperation):void {
 					if (system.openedFile) {
 						view.closeForm();
-						if(op.isSuccess) view.refresh();
+						if(op.isSuccess && op.result) view.refresh();
 					}
 				});
 				break;

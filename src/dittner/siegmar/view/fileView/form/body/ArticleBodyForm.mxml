@@ -9,12 +9,12 @@
     <fx:Script><![CDATA[
         import dittner.siegmar.bootstrap.async.AsyncOperation;
         import dittner.siegmar.bootstrap.async.IAsyncOperation;
-        import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
         import dittner.siegmar.domain.fileSystem.body.NoteListBody;
         import dittner.siegmar.domain.fileSystem.body.links.BookLink;
         import dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
         import dittner.siegmar.domain.fileSystem.body.note.ArticleNote;
         import dittner.siegmar.domain.fileSystem.body.note.NoteType;
+        import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
         import dittner.siegmar.utils.delay.invalidateOf;
         import dittner.siegmar.view.common.utils.AppColors;
         import dittner.siegmar.view.common.utils.FontName;
@@ -96,7 +96,7 @@
         }
 
         private function focusTextInput():void {
-            if(stage) stage.focus = textInput;
+            if (stage) stage.focus = textInput;
         }
 
         private function selectBookLink(id:String):void {
@@ -182,7 +182,7 @@
              width="100%"
              fontFamily="{FontName.MYRIAD}" fontSize="16"
              mouseChildren="false" mouseEnabled="false" paddingBottom="30"
-             color="{AppColors.TEXT_WHITE}"/>
+             color="{AppColors.HELL_TÜRKIS}"/>
 
     <s:Group width="100%" visible.remove="false" includeInLayout.remove="false">
         <s:layout>
@@ -262,16 +262,19 @@
              color="{AppColors.HELL_TÜRKIS}"/>
 
     <s:HGroup width="100%" gap="10">
-        <button:GrayButton id="cancelBtn"
-                           width="100%"
-                           label="Abbrechen"
-                           click="cancelBtnClickHandler()"/>
+        <button:StrokeButton id="cancelBtn"
+                             width="100%"
+                             color="{AppColors.HELL_TÜRKIS}"
+                             label="Abbrechen"
+                             click="cancelBtnClickHandler()"/>
 
-        <button:BlackButton id="applyBtn"
-                            width="100%"
-                            label="Bestätigen"
-                            enabled="{textInput.text}"
-                            click="applyBtnClickHandler()"/>
+        <button:ColorButton id="applyBtn"
+                             width="100%"
+                             label="Bestätigen"
+                             bgColor="{AppColors.HELL_TÜRKIS}"
+                             textColor="0"
+                             enabled="{textInput.text}"
+                             click="applyBtnClickHandler()"/>
     </s:HGroup>
 
 </s:Group>

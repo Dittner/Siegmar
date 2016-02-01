@@ -170,8 +170,12 @@ public class ReordableList extends SelectableDataGroup {
 		if (coll && dragItemInfo.isActive && renderer && renderer.data != dragItemInfo.data) {
 			var newIndex:int = itemToSrcIndex((renderer as IItemRenderer).data);
 			var src:Array = coll.source;
-			src.splice(dragItemInfo.srcItemInd, 1);
-			src.splice(newIndex, 0, dragItemInfo.data);
+			if(src[dragItemInfo.srcItemInd] == dragItemInfo.data) {
+				src.splice(dragItemInfo.srcItemInd, 1);
+				src.splice(newIndex, 0, dragItemInfo.data);
+			}
+			else throw new Error("Drag-n-drop is failed. Item's index matches wrong item's data");
+
 
 			droppedItemIndex = (renderer as IItemRenderer).itemIndex;
 			var filterFunc:Function = coll.filterFunction;

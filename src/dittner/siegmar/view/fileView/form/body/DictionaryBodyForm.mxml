@@ -8,9 +8,9 @@
     <fx:Script><![CDATA[
         import dittner.siegmar.bootstrap.async.AsyncOperation;
         import dittner.siegmar.bootstrap.async.IAsyncOperation;
-        import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
         import dittner.siegmar.domain.fileSystem.body.NoteListBody;
         import dittner.siegmar.domain.fileSystem.body.note.TitledNote;
+        import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
         import dittner.siegmar.utils.delay.invalidateOf;
         import dittner.siegmar.view.common.utils.AppColors;
         import dittner.siegmar.view.common.utils.FontName;
@@ -48,7 +48,7 @@
         }
 
         private function focusTextInput():void {
-            if(stage) stage.focus = titleInput;
+            if (stage) stage.focus = titleInput;
         }
 
         public function removeNote(file:SiegmarFile):IAsyncOperation {
@@ -129,7 +129,7 @@
              width="100%"
              fontFamily="{FontName.MYRIAD}" fontSize="16"
              mouseChildren="false" mouseEnabled="false" paddingBottom="30"
-             color="{AppColors.TEXT_WHITE}"/>
+             color="{AppColors.HELL_TÜRKIS}"/>
 
     <input:TextInputForm id="titleInput"
                          visible.remove="false" includeInLayout.remove="false"
@@ -149,13 +149,16 @@
              color="{AppColors.HELL_TÜRKIS}"/>
 
     <s:HGroup width="100%" gap="10">
-        <button:GrayButton id="cancelBtn"
-                           width="100%"
-                           label="Abbrechen"
-                           click="cancelBtnClickHandler()"/>
+        <button:StrokeButton id="cancelBtn"
+                             width="100%"
+                             color="{AppColors.HELL_TÜRKIS}"
+                             label="Abbrechen"
+                             click="cancelBtnClickHandler()"/>
 
-        <button:BlackButton id="applyBtn"
+        <button:ColorButton id="applyBtn"
                             width="100%"
+                            bgColor="{AppColors.HELL_TÜRKIS}"
+                            textColor="0"
                             label="Bestätigen"
                             enabled="{isApplyBtnEnabled(currentState, titleInput.text, contentInput.text)}"
                             click="applyBtnClickHandler()"/>
