@@ -96,8 +96,7 @@
 
         public function remove(fileHeader:FileHeader):void {
             _mode = FileFormMode.REMOVE;
-            removeLbl.text = "Sind Sie sicher, das Sie entfernen möchten?\n\n";
-            removeLbl.text += fileHeader.isFolder ? "Ordner: " : "Datei: ";
+            removeLbl.text = fileHeader.isFolder ? "Ordner: " : "Datei: ";
             removeLbl.text += fileHeader.title.toUpperCase();
             dispatchEvent(new Event("modeChanged"));
         }
@@ -128,6 +127,13 @@
                 dateFormatter.formatString = 'MM.DD.YYYY JJ:NN';
             }
         }
+
+        private function getHeader(formMode:String):String {
+            if(formMode == FileFormMode.ADD) return "Wählen Sie bitte den Typ der Datei aus";
+            else if(formMode == FileFormMode.EDIT) return "Hier können Sie die Dateien erneuern";
+            else if(formMode == FileFormMode.REMOVE) return "Sind Sie sicher, das Sie entfernen möchten?";
+            return "";
+        }
         ]]></fx:Script>
 
     <s:states>
@@ -139,8 +145,12 @@
         <s:State name="picture"/>
     </s:states>
 
+    <stylecomponents:Background left="-15" right="-15" top="-15" bottom="-15" color="0" alpha=".25"/>
+
+
     <s:BitmapImage width="100%" height="100%" alpha=".85"
                    source="@Embed(source='/assets/form_bg_pattern.png')" fillMode="repeat"/>
+
 
     <s:VGroup width="100%" height="100%" paddingTop="20" paddingLeft="20" paddingRight="20" paddingBottom="20"
               gap="20">
@@ -151,12 +161,14 @@
                  mouseChildren="false" mouseEnabled="false" paddingBottom="50"
                  color="{AppColors.HELL_TÜRKIS}"/>
 
-        <s:Label text="Wählen Sie bitte den Typ der Datei aus"
-                 visible="{isAddMode}" includeInLayout="{isAddMode}"
+        <s:Spacer height="25%" includeInLayout="{!isEditMode}"/>
+
+        <s:Label text="{getHeader(mode)}"
+                 styleName="header"
                  width="100%" paddingBottom="0" textAlign="center"
-                 fontFamily="{FontName.MYRIAD}" fontSize="18"
-                 mouseChildren="false" mouseEnabled="false"
-                 color="{AppColors.HELL_TÜRKIS}"/>
+                 mouseChildren="false" mouseEnabled="false"/>
+
+        <s:Spacer height="25%" includeInLayout="{!isEditMode}"/>
 
         <s:Group width="100%" visible="{isAddMode}" includeInLayout="{isAddMode}">
             <s:layout>
@@ -227,12 +239,11 @@
                  mouseChildren="false" mouseEnabled="false"
                  color="{AppColors.TEXT_LIGHT}"/>
 
-        <s:Spacer height="100%"
-                  visible="{isRemoveMode}" includeInLayout="{isRemoveMode}"/>
-
         <s:Group width="100%" height="100%"
                  visible="{isEditMode}" includeInLayout="{isEditMode}">
-            <stylecomponents:Background top="20" bottom="60" width="100%" color="#ffFFff"/>
+            <stylecomponents:Background top="20" bottom="60" width="100%"
+                                        strokeColor="{AppColors.INPUT_BORDER}" weight="1" strokeAlpha="1"
+                                        color="{AppColors.INPUT_CONTENT}"/>
 
             <s:Label width="100%" maxDisplayedLines="1" height="20"
                      paddingTop="4"
@@ -246,7 +257,7 @@
                 <list:SelectableDataGroup id="destinationFolderList"
                                           width="100%"
                                           dataProvider="{destinationFolderColl}"
-                                          itemRenderer="dittner.siegmar.view.fileList.list.FileHeaderRenderer">
+                                          itemRenderer="dittner.siegmar.view.fileList.list.FolderRenderer">
                     <list:layout>
                         <s:VerticalLayout gap="0" useVirtualLayout="true" variableRowHeight="false"/>
                     </list:layout>
@@ -274,6 +285,8 @@
                          color="#ffFFff"/>
             </s:HGroup>
         </s:Group>
+
+        <s:Spacer height="100%" includeInLayout="{!isEditMode}"/>
 
         <s:HGroup width="100%" gap="10">
             <button:StrokeButton id="cancelBtn"

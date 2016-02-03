@@ -61,8 +61,7 @@
             this.file = file;
             this.fileBody = file.body as BookLinksBody;
             var link:BookLink = file.selectedNote as BookLink;
-            removeLbl.text = "Sind Sie sicher, das Sie entfernen möchten?\n\n";
-            removeLbl.text += link.authorName + "\n" + link.bookName + "\n" + link.publicationYear + "г.";
+            removeLbl.text = link.authorName + "\n" + link.bookName + "\n" + link.publicationYear + "г.";
             currentState = "remove";
             return operation;
         }
@@ -168,6 +167,16 @@
                          visible.remove="false" includeInLayout.remove="false"
                          width="100%" title="Anzahl der Seiten:"/>
 
+    <s:Label styleName="header"
+             paddingTop="30" paddingBottom="30"
+             text="Sind Sie sicher, das Sie entfernen möchten?"
+             visible="false" includeInLayout="false"
+             visible.remove="true" includeInLayout.remove="true"
+             width="100%"
+             textAlign="center" verticalAlign="middle"
+             mouseChildren="false" mouseEnabled="false"
+             color="{AppColors.HELL_TÜRKIS}"/>
+
     <s:Label id="removeLbl"
              visible="false"
              visible.remove="true"
@@ -175,7 +184,7 @@
              fontFamily="{FontName.MYRIAD}" fontSize="18"
              mouseChildren="false" mouseEnabled="false"
              maxDisplayedLines="8"
-             color="{AppColors.HELL_TÜRKIS}"/>
+             color="{AppColors.TEXT_LIGHT}"/>
 
     <s:HGroup width="100%" gap="10">
         <button:StrokeButton id="cancelBtn"

@@ -28,7 +28,8 @@
               horizontalAlign="center"
               paddingLeft="20" paddingTop="20" paddingRight="20" paddingBottom="20">
         <s:Label text="Die Kopie der Dateibank auf den Server exportieren"
-                 fontSize="30" fontWeight="bold" color="#ffFFff" paddingBottom="20"/>
+                 styleName="header"
+                 paddingBottom="20"/>
 
         <input:TextInputForm id="hostInput"
                              width="400" title="Server"/>
@@ -64,7 +65,7 @@
                              title="Die Dateibank wird hochgeladen..."
                              width="500"/>
 
-    <s:Label fontFamily="{FontName.GEORGIA}"
+    <s:Label fontFamily="{FontName.BASIC}"
              fontWeight="bold"
              visible="{errorText}"
              color="{AppColors.TEXT_INVALID}"
@@ -74,7 +75,7 @@
              bottom="50"
              text="{errorText}"/>
 
-    <s:Label fontFamily="{FontName.GEORGIA}"
+    <s:Label fontFamily="{FontName.BASIC}"
              fontWeight="bold"
              visible="{isUploadSuccess}"
              color="{AppColors.TEXT_WHITE}"

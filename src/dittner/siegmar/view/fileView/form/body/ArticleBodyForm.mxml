@@ -113,8 +113,7 @@
             this.file = file;
             this.fileBody = file.body as NoteListBody;
             var articleNote:ArticleNote = file.selectedNote as ArticleNote;
-            removeLbl.text = "Sind Sie sicher, das Sie entfernen möchten?\n\n";
-            removeLbl.text += articleNote.text;
+            removeLbl.text = articleNote.text;
             currentState = "remove";
             return operation;
         }
@@ -163,6 +162,11 @@
                 res.bookLinkId = linkBtn.selected && linksList.selectedLink ? linksList.selectedLink.id : "";
             }
             return res;
+        }
+
+        private function isApplyBtnEnabled(currentState:String, docContent:String):Boolean {
+            if (currentState == "remove") return true;
+            else return docContent;
         }
         ]]></fx:Script>
 
@@ -241,7 +245,6 @@
 
                 <input:TextInputForm id="authorInput"
                                      showTitle="false" height="25"
-                                     fontSize="14"
                                      visible="{authorBtn.selected}"
                                      width="100%"/>
             </s:VGroup>
@@ -252,6 +255,16 @@
                         visible.remove="false" includeInLayout.remove="false"
                         width="100%" height="100%" title="Inhalt:"/>
 
+    <s:Label styleName="header"
+             paddingTop="30" paddingBottom="30"
+             text="Sind Sie sicher, das Sie entfernen möchten?"
+             visible="false" includeInLayout="false"
+             visible.remove="true" includeInLayout.remove="true"
+             width="100%"
+             textAlign="center" verticalAlign="middle"
+             mouseChildren="false" mouseEnabled="false"
+             color="{AppColors.HELL_TÜRKIS}"/>
+
     <s:Label id="removeLbl"
              visible="false" visible.remove="true"
              includeInLayout="false" includeInLayout.remove="true"
@@ -259,7 +272,7 @@
              fontFamily="{FontName.MYRIAD}" fontSize="18"
              mouseChildren="false" mouseEnabled="false"
              maxDisplayedLines="8"
-             color="{AppColors.HELL_TÜRKIS}"/>
+             color="{AppColors.TEXT_LIGHT}"/>
 
     <s:HGroup width="100%" gap="10">
         <button:StrokeButton id="cancelBtn"
@@ -273,7 +286,7 @@
                              label="Bestätigen"
                              bgColor="{AppColors.HELL_TÜRKIS}"
                              textColor="0"
-                             enabled="{textInput.text}"
+                             enabled="{isApplyBtnEnabled(currentState, textInput.text)}"
                              click="applyBtnClickHandler()"/>
     </s:HGroup>
 

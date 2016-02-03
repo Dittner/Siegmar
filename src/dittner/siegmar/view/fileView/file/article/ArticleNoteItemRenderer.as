@@ -10,11 +10,11 @@ import flash.text.TextFormat;
 
 public class ArticleNoteItemRenderer extends DraggableNoteItemRenderer {
 
-	private static const TITLE_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 30, AppColors.TEXT_BLACK, true, false, null, null, null, "center");
-	private static const SUBTITLE_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 24, AppColors.TEXT_BLACK, true, false, null, null, null, "left");
-	private static const EPIGRAPH_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 18, AppColors.TEXT_BLACK, false, true, null, null, null, "right");
-	private static const CITATION_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 20, 0x252787, false, false, null, null, null, "left");
-	private static const TEXT_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 20, AppColors.TEXT_BLACK, false, false, null, null, null, "left");
+	private static const TITLE_FORMAT:TextFormat = new TextFormat(FontName.BASIC_MX, 30, AppColors.TEXT_BLACK, true, false, null, null, null, "center");
+	private static const SUBTITLE_FORMAT:TextFormat = new TextFormat(FontName.BASIC_MX, 24, AppColors.TEXT_BLACK, true, false, null, null, null, "left");
+	private static const EPIGRAPH_FORMAT:TextFormat = new TextFormat(FontName.BASIC_MX, 18, AppColors.TEXT_BLACK, false, true, null, null, null, "right");
+	private static const CITATION_FORMAT:TextFormat = new TextFormat(FontName.BASIC_MX, 20, 0x252787, false, false, null, null, null, "left");
+	private static const TEXT_FORMAT:TextFormat = new TextFormat(FontName.BASIC_MX, 20, AppColors.TEXT_BLACK, false, false, null, null, null, "left");
 
 	private static const PAD:uint = 10;
 	private static const MAX_WIDTH:uint = 1000;

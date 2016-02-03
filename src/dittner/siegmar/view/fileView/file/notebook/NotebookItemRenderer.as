@@ -10,7 +10,7 @@ import flash.text.TextFormat;
 
 public class NotebookItemRenderer extends DraggableNoteItemRenderer {
 
-	private static const TEXT_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 20, AppColors.TEXT_BLACK);
+	private static const TEXT_FORMAT:TextFormat = new TextFormat(FontName.BASIC_MX, 20, AppColors.TEXT_BLACK);
 
 	private static const PAD:uint = 20;
 	private static const SEP_COLOR:uint = 0;

@@ -11,7 +11,7 @@ import flash.text.TextFormat;
 public class DictionaryItemRenderer extends DraggableNoteItemRenderer {
 
 	private static const TITLE_FORMAT:TextFormat = new TextFormat(FontName.MYRIAD_MX, 24, AppColors.TEXT_BLACK, true);
-	private static const DESCRIPTION_FORMAT:TextFormat = new TextFormat(FontName.GEORGIA_MX, 20, AppColors.TEXT_BLACK);
+	private static const DESCRIPTION_FORMAT:TextFormat = new TextFormat(FontName.BASIC_MX, 20, AppColors.TEXT_BLACK);
 
 	private static const PAD:uint = 20;
 	private static const GAP:uint = 10;

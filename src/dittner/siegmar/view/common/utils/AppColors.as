@@ -8,11 +8,7 @@ public class AppColors {
 	public static const BLACK:uint = 0;
 	public static const LILA:uint = 0x7e74b6;
 
-	public static const BG:uint = 0xe0e0e6;
-	public static const EDITOR_CONTENT_BG:uint = 0xf0F0f5;
-
 	public static const TOOLBAR:uint = 0x111111;//0x0b0e34;
-	public static const SCREEN_LIST_BG:uint = 0;
 
 	public static const EDITOR_BORDER:uint = 0;
 	public static const EDITOR_SHADOW:uint = 0x54545d;
@@ -30,7 +26,7 @@ public class AppColors {
 	public static const INVALID_INPUT_BORDER:uint = 0xe33333;
 
 	public static const INPUT_BORDER:uint = 0xc7c7cf;
-	public static const INPUT_CONTENT:uint = 0xffFFff;
+	public static const INPUT_CONTENT:uint = 0xa8a5b5;
 
 	public static const DOC_DICTIONARY:uint = 0xa2cddb;
 	public static const DOC_NOTEBOOK:uint = 0xe7e2cb;

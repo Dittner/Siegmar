@@ -27,15 +27,23 @@ public class FavoriteFileHeaderListMediator extends WalterMediator {
 
 	override protected function activate():void {
 		view.list.dataProvider = new ArrayCollection();
-
+		listenProxy(fileStorage, FileStorage.FILE_REMOVED, fileRemoved);
 		listenProxy(system, SiegmarFileSystem.FILE_SELECTED, systemFileSelected);
 		listenMediator(ToolbarMediator.FAVORITE_FILES_CHANGED_KEY, addHeaderToFavorites);
 
 		view.list.addEventListener(SelectableDataGroupEvent.SELECTED, viewListItemSelectedHandler);
 		view.list.addEventListener(SelectableDataGroupEvent.DOUBLE_CLICKED, viewListDoubleClicked);
 		view.list.addEventListener(SelectableDataGroupEvent.REMOVE, favoriteHeaderRemoved);
+		loadFavoriteFileHeaders();
+	}
+
+	private function loadFavoriteFileHeaders():void {
 		var op:IAsyncOperation = fileStorage.loadFavoriteFileHeaders();
 		op.addCompleteCallback(favoriteHeadersLoaded);
+	}
+
+	private function fileRemoved(msg:WalterMessage):void {
+		loadFavoriteFileHeaders();
 	}
 
 	private function viewListItemSelectedHandler(event:SelectableDataGroupEvent):void {

@@ -11,22 +11,28 @@
 }
 
 @font-face {
-    src: url("/fonts/georgia.ttf");
-    font-family: Georgia;
+    src: url("/fonts/ClearSans-Regular.ttf");
+    font-family: Basic;
     embedAsCFF: true;
 }
 
 @font-face {
-    src: url("/fonts/georgia-bold.ttf");
-    font-family: Georgia;
+    src: url("/fonts/ClearSans-Bold.ttf");
+    font-family: Basic;
     fontWeight: bold;
     embedAsCFF: true;
 }
 
 @font-face {
-    src: url("/fonts/georgia-italic.ttf");
-    font-family: Georgia;
+    src: url("/fonts/ClearSans-Italic.ttf");
+    font-family: Basic;
     fontStyle: italic;
+    embedAsCFF: true;
+}
+
+@font-face {
+    src: url("/fonts/ClearSans-Thin.ttf");
+    font-family: Thin;
     embedAsCFF: true;
 }
 
@@ -59,21 +65,21 @@
 }
 
 @font-face {
-    src: url("/fonts/georgia.ttf");
-    font-family: GeorgiaMX;
+    src: url("/fonts/ClearSans-Regular.ttf");
+    font-family: BasicMX;
     embedAsCFF: false;
 }
 
 @font-face {
-    src: url("/fonts/georgia-bold.ttf");
-    font-family: GeorgiaMX;
+    src: url("/fonts/ClearSans-Bold.ttf");
+    font-family: BasicMX;
     fontWeight: bold;
     embedAsCFF: false;
 }
 
 @font-face {
-    src: url("/fonts/georgia-italic.ttf");
-    font-family: GeorgiaMX;
+    src: url("/fonts/ClearSans-Italic.ttf");
+    font-family: BasicMX;
     fontStyle: italic;
     embedAsCFF: false;
 }
@@ -101,7 +107,7 @@
 /***********************************************************/
 
 global {
-    fontSize: 14px;
+    fontSize: 15px;
     fontWeight: normal;
     contentBackgroundAlpha: 0;
     backgroundColor: 0;
@@ -110,9 +116,16 @@ global {
 }
 
 s|Label, s|Button {
-    fontSize: 14px;
+    fontSize: 15px;
     fontWeight: normal;
     fontFamily: MyriadPro;
+}
+
+s|Label.header {
+    fontSize: 30px;
+    fontWeight: normal;
+    fontFamily: Thin;
+    color: #b2d2e6;
 }
 
 /************************** INPUT **************************/
@@ -122,8 +135,8 @@ input|TextInputForm {
     contentBackgroundAlpha: 1;
     borderColor: #c7c7cf;
     focusSkin: ClassReference("mx.core.UIComponent");
-    fontSize: 14px;
-    color: #333333;
+    fontSize: 15px;
+    color: #050f25;
 }
 
 s|TextInput.loginInput {
@@ -192,7 +205,7 @@ cap|CapHScrollBarSkin #incrementButton {
 
 /************************** OTHER COMPONENTS **************************/
 s|TabBar {
-    fontSize: 14;
+    fontSize: 15px;
     skinClass: ClassReference("dittner.siegmar.view.common.tabBar.TabBarSkin");
 }
 
@@ -201,12 +214,12 @@ s|CheckBox {
 }
 
 s|RadioButton {
-    fontSize: 14px;
+    fontSize: 15px;
     skinClass: ClassReference("dittner.siegmar.view.common.radioButton.CustomRadioButtonSkin");
 }
 
 spinner|CustomSpinner {
     skin-class: ClassReference("dittner.siegmar.view.common.spinner.CustomSpinnerSkin");
-    fontSize: 14px;
+    fontSize: 15px;
     color: #4e4f61;
 }

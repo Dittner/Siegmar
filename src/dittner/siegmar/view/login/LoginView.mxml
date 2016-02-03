@@ -88,15 +88,14 @@
               paddingTop="30" paddingBottom="20"
               verticalAlign="middle">
 
-        <s:Label fontFamily="{FontName.GEORGIA}"
-                 color="{AppColors.HELL_TÜRKIS}"
-                 fontSize="38" width="100%" textAlign="center"
+        <s:Label styleName="header"
+                 fontSize="50" width="100%" textAlign="center"
                  paddingBottom="60"
                  text="Die Chiffriermaschine Siegmar"/>
 
         <s:HGroup width="100%" gap="10" verticalAlign="middle"
                   visible.authorization="false" includeInLayout.authorization="false">
-            <s:Label fontFamily="{FontName.GEORGIA}"
+            <s:Label fontFamily="{FontName.BASIC}"
                      color="{AppColors.TEXT_RED}"
                      width="{width/2 - 260}"
                      fontSize="30"
@@ -107,7 +106,7 @@
         </s:HGroup>
 
         <s:HGroup width="100%" gap="10" verticalAlign="middle">
-            <s:Label fontFamily="{FontName.GEORGIA}"
+            <s:Label fontFamily="{FontName.BASIC}"
                      color="{AppColors.TEXT_RED}"
                      width="{width/2 - 260}"
                      fontSize="30"
@@ -118,7 +117,7 @@
         </s:HGroup>
 
         <s:HGroup width="100%" gap="10" verticalAlign="middle">
-            <s:Label fontFamily="{FontName.GEORGIA}"
+            <s:Label fontFamily="{FontName.BASIC}"
                      color="{AppColors.TEXT_RED}"
                      width="{width/2 - 260}"
                      fontSize="30"
@@ -130,7 +129,7 @@
         </s:HGroup>
 
         <s:HGroup width="100%" gap="10" verticalAlign="middle">
-            <s:Label fontFamily="{FontName.GEORGIA}"
+            <s:Label fontFamily="{FontName.BASIC}"
                      color="{AppColors.TEXT_RED}"
                      width="{width/2 - 260}"
                      fontSize="30"
@@ -147,7 +146,7 @@
                             label.authorization="Einloggen"/>
 
         <s:Label id="errorLbl"
-                 fontFamily="{FontName.GEORGIA}"
+                 fontFamily="{FontName.BASIC}"
                  fontWeight="bold"
                  visible="{isLoginWithError}"
                  color="{AppColors.TEXT_INVALID}"

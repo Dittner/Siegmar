@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
          xmlns:s="library://ns.adobe.com/flex/spark"
-         xmlns:bodyForm="dittner.siegmar.view.fileView.form.body.*">
+         xmlns:bodyForm="dittner.siegmar.view.fileView.form.body.*"
+         xmlns:stylecomponents="cosmoLib.components.styleComponents.*">
 
     <fx:Script><![CDATA[
         import dittner.siegmar.bootstrap.async.IAsyncOperation;
@@ -77,8 +78,11 @@
         <s:State name="bookLinks"/>
     </s:states>
 
+    <stylecomponents:Background left="-2" right="-2" top="-2" bottom="-2" color="0" alpha=".5"/>
+
     <s:BitmapImage width="100%" height="100%" alpha=".85"
                    source="@Embed(source='/assets/form_bg_pattern.png')" fillMode="repeat"/>
+
 
     <bodyForm:NotebookBodyForm id="noteBodyForm"
                                includeInLayout="false" visible="false"

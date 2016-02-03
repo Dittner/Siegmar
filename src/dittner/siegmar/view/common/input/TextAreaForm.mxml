@@ -113,7 +113,6 @@
     <input:HistoryTextArea id="area"
                            width="100%" height="100%"
                            text="@{text}"
-                           color="#333333"
                            fontFamily="{FontName.MYRIAD}"
                            focusSkin="{UIComponent}"
                            borderVisible="false"

@@ -124,6 +124,7 @@ public class SiegmarFileSystem extends WalterProxy {
 			_settingsFileHeader = op.settingsFileHeader;
 
 			listenProxy(fileStorage, FileStorage.FILE_STORED, fileStored);
+			listenProxy(fileStorage, FileStorage.FILE_REMOVED, fileRemoved);
 		}
 	}
 
@@ -150,6 +151,10 @@ public class SiegmarFileSystem extends WalterProxy {
 	}
 
 	private function fileStored(msg:WalterMessage):void {
+		if (!initOp || !initOp.isProcessing) loadFileHeaders();
+	}
+
+	private function fileRemoved(msg:WalterMessage):void {
 		if (!initOp || !initOp.isProcessing) loadFileHeaders();
 	}
 

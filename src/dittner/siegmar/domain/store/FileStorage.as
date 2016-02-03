@@ -24,6 +24,7 @@ import flash.data.SQLConnection;
 public class FileStorage extends WalterProxy {
 
 	public static const FILE_STORED:String = "stored";
+	public static const FILE_REMOVED:String = "removed";
 
 	public function FileStorage() {
 		_isEmpty = !RunDataBaseSQLOperation.existsDataBaseFile();
@@ -87,7 +88,7 @@ public class FileStorage extends WalterProxy {
 
 	public function removeFile(header:FileHeader):IAsyncOperation {
 		var cmd:IAsyncCommand = new RemoveFileSQLOperation(wrapFileHeader(header));
-		cmd.addCompleteCallback(notifyFileStored);
+		cmd.addCompleteCallback(notifyFileRemoved);
 		sqlCmdManager.add(cmd);
 		return cmd;
 	}
@@ -148,6 +149,9 @@ public class FileStorage extends WalterProxy {
 
 	private function notifyFileStored(op:IAsyncOperation):void {
 		if (op.isSuccess) sendMessage(FILE_STORED);
+	}
+	private function notifyFileRemoved(op:IAsyncOperation):void {
+		if (op.isSuccess) sendMessage(FILE_REMOVED);
 	}
 }
 }
