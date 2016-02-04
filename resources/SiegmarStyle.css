@@ -142,9 +142,10 @@ input|TextInputForm {
 s|TextInput.loginInput {
     fontSize: 30px;
     color: #b2d2e6;
-    fontFamily: MyriadProMX;
+    fontFamily: MyriadPro;
     fontWeight: normal;
     borderVisible: false;
+    focusedTextSelectionColor: #595ab6;
     focusSkin: ClassReference("mx.core.UIComponent");
     skinClass: ClassReference("dittner.siegmar.view.common.input.LoginTextInputSkin");
 }

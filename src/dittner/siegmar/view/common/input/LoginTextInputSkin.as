@@ -1,7 +1,7 @@
 package dittner.siegmar.view.common.input {
 import flash.display.Graphics;
 
-import spark.skins.mobile.TextInputSkin;
+import spark.skins.spark.TextInputSkin;
 
 public class LoginTextInputSkin extends TextInputSkin {
 
@@ -9,7 +9,8 @@ public class LoginTextInputSkin extends TextInputSkin {
 		super();
 	}
 
-	override protected function drawBackground(w:Number, h:Number):void {
+	override protected function updateDisplayList(w:Number, h:Number):void {
+		super.updateDisplayList(w, h);
 		var g:Graphics = graphics;
 		g.clear();
 		g.lineStyle(1, 0x595ab6);

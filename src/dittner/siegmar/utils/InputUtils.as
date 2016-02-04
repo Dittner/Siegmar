@@ -1,6 +1,7 @@
 package dittner.siegmar.utils {
 public class InputUtils {
-	public static const DIGITS:RegExp = /[0-9]+/;
+	public static const DIGITS:RegExp = /[0-9]/;
+	public static const NO_DIGITS:RegExp = /[^0-9]/;
 	public static const LETTERS:RegExp = /[a-zA-ZÄäÖöÜüß]+/;
 	public static const LETTERS_AND_SYMBOLS:RegExp = /[a-zA-ZÄäÖöÜüß *\/-]+/;
 
