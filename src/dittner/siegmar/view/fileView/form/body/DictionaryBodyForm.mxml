@@ -130,6 +130,8 @@
              mouseChildren="false" mouseEnabled="false" paddingBottom="30"
              color="{AppColors.HELL_TÜRKIS}"/>
 
+    <s:Spacer height="100%"/>
+
     <input:TextInputForm id="titleInput"
                          visible.remove="false" includeInLayout.remove="false"
                          width="100%" title="Titel:"/>
@@ -156,6 +158,8 @@
              mouseChildren="false" mouseEnabled="false"
              maxDisplayedLines="8"
              color="{AppColors.HELL_TÜRKIS}"/>
+
+    <s:Spacer height="100%"/>
 
     <s:HGroup width="100%" gap="10">
         <button:StrokeButton id="cancelBtn"

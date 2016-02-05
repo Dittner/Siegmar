@@ -129,9 +129,9 @@
         }
 
         private function getHeader(formMode:String):String {
-            if(formMode == FileFormMode.ADD) return "Wählen Sie bitte den Typ der Datei aus";
-            else if(formMode == FileFormMode.EDIT) return "Hier können Sie die Dateien erneuern";
-            else if(formMode == FileFormMode.REMOVE) return "Sind Sie sicher, das Sie entfernen möchten?";
+            if (formMode == FileFormMode.ADD) return "Wählen Sie bitte den Typ der Datei aus";
+            else if (formMode == FileFormMode.EDIT) return "Hier können Sie die Dateien erneuern";
+            else if (formMode == FileFormMode.REMOVE) return "Sind Sie sicher, das Sie entfernen möchten?";
             return "";
         }
         ]]></fx:Script>
@@ -145,14 +145,16 @@
         <s:State name="picture"/>
     </s:states>
 
-    <stylecomponents:Background left="-15" right="-15" top="-15" bottom="-15" color="0" alpha=".25"/>
-
-
-    <s:BitmapImage width="100%" height="100%" alpha=".85"
+    <s:BitmapImage width="100%" height="100%" alpha=".25"
                    source="@Embed(source='/assets/form_bg_pattern.png')" fillMode="repeat"/>
 
+    <stylecomponents:Background width="75%" height="75%"
+                                horizontalCenter="0" verticalCenter="0"
+                                color="#202131"/>
 
-    <s:VGroup width="100%" height="100%" paddingTop="20" paddingLeft="20" paddingRight="20" paddingBottom="20"
+    <s:VGroup width="75%" height="75%"
+              horizontalCenter="0" verticalCenter="0"
+              paddingTop="20" paddingLeft="20" paddingRight="20" paddingBottom="20"
               gap="20">
 
         <s:Label text="{getTitle(mode)}"

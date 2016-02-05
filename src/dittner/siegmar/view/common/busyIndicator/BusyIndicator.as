@@ -8,7 +8,7 @@ import flash.utils.Timer;
 import mx.core.UIComponent;
 
 [Event(name="renderComplete", type="flash.events.Event")]
-public class ClockBusyIndicator extends UIComponent {
+public class BusyIndicator extends UIComponent {
 
 	public static const RENDER_DELAY:int = 1000;//ms
 
@@ -18,7 +18,7 @@ public class ClockBusyIndicator extends UIComponent {
 	//
 	//--------------------------------------------------------------------------
 
-	public function ClockBusyIndicator() {
+	public function BusyIndicator() {
 		super();
 	}
 
@@ -28,7 +28,7 @@ public class ClockBusyIndicator extends UIComponent {
 	//
 	//----------------------------------------------------------------------------------------------
 
-	[Embed(source='/swf/clockBusyIndicator.swf')]
+	[Embed(source='/swf/busyIndicator.swf')]
 	protected static var indicatorClass:Class;
 
 	protected var indicatorBg:Sprite;

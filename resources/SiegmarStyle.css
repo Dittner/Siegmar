@@ -155,7 +155,7 @@ s|TextArea {
     focusSkin: ClassReference("mx.core.UIComponent");
     skinClass: ClassReference("spark.skins.spark.TextAreaSkin");
     horizontalScrollPolicy: off;
-    focusedTextSelectionColor: #ffcc00;
+    focusedTextSelectionColor: #595ab6;
 
     fontSize: 16px;
     color: #050f25;
