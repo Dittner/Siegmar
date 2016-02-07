@@ -77,8 +77,8 @@
 
     <s:BitmapImage width="100%" height="100%" source="@Embed(source='/bg_pattern.png')" fillMode="repeat"/>
 
-    <s:BitmapImage visible.authorization="{!isLoginSuccess}" visible.registration="false"
-                   horizontalCenter="0" top="20" source="@Embed(source='/assets/lock.png')"/>
+    <s:SWFLoader visible.authorization="{!isLoginSuccess}" visible.registration="false"
+                 horizontalCenter="0" top="50" source="@Embed(source='/swf/lock.swf')"/>
 
     <s:BitmapImage visible="{isLoginSuccess}"
                    visible.registration="false"
