@@ -135,8 +135,9 @@ input|TextInputForm {
     contentBackgroundAlpha: 1;
     borderColor: #c7c7cf;
     focusSkin: ClassReference("mx.core.UIComponent");
-    fontSize: 15px;
+    fontSize: 18px;
     color: #050f25;
+    focusedTextSelectionColor: #d2cee0;
 }
 
 s|TextInput.loginInput {
@@ -155,9 +156,9 @@ s|TextArea {
     focusSkin: ClassReference("mx.core.UIComponent");
     skinClass: ClassReference("spark.skins.spark.TextAreaSkin");
     horizontalScrollPolicy: off;
-    focusedTextSelectionColor: #595ab6;
+    focusedTextSelectionColor: #d2cee0;
 
-    fontSize: 16px;
+    fontSize: 18px;
     color: #050f25;
     fontWeight: normal;
 }

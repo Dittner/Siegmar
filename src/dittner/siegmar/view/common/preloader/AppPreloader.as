@@ -39,6 +39,7 @@ public final class AppPreloader extends SparkDownloadProgressBar {
 
 	private function nativeApplication_activateHandler(event:Event):void {
 		NativeApplication.nativeApplication.activeWindow.x = (Capabilities.screenResolutionX - NativeApplication.nativeApplication.activeWindow.width) / 2;
+		NativeApplication.nativeApplication.activeWindow.y = 0;
 	}
 
 	private var progressField:TextField;

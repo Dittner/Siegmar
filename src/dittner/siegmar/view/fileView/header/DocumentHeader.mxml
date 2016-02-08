@@ -27,11 +27,10 @@
             docIconRender.textColor = file.header.color;
             docIconRender.letter = file.header.symbol;
             fileTitleLbl.text = file.header.title;
+            if (file.header.options[FileOptionKeys.AUTHOR]) {
+                fileTitleLbl.text += ". " + file.header.options[FileOptionKeys.AUTHOR];
+            }
             fileTitleLbl.setStyle("color", file.header.color);
-            authorNameLbl.text = file.header.options[FileOptionKeys.AUTHOR];
-            //file.header.options[FileOptionKeys.DATE_CREATED];
-            authorNameLbl.text = file.header.options[FileOptionKeys.AUTHOR];
-            authorNameLbl.visible = authorNameLbl.includeInLayout = authorNameLbl.text;
         }
 
         override protected function updateDisplayList(w:Number, h:Number):void {
@@ -54,12 +53,6 @@
         <s:Label id="fileTitleLbl"
                  fontFamily="{FontName.MYRIAD}" fontSize="16"
                  mouseChildren="false" mouseEnabled="false"/>
-
-        <s:Label id="authorNameLbl"
-                 width="100%" textAlign="right"
-                 fontFamily="{FontName.MYRIAD}" fontSize="16"
-                 mouseChildren="false" mouseEnabled="false"
-                 color="#ffFFff"/>
 
         <s:Spacer width="100%"/>
 
