@@ -7,6 +7,7 @@ import dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
 import dittner.siegmar.domain.fileSystem.file.FileType;
 import dittner.siegmar.domain.fileSystem.header.FileHeader;
 import dittner.siegmar.domain.store.FileStorage;
+import dittner.siegmar.domain.user.User;
 import dittner.siegmar.message.MediatorMsg;
 import dittner.siegmar.view.common.form.FileFormMode;
 import dittner.siegmar.view.common.list.SelectableDataGroupEvent;
@@ -25,12 +26,15 @@ public class FileHeaderFormMediator extends WalterMediator {
 	public var system:SiegmarFileSystem;
 	[Inject]
 	public var fileStorage:FileStorage;
+	[Inject]
+	public var user:User;
 
 	private var selectedFolder:FileHeader;
 	private var appliedFolder:FileHeader;
 	private var foldersStack:Array;
 
 	override protected function activate():void {
+		view.userName = user.userName;
 		listenMediator(MediatorMsg.START_EDIT, startEdit);
 		listenMediator(MediatorMsg.END_EDIT, endEdit);
 		view.cancelBtn.addEventListener(MouseEvent.CLICK, cancelHandler);

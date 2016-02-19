@@ -7,7 +7,6 @@ import dittner.siegmar.bootstrap.walter.message.WalterMessage;
 import dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
 import dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
 import dittner.siegmar.domain.user.User;
-import dittner.siegmar.utils.delay.invalidateOf;
 import dittner.siegmar.view.common.list.SelectableDataGroupEvent;
 import dittner.siegmar.view.fileList.toolbar.ToolAction;
 
@@ -59,7 +58,10 @@ public class FileViewMediator extends WalterMediator {
 				completeOp.addCompleteCallback(function (op:IAsyncOperation):void {
 					if (system.openedFile) {
 						view.closeForm();
-						if(op.isSuccess && op.result) view.refresh();
+						if (op.isSuccess && op.result) {
+							view.refresh();
+							if (action == ToolAction.CREATE) view.scrollToBottom();
+						}
 					}
 				});
 				break;

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<application xmlns="http://ns.adobe.com/air/application/14.0">
+<application xmlns="http://ns.adobe.com/air/application/17.0">
 
     <id>Siegmar</id>
     <filename>Siegmar</filename>
     <name>Siegmar</name>
 
-    <versionNumber>2.2.0</versionNumber>
-    <versionLabel>2.2</versionLabel>
+    <versionNumber>2.4.0</versionNumber>
+    <versionLabel>2.4</versionLabel>
 
     <initialWindow>
         <content></content>
         <minimizable>true</minimizable>
         <maximizable>true</maximizable>
         <resizable>true</resizable>
-        <width>1280</width>
+        <width>1330</width>
         <height>950</height>
-        <minSize>1100 700</minSize>
+        <minSize>1280 700</minSize>
         <aspectRatio>landscape</aspectRatio>
         <autoOrients>false</autoOrients>
         <fullScreen>true</fullScreen>

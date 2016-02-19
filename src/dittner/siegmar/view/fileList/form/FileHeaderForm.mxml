@@ -36,6 +36,19 @@
         }
 
         //--------------------------------------
+        //  userName
+        //--------------------------------------
+        private var _userName:String;
+        [Bindable("userNameChanged")]
+        public function get userName():String {return _userName;}
+        public function set userName(value:String):void {
+            if (_userName != value) {
+                _userName = value;
+                dispatchEvent(new Event("userNameChanged"));
+            }
+        }
+
+        //--------------------------------------
         //  mode
         //--------------------------------------
         private var _mode:String = FileFormMode.ADD;
@@ -103,7 +116,7 @@
 
         public function clear():void {
             titleInput.text = "";
-            authorInput.text = "";
+            authorInput.text = userName;
             dateInput.text = "";
             setCurrentState("folder");
         }

@@ -61,9 +61,10 @@ public final class AppPreloader extends SparkDownloadProgressBar {
 
 		progressField = new TextField();
 		progressField.selectable = false;
+		progressField.width = 100;
 		progressField.height = 100;
-		progressField.embedFonts = true;
-		progressField.defaultTextFormat = new TextFormat(FontName.MYRIAD_MX, 25, AppColors.HELL_TÜRKIS, null, null, null, null, null, TextAlign.LEFT);
+		progressField.embedFonts = false;
+		progressField.defaultTextFormat = new TextFormat("_sans", 20, AppColors.HELL_TÜRKIS, null, null, null, null, null, TextAlign.CENTER);
 		addChild(progressField);
 
 		startTime = getTimer();
@@ -84,10 +85,10 @@ public final class AppPreloader extends SparkDownloadProgressBar {
 		}
 
 		progressField.text = Math.round((progress * 100)) + "%";
-		progressField.width = 200;
+		progressField.width = 100;
 		if (progressField.y == 0 && stage) {
 			progressField.y = (stage.stageHeight - progressField.height >> 1);
-			progressField.x = (stage.stageWidth - 100 >> 1);
+			progressField.x = (stage.stageWidth - progressField.width >> 1);
 		}
 	}
 

@@ -4,20 +4,23 @@ import dittner.siegmar.bootstrap.navigator.ViewNavigator;
 import dittner.siegmar.bootstrap.viewFactory.ViewID;
 import dittner.siegmar.bootstrap.walter.WalterMediator;
 import dittner.siegmar.bootstrap.walter.message.WalterMessage;
-import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
 import dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
 import dittner.siegmar.domain.fileSystem.body.picture.PictureBody;
+import dittner.siegmar.domain.fileSystem.body.picture.action.DrawLinesAction;
+import dittner.siegmar.domain.fileSystem.body.picture.action.LinesDisplacementAction;
+import dittner.siegmar.domain.fileSystem.body.picture.action.PaintingAction;
+import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
 import dittner.siegmar.utils.BitmapLocalSaver;
 import dittner.siegmar.utils.FileChooser;
 import dittner.siegmar.view.common.colorChooser.SelectColorEvent;
 import dittner.siegmar.view.common.list.SelectableDataGroupEvent;
 import dittner.siegmar.view.fileList.toolbar.ToolbarMediator;
-import dittner.siegmar.domain.fileSystem.body.picture.action.DrawLinesAction;
-import dittner.siegmar.domain.fileSystem.body.picture.action.LinesDisplacementAction;
-import dittner.siegmar.domain.fileSystem.body.picture.action.PaintingAction;
 
 import flash.display.Bitmap;
+import flash.display.BitmapData;
 import flash.events.MouseEvent;
+import flash.geom.Point;
+import flash.geom.Rectangle;
 import flash.net.FileFilter;
 
 import mx.collections.ArrayCollection;
@@ -95,7 +98,13 @@ public class PaintingViewMediator extends WalterMediator {
 	}
 
 	private function imageBrowsed(op:IAsyncOperation):void {
-		openedFileBody.image = op.isSuccess ? (op.result as Bitmap).bitmapData : null;
+		var loadedBd:BitmapData = op.isSuccess ? (op.result as Bitmap).bitmapData : null;
+		if (loadedBd) {
+			var res:BitmapData = new BitmapData(loadedBd.width, loadedBd.height, true, 0);
+			res.copyPixels(loadedBd, new Rectangle(0, 0, loadedBd.width, loadedBd.height), new Point());
+			loadedBd.dispose();
+			openedFileBody.image = res;
+		}
 		updatePicture();
 	}
 

@@ -102,7 +102,6 @@ public class PictureBody extends FileBody {
 			bytes.writeBytes(imageBytes);
 			bytes.writeUnsignedInt(bd.width);
 			bytes.writeUnsignedInt(bd.height);
-			bytes.writeBoolean(bd.transparent);
 		}
 		else {
 			bytes.writeDouble(0);
@@ -118,9 +117,8 @@ public class PictureBody extends FileBody {
 			imageBytes.position = 0;
 			var width:uint = bytes.readUnsignedInt();
 			var height:uint = bytes.readUnsignedInt();
-			var transparent:Boolean = bytes.readBoolean();
 
-			bd = new BitmapData(width, height, transparent);
+			bd = new BitmapData(width, height, true);
 			bd.setPixels(new Rectangle(0, 0, width, height), imageBytes);
 		}
 
@@ -130,8 +128,9 @@ public class PictureBody extends FileBody {
 	public function render():BitmapData {
 		if (!image) return null;
 		var res:BitmapData = image.clone();
-		for each(var action:PaintingAction in actions)
+		for each(var action:PaintingAction in actions) {
 			res = action.exec(res, bg);
+		}
 		return res;
 	}
 }

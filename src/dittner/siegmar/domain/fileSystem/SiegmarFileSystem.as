@@ -235,6 +235,7 @@ public class SiegmarFileSystem extends WalterProxy {
 
 	public function closeOpenedFile():void {
 		_openedFile = null;
+		_selectedFileHeader = null;
 	}
 
 	public function logout():void {

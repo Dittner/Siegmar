@@ -62,8 +62,11 @@
             if (activeFile) {
                 activeFile.fileBodyList.refresh();
                 (activeFile.fileBodyList.dataProvider as ICollectionView).refresh();
-                invalidateOf(activeFile.fileBodyList.scrollToBottom);
             }
+        }
+
+        public function scrollToBottom():void {
+            invalidateOf(activeFile.fileBodyList.scrollToBottom);
         }
 
         public function clear():void {

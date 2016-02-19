@@ -6,8 +6,8 @@
          xmlns:common="cosmoLib.components.styleComponents.*"
          xmlns:actionform="dittner.siegmar.view.painting.actionForm.*">
     <fx:Script><![CDATA[
-        import dittner.siegmar.view.common.popup.SimplePopup;
         import dittner.siegmar.domain.fileSystem.body.picture.action.PaintingAction;
+        import dittner.siegmar.view.common.popup.SimplePopup;
 
         import mx.collections.ArrayCollection;
 
