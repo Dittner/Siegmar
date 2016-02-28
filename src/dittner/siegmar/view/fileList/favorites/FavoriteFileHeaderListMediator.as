@@ -1,5 +1,5 @@
 package dittner.siegmar.view.fileList.favorites {
-import dittner.siegmar.bootstrap.async.IAsyncOperation;
+import dittner.async.IAsyncOperation;
 import dittner.siegmar.bootstrap.navigator.ViewNavigator;
 import dittner.siegmar.bootstrap.viewFactory.ViewID;
 import dittner.siegmar.bootstrap.walter.WalterMediator;

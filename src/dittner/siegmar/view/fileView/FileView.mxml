@@ -12,11 +12,11 @@
                xmlns:article="dittner.siegmar.view.fileView.file.article.*">
 
     <fx:Script><![CDATA[
-        import dittner.siegmar.bootstrap.async.IAsyncOperation;
+        import dittner.async.IAsyncOperation;
+        import dittner.async.utils.invalidateOf;
         import dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
         import dittner.siegmar.domain.fileSystem.file.FileType;
         import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
-        import dittner.siegmar.utils.delay.invalidateOf;
         import dittner.siegmar.view.common.list.SelectableDataGroupEvent;
         import dittner.siegmar.view.common.popup.SimplePopup;
         import dittner.siegmar.view.common.utils.AppColors;

@@ -1,5 +1,5 @@
 package dittner.siegmar.backend.sqlOperation.phase {
-import dittner.siegmar.bootstrap.async.AsyncCommand;
+import dittner.async.AsyncCommand;
 import dittner.siegmar.utils.AppInfo;
 
 import flash.errors.SQLError;

@@ -5,7 +5,7 @@
          xmlns:stylecomponents="cosmoLib.components.styleComponents.*">
 
     <fx:Script><![CDATA[
-        import dittner.siegmar.bootstrap.async.IAsyncOperation;
+        import dittner.async.IAsyncOperation;
         import dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
         import dittner.siegmar.domain.fileSystem.file.FileType;
         import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
@@ -107,7 +107,5 @@
                                   includeInLayout.article="true" visible.article="true"
                                   left="10" top="10" bottom="10" right="10"/>
     </s:Group>
-
-
 
 </s:Group>

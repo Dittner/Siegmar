@@ -1,8 +1,8 @@
 package dittner.siegmar.bootstrap.walter.injector {
+import dittner.async.utils.invalidateOf;
 import dittner.siegmar.bootstrap.walter.Walter;
 import dittner.siegmar.bootstrap.walter.WalterProxy;
 import dittner.siegmar.bootstrap.walter.walter_namespace;
-import dittner.siegmar.utils.delay.invalidateOf;
 
 import flash.utils.describeType;
 import flash.utils.getDefinitionByName;

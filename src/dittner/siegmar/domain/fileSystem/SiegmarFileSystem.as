@@ -1,5 +1,5 @@
 package dittner.siegmar.domain.fileSystem {
-import dittner.siegmar.bootstrap.async.IAsyncOperation;
+import dittner.async.IAsyncOperation;
 import dittner.siegmar.bootstrap.walter.WalterProxy;
 import dittner.siegmar.bootstrap.walter.message.WalterMessage;
 import dittner.siegmar.bootstrap.walter.walter_namespace;

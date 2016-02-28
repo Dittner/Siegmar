@@ -1,6 +1,7 @@
 package dittner.siegmar.bootstrap.async {
-import dittner.siegmar.utils.delay.clearDelay;
-import dittner.siegmar.utils.delay.doLaterInSec;
+import dittner.async.IAsyncCommand;
+import dittner.async.utils.clearDelay;
+import dittner.async.utils.doLaterInSec;
 
 public class SQLCommandManager {
 

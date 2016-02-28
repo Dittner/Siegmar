@@ -6,12 +6,12 @@
          implements="dittner.siegmar.view.common.form.IBodyForm">
 
     <fx:Script><![CDATA[
-        import dittner.siegmar.bootstrap.async.AsyncOperation;
-        import dittner.siegmar.bootstrap.async.IAsyncOperation;
+        import dittner.async.AsyncOperation;
+        import dittner.async.IAsyncOperation;
+        import dittner.async.utils.invalidateOf;
         import dittner.siegmar.domain.fileSystem.body.NoteListBody;
         import dittner.siegmar.domain.fileSystem.body.note.TitledNote;
         import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
-        import dittner.siegmar.utils.delay.invalidateOf;
         import dittner.siegmar.view.common.utils.AppColors;
         import dittner.siegmar.view.common.utils.FontName;
 
@@ -130,15 +130,15 @@
              mouseChildren="false" mouseEnabled="false" paddingBottom="30"
              color="{AppColors.HELL_TÜRKIS}"/>
 
-    <s:Spacer height="100%"/>
+    <s:Spacer height="10%"/>
 
     <input:TextInputForm id="titleInput"
                          visible.remove="false" includeInLayout.remove="false"
                          width="100%" title="Titel:"/>
 
-    <input:TextInputForm id="contentInput"
-                         visible.remove="false" includeInLayout.remove="false"
-                         width="100%" title="Inhalt:"/>
+    <input:TextAreaForm id="contentInput"
+                        visible.remove="false" includeInLayout.remove="false"
+                        width="100%" height="100%" title="Inhalt:"/>
 
     <s:Label styleName="header"
              paddingTop="30" paddingBottom="30"
@@ -151,15 +151,15 @@
              color="{AppColors.HELL_TÜRKIS}"/>
 
     <s:Label id="removeLbl"
-             visible="false"
-             visible.remove="true"
+             visible="false" includeInLayout="false"
+             visible.remove="true" includeInLayout.remove="true"
              width="100%" height="100%" textAlign="center" verticalAlign="middle"
              fontFamily="{FontName.MYRIAD}" fontSize="18"
              mouseChildren="false" mouseEnabled="false"
              maxDisplayedLines="8"
              color="{AppColors.HELL_TÜRKIS}"/>
 
-    <s:Spacer height="100%"/>
+    <s:Spacer height="10%"/>
 
     <s:HGroup width="100%" gap="10">
         <button:StrokeButton id="cancelBtn"

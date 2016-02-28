@@ -2,9 +2,9 @@ package dittner.siegmar.domain.user {
 
 import com.adobe.crypto.MD5;
 
+import dittner.async.AsyncOperation;
+import dittner.async.IAsyncOperation;
 import dittner.siegmar.backend.encryption.EncryptionService;
-import dittner.siegmar.bootstrap.async.AsyncOperation;
-import dittner.siegmar.bootstrap.async.IAsyncOperation;
 import dittner.siegmar.bootstrap.walter.WalterProxy;
 import dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
 import dittner.siegmar.utils.LocalStorage;
@@ -123,6 +123,5 @@ public class User extends WalterProxy {
 			encryptionService.deleteEncryptionKey();
 		}
 	}
-
 }
 }

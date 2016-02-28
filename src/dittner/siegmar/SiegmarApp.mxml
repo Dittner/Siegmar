@@ -5,18 +5,23 @@
                usePreloader="true"
                preloader="dittner.siegmar.view.common.preloader.AppPreloader"
                backgroundColor="#172141"
-               creationComplete="creationCompleteHandler(event)"
+               addedToStage="addedToStage(event)"
                uncaughtError="uncaughtErrorHandler(event)">
 
     <fx:Script><![CDATA[
+        import dittner.async.Async;
         import dittner.siegmar.view.common.utils.TextFieldFactory;
 
         import mx.events.FlexEvent;
         import mx.logging.Log;
 
         public static var root:SiegmarApp;
+        public static var stage:Stage;
 
-        private function creationCompleteHandler(event:FlexEvent):void {
+        private function addedToStage(event:Event):void {
+            Async.fps = 30;
+            Async.stage = stage;
+            SiegmarApp.stage = stage;
             SiegmarApp.root = this;
             TextFieldFactory.useEmbedFonts = true;
             var config:SiegmarConfig = new SiegmarConfig();

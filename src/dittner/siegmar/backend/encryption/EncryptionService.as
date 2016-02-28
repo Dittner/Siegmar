@@ -8,8 +8,8 @@ import com.hurlant.crypto.symmetric.NullPad;
 import com.hurlant.util.Base64;
 import com.hurlant.util.Hex;
 
-import dittner.siegmar.bootstrap.async.AsyncOperation;
-import dittner.siegmar.bootstrap.async.IAsyncOperation;
+import dittner.async.AsyncOperation;
+import dittner.async.IAsyncOperation;
 import dittner.siegmar.bootstrap.walter.WalterProxy;
 
 import flash.events.TimerEvent;

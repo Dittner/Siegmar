@@ -1,7 +1,7 @@
 package dittner.siegmar.backend.sqlOperation {
 import com.adobe.crypto.MD5;
 
-import dittner.siegmar.bootstrap.async.AsyncCommand;
+import dittner.async.AsyncCommand;
 import dittner.siegmar.utils.AppInfo;
 
 import flash.data.SQLConnection;

@@ -1,6 +1,6 @@
 package dittner.siegmar.utils {
-import dittner.siegmar.bootstrap.async.AsyncOperation;
-import dittner.siegmar.bootstrap.async.IAsyncOperation;
+import dittner.async.AsyncOperation;
+import dittner.async.IAsyncOperation;
 
 import flash.display.BitmapData;
 import flash.events.Event;

@@ -39,9 +39,9 @@ public class TapEventKit {
 }
 }
 
-import dittner.siegmar.utils.delay.clearDelay;
-import dittner.siegmar.utils.delay.doLaterInMSec;
-import dittner.siegmar.utils.delay.doLaterInSec;
+import dittner.async.utils.clearDelay;
+import dittner.async.utils.doLaterInMSec;
+import dittner.async.utils.doLaterInSec;
 
 import flash.display.DisplayObject;
 import flash.events.MouseEvent;

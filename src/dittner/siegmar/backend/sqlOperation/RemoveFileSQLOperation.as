@@ -1,9 +1,9 @@
 package dittner.siegmar.backend.sqlOperation {
+import dittner.async.AsyncCommand;
+import dittner.async.CompositeCommand;
+import dittner.async.IAsyncOperation;
 import dittner.siegmar.backend.sqlOperation.phase.RemoveFileHeadersAndBodiesPhaseOperation;
 import dittner.siegmar.backend.sqlOperation.phase.SelectHeaderIDsToRemoveOperation;
-import dittner.siegmar.bootstrap.async.AsyncCommand;
-import dittner.siegmar.bootstrap.async.CompositeCommand;
-import dittner.siegmar.bootstrap.async.IAsyncOperation;
 
 public class RemoveFileSQLOperation extends AsyncCommand {
 

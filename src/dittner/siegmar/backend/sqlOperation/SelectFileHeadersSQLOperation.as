@@ -1,5 +1,5 @@
 package dittner.siegmar.backend.sqlOperation {
-import dittner.siegmar.bootstrap.async.AsyncCommand;
+import dittner.async.AsyncCommand;
 import dittner.siegmar.domain.fileSystem.header.FileHeader;
 import dittner.siegmar.domain.store.FileStorage;
 

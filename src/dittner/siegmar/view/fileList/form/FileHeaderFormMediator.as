@@ -1,5 +1,5 @@
 package dittner.siegmar.view.fileList.form {
-import dittner.siegmar.bootstrap.async.IAsyncOperation;
+import dittner.async.IAsyncOperation;
 import dittner.siegmar.bootstrap.walter.WalterMediator;
 import dittner.siegmar.bootstrap.walter.message.WalterMessage;
 import dittner.siegmar.domain.fileSystem.FileOptionKeys;

@@ -1,5 +1,5 @@
 package dittner.siegmar.domain.fileSystem.body {
-import dittner.siegmar.bootstrap.async.IAsyncOperation;
+import dittner.async.IAsyncOperation;
 import dittner.siegmar.bootstrap.walter.Walter;
 import dittner.siegmar.bootstrap.walter.walter_namespace;
 import dittner.siegmar.domain.store.FileStorage;

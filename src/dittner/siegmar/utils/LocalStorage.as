@@ -1,5 +1,5 @@
 package dittner.siegmar.utils {
-import dittner.siegmar.utils.delay.invalidateOf;
+import dittner.async.utils.invalidateOf;
 
 import flash.net.SharedObject;
 

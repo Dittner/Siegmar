@@ -1,5 +1,5 @@
 package dittner.siegmar.view.common.list {
-import dittner.siegmar.utils.delay.doLaterInMSec;
+import dittner.async.utils.doLaterInMSec;
 import dittner.siegmar.view.common.utils.TapEventKit;
 
 import flash.display.Bitmap;
@@ -170,12 +170,11 @@ public class ReordableList extends SelectableDataGroup {
 		if (coll && dragItemInfo.isActive && renderer && renderer.data != dragItemInfo.data) {
 			var newIndex:int = itemToSrcIndex((renderer as IItemRenderer).data);
 			var src:Array = coll.source;
-			if(src[dragItemInfo.srcItemInd] == dragItemInfo.data) {
+			if (src[dragItemInfo.srcItemInd] == dragItemInfo.data) {
 				src.splice(dragItemInfo.srcItemInd, 1);
 				src.splice(newIndex, 0, dragItemInfo.data);
 			}
 			else throw new Error("Drag-n-drop is failed. Item's index matches wrong item's data");
-
 
 			droppedItemIndex = (renderer as IItemRenderer).itemIndex;
 			var filterFunc:Function = coll.filterFunction;

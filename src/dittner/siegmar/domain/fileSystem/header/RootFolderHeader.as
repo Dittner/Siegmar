@@ -1,6 +1,6 @@
 package dittner.siegmar.domain.fileSystem.header {
-import dittner.siegmar.bootstrap.async.AsyncOperation;
-import dittner.siegmar.bootstrap.async.IAsyncOperation;
+import dittner.async.AsyncOperation;
+import dittner.async.IAsyncOperation;
 
 public class RootFolderHeader extends FileHeader {
 	public function RootFolderHeader() {

@@ -1,4 +1,7 @@
 package dittner.siegmar.domain.store {
+import dittner.async.IAsyncCommand;
+import dittner.async.IAsyncOperation;
+import dittner.async.AsyncOperation;
 import dittner.siegmar.backend.encryption.EncryptionService;
 import dittner.siegmar.backend.sqlOperation.FileSQLWrapper;
 import dittner.siegmar.backend.sqlOperation.RemoveFileSQLOperation;
@@ -10,9 +13,6 @@ import dittner.siegmar.backend.sqlOperation.SelectFileHeadersByTypeSQLOperation;
 import dittner.siegmar.backend.sqlOperation.SelectFileHeadersSQLOperation;
 import dittner.siegmar.backend.sqlOperation.StoreFileBodySQLOperation;
 import dittner.siegmar.backend.sqlOperation.StoreFileHeaderSQLOperation;
-import dittner.siegmar.bootstrap.async.AsyncOperation;
-import dittner.siegmar.bootstrap.async.IAsyncCommand;
-import dittner.siegmar.bootstrap.async.IAsyncOperation;
 import dittner.siegmar.bootstrap.async.SQLCommandManager;
 import dittner.siegmar.bootstrap.walter.WalterProxy;
 import dittner.siegmar.domain.fileSystem.SiegmarFileSystem;

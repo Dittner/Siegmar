@@ -7,15 +7,15 @@
          implements="dittner.siegmar.view.common.form.IBodyForm">
 
     <fx:Script><![CDATA[
-        import dittner.siegmar.bootstrap.async.AsyncOperation;
-        import dittner.siegmar.bootstrap.async.IAsyncOperation;
+        import dittner.async.AsyncOperation;
+        import dittner.async.IAsyncOperation;
+        import dittner.async.utils.invalidateOf;
         import dittner.siegmar.domain.fileSystem.body.NoteListBody;
         import dittner.siegmar.domain.fileSystem.body.links.BookLink;
         import dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
         import dittner.siegmar.domain.fileSystem.body.note.ArticleNote;
         import dittner.siegmar.domain.fileSystem.body.note.NoteType;
         import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
-        import dittner.siegmar.utils.delay.invalidateOf;
         import dittner.siegmar.view.common.utils.AppColors;
         import dittner.siegmar.view.common.utils.FontName;
 
@@ -282,12 +282,12 @@
                              click="cancelBtnClickHandler()"/>
 
         <button:ColorButton id="applyBtn"
-                             width="100%"
-                             label="Bestätigen"
-                             bgColor="{AppColors.HELL_TÜRKIS}"
-                             textColor="0"
-                             enabled="{isApplyBtnEnabled(currentState, textInput.text)}"
-                             click="applyBtnClickHandler()"/>
+                            width="100%"
+                            label="Bestätigen"
+                            bgColor="{AppColors.HELL_TÜRKIS}"
+                            textColor="0"
+                            enabled="{isApplyBtnEnabled(currentState, textInput.text)}"
+                            click="applyBtnClickHandler()"/>
     </s:HGroup>
 
 </s:Group>

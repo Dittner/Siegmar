@@ -1,5 +1,6 @@
 package dittner.siegmar.view.login {
-import dittner.siegmar.bootstrap.async.IAsyncOperation;
+import dittner.async.IAsyncOperation;
+import dittner.async.utils.doLaterInMSec;
 import dittner.siegmar.bootstrap.navigator.ViewNavigator;
 import dittner.siegmar.bootstrap.viewFactory.ViewID;
 import dittner.siegmar.bootstrap.walter.WalterMediator;
@@ -8,7 +9,6 @@ import dittner.siegmar.domain.store.FileStorage;
 import dittner.siegmar.domain.user.User;
 import dittner.siegmar.message.MediatorMsg;
 import dittner.siegmar.utils.AppInfo;
-import dittner.siegmar.utils.delay.doLaterInMSec;
 
 import flash.events.MouseEvent;
 

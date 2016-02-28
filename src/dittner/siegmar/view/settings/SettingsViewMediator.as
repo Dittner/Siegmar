@@ -1,7 +1,8 @@
 package dittner.siegmar.view.settings {
-import dittner.siegmar.backend.ftpClient.FtpClient;
-import dittner.siegmar.bootstrap.async.IAsyncOperation;
-import dittner.siegmar.bootstrap.async.ProgressCommand;
+import dittner.async.IAsyncOperation;
+import dittner.async.ProgressCommand;
+import dittner.ftpClient.FtpClient;
+import dittner.siegmar.SiegmarApp;
 import dittner.siegmar.bootstrap.navigator.ViewNavigator;
 import dittner.siegmar.bootstrap.walter.WalterMediator;
 import dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
@@ -28,7 +29,7 @@ public class SettingsViewMediator extends WalterMediator {
 	private function get settings():Settings {return settingsBody.settings;}
 
 	override protected function activate():void {
-		if (!ftp) ftp = new FtpClient();
+		if (!ftp) ftp = new FtpClient(SiegmarApp.stage);
 		var op:IAsyncOperation = system.fileStorage.loadFileBody(system.settingsFileHeader);
 		op.addCompleteCallback(settingsLoaded);
 	}
@@ -61,7 +62,7 @@ public class SettingsViewMediator extends WalterMediator {
 
 	private function uploadDataBase():void {
 		var dbFile:File = File.documentsDirectory.resolvePath(AppInfo.dbRootPath + AppInfo.DB_NAME);
-		var uploadCmd:ProgressCommand = ftp.upload(dbFile, settings.serverInfo);
+		var uploadCmd:ProgressCommand = ftp.upload([dbFile], settings.serverInfo);
 		uploadCmd.addCompleteCallback(uploadComplete);
 		uploadCmd.addProgressCallback(uploadProgress);
 	}
