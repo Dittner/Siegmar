@@ -94,6 +94,7 @@
             this.reservedTitleHash = reservedTitleHash;
             _mode = FileFormMode.ADD;
             dateInput.text = dateFormatter.format(new Date());
+            authorInput.text = userName;
             dispatchEvent(new Event("modeChanged"));
         }
 
@@ -116,7 +117,7 @@
 
         public function clear():void {
             titleInput.text = "";
-            authorInput.text = userName;
+            authorInput.text = "";
             dateInput.text = "";
             setCurrentState("folder");
         }
@@ -223,7 +224,6 @@
 
             <s:RadioButton id="albumRadioBtn"
                            groupName="radioBar"
-                           enabled="false"
                            width="200"
                            value="{FileType.ALBUM}"
                            label="{FileTypeName.ALBUM}"
@@ -243,6 +243,7 @@
 
             <input:TextInputForm id="authorInput" width="100%" title="Autor:"
                                  visible.folder="false" includeInLayout.folder="false"/>
+
             <input:TextInputForm id="dateInput" width="100%" title="Datum der Ausgabe:"
                                  visible.folder="false" includeInLayout.folder="false"/>
         </s:VGroup>

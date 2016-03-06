@@ -5,6 +5,7 @@ import dittner.siegmar.bootstrap.walter.message.WalterMessage;
 import dittner.siegmar.bootstrap.walter.walter_namespace;
 import dittner.siegmar.domain.fileSystem.body.FileBody;
 import dittner.siegmar.domain.fileSystem.body.NoteListBody;
+import dittner.siegmar.domain.fileSystem.body.album.AlbumBody;
 import dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
 import dittner.siegmar.domain.fileSystem.body.picture.PictureBody;
 import dittner.siegmar.domain.fileSystem.body.settings.SettingsBody;
@@ -183,6 +184,9 @@ public class SiegmarFileSystem extends WalterProxy {
 				break;
 			case FileType.PICTURE :
 				body = new PictureBody();
+				break;
+			case FileType.ALBUM :
+				body = new AlbumBody();
 				break;
 			case FileType.BOOK_LINKS :
 				body = new BookLinksBody();

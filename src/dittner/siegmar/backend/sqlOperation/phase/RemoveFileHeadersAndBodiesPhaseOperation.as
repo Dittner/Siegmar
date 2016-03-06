@@ -3,6 +3,7 @@ import dittner.async.AsyncCommand;
 import dittner.async.CompositeCommand;
 import dittner.async.IAsyncOperation;
 import dittner.siegmar.backend.sqlOperation.FileSQLWrapper;
+import dittner.siegmar.backend.sqlOperation.RemovePhotoByFileIDSQLOperation;
 
 public class RemoveFileHeadersAndBodiesPhaseOperation extends AsyncCommand {
 
@@ -23,6 +24,7 @@ public class RemoveFileHeadersAndBodiesPhaseOperation extends AsyncCommand {
 			for each(var fileID:int in headerWrapper.removingFileIDs) {
 				compositeOp.addOperation(RemoveFileHeaderByFileIDPhaseOperation, headerWrapper, fileID);
 				compositeOp.addOperation(RemoveFileBodyByFileIDPhaseOperation, headerWrapper, fileID);
+				compositeOp.addOperation(RemovePhotoByFileIDSQLOperation, headerWrapper.sqlConnection, fileID);
 			}
 			compositeOp.execute();
 		}

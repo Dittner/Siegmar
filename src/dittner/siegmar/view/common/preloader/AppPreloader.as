@@ -1,9 +1,7 @@
 package dittner.siegmar.view.common.preloader {
 import dittner.siegmar.view.common.utils.AppColors;
-import dittner.siegmar.view.common.utils.FontName;
 
 import flash.desktop.NativeApplication;
-
 import flash.display.Bitmap;
 import flash.display.Graphics;
 import flash.events.Event;
@@ -37,9 +35,13 @@ public final class AppPreloader extends SparkDownloadProgressBar {
 		addEventListener(Event.ADDED_TO_STAGE, addedToStage);
 	}
 
+	private static var positionUpdated:Boolean = false;
 	private function nativeApplication_activateHandler(event:Event):void {
-		NativeApplication.nativeApplication.activeWindow.x = (Capabilities.screenResolutionX - NativeApplication.nativeApplication.activeWindow.width) / 2;
-		NativeApplication.nativeApplication.activeWindow.y = 0;
+		if (!positionUpdated) {
+			positionUpdated = true;
+			NativeApplication.nativeApplication.activeWindow.x = (Capabilities.screenResolutionX - NativeApplication.nativeApplication.activeWindow.width) / 2;
+			NativeApplication.nativeApplication.activeWindow.y = 0;
+		}
 	}
 
 	private var progressField:TextField;

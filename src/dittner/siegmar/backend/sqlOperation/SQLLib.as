@@ -16,6 +16,10 @@ public class SQLLib extends WalterProxy {
 	private static const CreateFileBodyTblClass:Class;
 	public static const CREATE_FILE_BODY_TBL:String = new CreateFileBodyTblClass();
 
+	[Embed(source="/dittner/siegmar/backend/sqlOperation/sql/CreatePhotoTbl.sql", mimeType="application/octet-stream")]
+	private static const CreatePhotoTblClass:Class;
+	public static const CREATE_PHOTO_TBL:String = new CreatePhotoTblClass();
+
 	//--------------------------------------
 	//  insert
 	//--------------------------------------
@@ -27,6 +31,10 @@ public class SQLLib extends WalterProxy {
 	[Embed(source="/dittner/siegmar/backend/sqlOperation/sql/InsertFileBody.sql", mimeType="application/octet-stream")]
 	private static const InsertFileBodyClass:Class;
 	public static const INSERT_FILE_BODY:String = new InsertFileBodyClass();
+
+	[Embed(source="/dittner/siegmar/backend/sqlOperation/sql/InsertPhoto.sql", mimeType="application/octet-stream")]
+	private static const InsertPhotoClass:Class;
+	public static const INSERT_PHOTO:String = new InsertPhotoClass();
 
 	//--------------------------------------
 	//  update
@@ -40,6 +48,10 @@ public class SQLLib extends WalterProxy {
 	private static const UpdateFileBodyClass:Class;
 	public static const UPDATE_FILE_BODY:String = new UpdateFileBodyClass();
 
+	[Embed(source="/dittner/siegmar/backend/sqlOperation/sql/UpdatePhoto.sql", mimeType="application/octet-stream")]
+	private static const UpdatePhotoClass:Class;
+	public static const UPDATE_PHOTO_BODY:String = new UpdatePhotoClass();
+
 	//--------------------------------------
 	//  delete
 	//--------------------------------------
@@ -51,6 +63,14 @@ public class SQLLib extends WalterProxy {
 	[Embed(source="/dittner/siegmar/backend/sqlOperation/sql/DeleteFileBodyByFileID.sql", mimeType="application/octet-stream")]
 	private static const DeleteFileBodyByFileIDClass:Class;
 	public static const DELETE_FILE_BODY_BY_FILE_ID:String = new DeleteFileBodyByFileIDClass();
+
+	[Embed(source="/dittner/siegmar/backend/sqlOperation/sql/DeletePhotoByID.sql", mimeType="application/octet-stream")]
+	private static const DeletePhotoByIDClass:Class;
+	public static const DELETE_PHOTO_BY_ID:String = new DeletePhotoByIDClass();
+
+	[Embed(source="/dittner/siegmar/backend/sqlOperation/sql/DeletePhotoByFileID.sql", mimeType="application/octet-stream")]
+	private static const DeletePhotoByFileIDClass:Class;
+	public static const DELETE_PHOTO_BY_FILE_ID:String = new DeletePhotoByFileIDClass();
 
 	//--------------------------------------
 	//  select
@@ -75,6 +95,18 @@ public class SQLLib extends WalterProxy {
 	[Embed(source="/dittner/siegmar/backend/sqlOperation/sql/SelectFileBody.sql", mimeType="application/octet-stream")]
 	private static const SelectFileBodyClass:Class;
 	public static const SELECT_FILE_BODY:String = new SelectFileBodyClass();
+
+	[Embed(source="/dittner/siegmar/backend/sqlOperation/sql/SelectPhotoBytes.sql", mimeType="application/octet-stream")]
+	private static const SelectPhotoClass:Class;
+	public static const SELECT_PHOTO:String = new SelectPhotoClass();
+
+	[Embed(source="/dittner/siegmar/backend/sqlOperation/sql/SelectPhotoPreview.sql", mimeType="application/octet-stream")]
+	private static const SelectPhotoPreviewClass:Class;
+	public static const SELECT_PHOTO_PREVIEW:String = new SelectPhotoPreviewClass();
+
+	[Embed(source="/dittner/siegmar/backend/sqlOperation/sql/SelectPhotosInfo.sql", mimeType="application/octet-stream")]
+	private static const SelectPhotosInfoClass:Class;
+	public static const SELECT_PHOTOS_INFO:String = new SelectPhotosInfoClass();
 
 }
 }

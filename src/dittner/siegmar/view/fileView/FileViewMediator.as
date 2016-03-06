@@ -7,6 +7,7 @@ import dittner.siegmar.bootstrap.walter.message.WalterMessage;
 import dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
 import dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
 import dittner.siegmar.domain.user.User;
+import dittner.siegmar.message.MediatorMsg;
 import dittner.siegmar.view.common.list.SelectableDataGroupEvent;
 import dittner.siegmar.view.fileList.toolbar.ToolAction;
 
@@ -28,6 +29,7 @@ public class FileViewMediator extends WalterMediator {
 	private var bookLinksBody:BookLinksBody;
 
 	override protected function activate():void {
+		view.vm = this;
 		var op:IAsyncOperation = system.fileStorage.loadFileBody(system.bookLinksFileHeader);
 		op.addCompleteCallback(linksLoaded);
 	}
@@ -88,6 +90,14 @@ public class FileViewMediator extends WalterMediator {
 
 	private function notesOrderChanged(event:Event):void {
 		system.openedFile.body.store();
+	}
+
+	public function lock():void {
+		sendMessage(MediatorMsg.LOCK);
+	}
+
+	public function unlock():void {
+		sendMessage(MediatorMsg.UNLOCK);
 	}
 
 	override protected function deactivate():void {

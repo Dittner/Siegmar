@@ -5,7 +5,7 @@ public class FileTypeName {
 	public static const ARTICLE:String = "Artikel";
 	public static const DICTIONARY:String = "Wörterbuch";
 	public static const NOTEBOOK:String = "Notizbuch";
-	public static const ALBUM:String = "Album";
+	public static const ALBUM:String = "Fotoalbum";
 	public static const PICTURE:String = "Bild";
 	public static const BOOK_LINK:String = "Literaturhinweise";
 	public static const SETTINGS:String = "Einstellungen";

@@ -1,18 +1,24 @@
 package dittner.siegmar.domain.store {
+import dittner.async.AsyncOperation;
 import dittner.async.IAsyncCommand;
 import dittner.async.IAsyncOperation;
-import dittner.async.AsyncOperation;
 import dittner.siegmar.backend.encryption.EncryptionService;
+import dittner.siegmar.backend.sqlOperation.CalcFilesAndPhotosSQLOperation;
 import dittner.siegmar.backend.sqlOperation.FileSQLWrapper;
 import dittner.siegmar.backend.sqlOperation.RemoveFileSQLOperation;
+import dittner.siegmar.backend.sqlOperation.RemovePhotoSQLOperation;
 import dittner.siegmar.backend.sqlOperation.RunDataBaseSQLOperation;
 import dittner.siegmar.backend.sqlOperation.SQLLib;
 import dittner.siegmar.backend.sqlOperation.SelectFavoriteFileHeadersSQLOperation;
 import dittner.siegmar.backend.sqlOperation.SelectFileBodySQLOperation;
 import dittner.siegmar.backend.sqlOperation.SelectFileHeadersByTypeSQLOperation;
 import dittner.siegmar.backend.sqlOperation.SelectFileHeadersSQLOperation;
+import dittner.siegmar.backend.sqlOperation.SelectPhotoSQLOperation;
+import dittner.siegmar.backend.sqlOperation.SelectPhotosInfoSQLOperation;
 import dittner.siegmar.backend.sqlOperation.StoreFileBodySQLOperation;
 import dittner.siegmar.backend.sqlOperation.StoreFileHeaderSQLOperation;
+import dittner.siegmar.backend.sqlOperation.StorePhotoSQLOperation;
+import dittner.siegmar.backend.sqlOperation.UpdatePhotoSQLOperation;
 import dittner.siegmar.bootstrap.async.SQLCommandManager;
 import dittner.siegmar.bootstrap.walter.WalterProxy;
 import dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
@@ -20,6 +26,7 @@ import dittner.siegmar.domain.fileSystem.body.FileBody;
 import dittner.siegmar.domain.fileSystem.header.FileHeader;
 
 import flash.data.SQLConnection;
+import flash.display.BitmapData;
 
 public class FileStorage extends WalterProxy {
 
@@ -63,9 +70,13 @@ public class FileStorage extends WalterProxy {
 		var cmd:IAsyncCommand;
 		sqlCmdManager = new SQLCommandManager();
 
-		cmd = new RunDataBaseSQLOperation(dataBasePwd, [SQLLib.CREATE_FILE_HEADER_TBL, SQLLib.CREATE_FILE_BODY_TBL]);
+		cmd = new RunDataBaseSQLOperation(dataBasePwd, [SQLLib.CREATE_FILE_HEADER_TBL, SQLLib.CREATE_FILE_BODY_TBL, SQLLib.CREATE_PHOTO_TBL]);
 		cmd.addCompleteCallback(dataBaseOpened);
 		sqlCmdManager.add(cmd);
+
+		cmd = new CalcFilesAndPhotosSQLOperation(this);
+		sqlCmdManager.add(cmd);
+
 		return cmd;
 	}
 
@@ -153,5 +164,48 @@ public class FileStorage extends WalterProxy {
 	private function notifyFileRemoved(op:IAsyncOperation):void {
 		if (op.isSuccess) sendMessage(FILE_REMOVED);
 	}
+
+	//--------------------------------------
+	//  photo
+	//--------------------------------------
+
+	public function storePhoto(bitmap:BitmapData, title:String, fileID:int):IAsyncOperation {
+		if (isEmpty) _isEmpty = false;
+
+		var cmd:IAsyncCommand = new StorePhotoSQLOperation(sqlConnection, bitmap, title, fileID);
+		sqlCmdManager.add(cmd);
+		return cmd;
+	}
+
+	public function updatePhoto(photoId:int, bitmap:BitmapData, title:String, fileID:int):IAsyncOperation {
+		var cmd:IAsyncCommand = new UpdatePhotoSQLOperation(sqlConnection, photoId, bitmap, title, fileID);
+		sqlCmdManager.add(cmd);
+		return cmd;
+	}
+
+	public function removePhoto(photoId:int):IAsyncOperation {
+		var cmd:IAsyncCommand = new RemovePhotoSQLOperation(sqlConnection, photoId);
+		sqlCmdManager.add(cmd);
+		return cmd;
+	}
+
+	public function loadPhotosInfo(fileID:int):IAsyncOperation {
+		var cmd:IAsyncCommand = new SelectPhotosInfoSQLOperation(sqlConnection, fileID);
+		sqlCmdManager.add(cmd);
+		return cmd;
+	}
+
+	public function loadPhotoBitmap(photoID:int):IAsyncOperation {
+		var cmd:IAsyncCommand = new SelectPhotoSQLOperation(sqlConnection, photoID);
+		sqlCmdManager.add(cmd);
+		return cmd;
+	}
+
+	public function loadPhotoPreview(photoID:int):IAsyncOperation {
+		var cmd:IAsyncCommand = new SelectPhotoSQLOperation(sqlConnection, photoID, true);
+		sqlCmdManager.add(cmd);
+		return cmd;
+	}
+
 }
 }

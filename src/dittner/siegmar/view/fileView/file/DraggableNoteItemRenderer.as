@@ -20,7 +20,7 @@ public class DraggableNoteItemRenderer extends ItemRendererBase implements IDrag
 	protected static const TEXT_DEFAULT_OFFSET:uint = 2;
 	public static const INDEX_COLUMN_WID:uint = 40;
 
-	private static const PAD:uint = 10;
+	protected static const PAD:uint = 10;
 
 	public function DraggableNoteItemRenderer() {
 		super();
@@ -30,11 +30,14 @@ public class DraggableNoteItemRenderer extends ItemRendererBase implements IDrag
 
 	protected var indexTf:TextField;
 
+	protected function get list():FileBodyList {
+		return parent is FileBodyList ? parent as FileBodyList : null;
+	}
+
 	//--------------------------------------
 	//  links
 	//--------------------------------------
 	protected function get links():BookLinksBody {
-		var list:FileBodyList = parent is FileBodyList ? parent as FileBodyList : null;
 		return list && list.bookLinksBody ? list.bookLinksBody : null;
 	}
 
@@ -79,7 +82,7 @@ public class DraggableNoteItemRenderer extends ItemRendererBase implements IDrag
 		}
 		else if (selected) {
 			bgColor = 0xffFFff;
-			bgAlpha = .25;
+			bgAlpha = .15;
 		}
 		else {
 			bgColor = 0xffFFff;

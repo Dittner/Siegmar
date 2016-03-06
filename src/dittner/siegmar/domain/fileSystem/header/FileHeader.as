@@ -113,6 +113,8 @@ public class FileHeader {
 				return AppColors.DOC_NOTEBOOK;
 			case FileType.PICTURE :
 				return AppColors.DOC_PICTURE;
+			case FileType.ALBUM :
+				return AppColors.DOC_ALBUM;
 			case FileType.BOOK_LINKS :
 				return AppColors.DOC_BOOK_LINKS;
 			default :
@@ -130,6 +132,8 @@ public class FileHeader {
 				return "N";
 			case FileType.PICTURE :
 				return "B";
+			case FileType.ALBUM :
+				return "P";
 			case FileType.BOOK_LINKS :
 				return "H";
 			default :

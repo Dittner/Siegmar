@@ -1,0 +1,261 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         xmlns:list="dittner.siegmar.view.common.list.*"
+         xmlns:stylecomponents="cosmoLib.components.styleComponents.*"
+         xmlns:button="dittner.siegmar.view.common.button.*"
+         addedToStage="addedToStageHandler(event)"
+         removedFromStage="removedFromStageHandler(event)"
+         implements="dittner.siegmar.view.fileView.file.IFileContent">
+
+    <fx:Script><![CDATA[
+        import dittner.async.IAsyncOperation;
+        import dittner.siegmar.domain.fileSystem.body.album.AlbumBody;
+        import dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
+        import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
+        import dittner.siegmar.utils.BitmapLocalSaver;
+        import dittner.siegmar.view.common.list.SelectableDataGroupEvent;
+        import dittner.siegmar.view.common.utils.AppColors;
+
+        import mx.collections.ArrayCollection;
+
+        //--------------------------------------
+        //  bookLinksBody
+        //--------------------------------------
+        private var _bookLinksBody:BookLinksBody;
+        [Bindable("bookLinksBodyChanged")]
+        public function get bookLinksBody():BookLinksBody {return _bookLinksBody;}
+        public function set bookLinksBody(value:BookLinksBody):void {
+            if (_bookLinksBody != value) {
+                _bookLinksBody = value;
+                dispatchEvent(new Event("bookLinksBodyChanged"));
+            }
+        }
+
+        //--------------------------------------
+        //  photoScale
+        //--------------------------------------
+        private var _photoScale:Number = 1;
+        [Bindable("photoScaleChanged")]
+        public function get photoScale():Number {return _photoScale;}
+        public function set photoScale(value:Number):void {
+            if (_photoScale != value) {
+                _photoScale = value;
+                dispatchEvent(new Event("photoScaleChanged"));
+            }
+        }
+
+        //--------------------------------------
+        //  fileBodyList
+        //--------------------------------------
+        public function get fileBodyList():FileBodyList {return list;}
+
+        //--------------------------------------
+        //  file
+        //--------------------------------------
+        private var fileChanged:Boolean = false;
+        private var _file:SiegmarFile;
+        [Bindable("fileChanged")]
+        public function get file():SiegmarFile {return _file;}
+        public function set file(value:SiegmarFile):void {
+            if (_file != value) {
+                _file = value;
+                fileChanged = true;
+                invalidateProperties()
+                dispatchEvent(new Event("fileChanged"));
+            }
+        }
+
+        override protected function commitProperties():void {
+            super.commitProperties();
+            if (fileChanged) {
+                fileChanged = false;
+                if (file && file.body is AlbumBody) {
+                    var op:IAsyncOperation = (file.body as AlbumBody).loadPhotosInfo();
+                    op.addCompleteCallback(photosInfoLoaded);
+                }
+            }
+        }
+
+        private function photosInfoLoaded(op:IAsyncOperation):void {
+            var coll:ArrayCollection = new ArrayCollection(op.result);
+            coll.filterFunction = filterFunction;
+            list.dataProvider = coll;
+        }
+
+        private var filterText:String = "";
+        public function filterNotes(txt:String):void {
+            filterText = txt;
+            if (list && list.dataProvider)
+                (list.dataProvider as ArrayCollection).refresh();
+        }
+
+        private function filterFunction(item:Object):Boolean {
+            if (!filterText) return true;
+            return item && item.hasOwnProperty("title") ? item.title.toLowerCase().indexOf(filterText) != -1 : true;
+        }
+
+        private function loadPhotoFunc(photoID:int):IAsyncOperation {
+            return (file.body as AlbumBody).loadPreview(photoID);
+            ;
+        }
+
+        private var selectedPhoto:BitmapData;
+        private function list_selectedItemChangeHandler(event:SelectableDataGroupEvent):void {
+            if (list.selectedItem) {
+                var op:IAsyncOperation = (file.body as AlbumBody).loadPhoto(list.selectedItem.id);
+                op.addCompleteCallback(function (op:IAsyncOperation):void {
+                    if (op.isSuccess && op.result is BitmapData) {
+                        if (selectedPhoto) selectedPhoto.dispose();
+                        selectedPhoto = op.result;
+                        sizeLbl.text = selectedPhoto.width + ":" + selectedPhoto.height;
+                        img.source = selectedPhoto;
+                    }
+                });
+            }
+        }
+
+        private function incPictureScale(e:MouseEvent):void {
+            if (selectedPhoto) {
+                var updatedScale:Number = photoScale;
+                switch (photoScale) {
+                    case 0.1 :
+                        updatedScale = 0.15;
+                        break;
+                    case 0.15 :
+                        updatedScale = 0.25;
+                        break;
+                    case 0.25 :
+                        updatedScale = 0.5;
+                        break;
+                    case 0.5 :
+                        updatedScale = 0.75;
+                        break;
+                    case 0.75 :
+                        updatedScale = 1;
+                        break;
+                    case 1 :
+                    case 2 :
+                    case 3 :
+                    case 4 :
+                        updatedScale = photoScale + 1;
+                        break;
+                }
+
+                photoScale = updatedScale;
+            }
+        }
+
+        private function decPictureScale(e:MouseEvent):void {
+            if (selectedPhoto) {
+                var updatedScale:Number = photoScale;
+                switch (photoScale) {
+                    case 0.15 :
+                        updatedScale = 0.1;
+                        break;
+                    case 0.25 :
+                        updatedScale = 0.15;
+                        break;
+                    case 0.5 :
+                        updatedScale = 0.25;
+                        break;
+                    case 0.75 :
+                        updatedScale = 0.5;
+                        break;
+                    case 1 :
+                        updatedScale = 0.75;
+                        break;
+                    case 2 :
+                    case 3 :
+                    case 4 :
+                    case 5 :
+                        updatedScale = photoScale - 1;
+                        break;
+                }
+
+                photoScale = updatedScale;
+            }
+        }
+        private function savePhotoBtnClickHandler(event:MouseEvent):void {
+            if (selectedPhoto)
+                BitmapLocalSaver.save(selectedPhoto, list.selectedItem.title + ".jpg", false);
+        }
+
+        override protected function keyUpHandler(event:KeyboardEvent):void {
+            if (list && list.dataProvider && list.dataProvider.length > 0) {
+                if (!list.selectedItem) {
+                    list.selectedIndex = 0;
+                    list.verticalScrollPosition = 0;
+                }
+                else if (event.keyCode == 40) {
+                    if (list.selectedIndex < list.dataProvider.length - 1) list.selectedIndex++;
+                    list.verticalScrollPosition = Math.max(0, 250 * list.selectedIndex - 375);
+                }
+                else if (event.keyCode == 38) {
+                    if (list.selectedIndex > 0) list.selectedIndex--;
+                    list.verticalScrollPosition = Math.max(0, 250 * list.selectedIndex - 375);
+                }
+            }
+        }
+
+        private function addedToStageHandler(event:Event):void {
+            stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
+        }
+        private function removedFromStageHandler(event:Event):void {
+            stage.removeEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
+        }
+        ]]></fx:Script>
+
+    <stylecomponents:Background width="300" height="100%" color="0" fillAlpha=".75"/>
+    <stylecomponents:Background left="300" right="0" height="100%" color="#737786" fillAlpha="1"/>
+
+    <s:Scroller width="300" height="100%"
+                styleName="cosmoScrollerStyle"
+                horizontalScrollPolicy="off" verticalScrollPolicy="on">
+        <list:FileBodyList id="list"
+                           width="100%"
+                           dragEnabled="false"
+                           loadPhotoFunc="{loadPhotoFunc}"
+                           deselectEnabled="false"
+                           selectedItemChange="list_selectedItemChangeHandler(event)"
+                           itemRenderer="dittner.siegmar.view.fileView.file.album.AlbumPhotoRenderer">
+            <list:layout>
+                <s:VerticalLayout gap="0" useVirtualLayout="true" variableRowHeight="false"/>
+            </list:layout>
+        </list:FileBodyList>
+    </s:Scroller>
+
+    <s:Scroller left="300" right="0" top="0" bottom="0">
+        <s:VGroup horizontalAlign="center" verticalAlign="middle">
+            <s:Image id="img" scaleX="{photoScale}" scaleY="{photoScale}"/>
+        </s:VGroup>
+    </s:Scroller>
+
+    <s:HGroup width="100%" gap="10" horizontalAlign="center" paddingTop="-40" paddingRight="5" verticalAlign="middle">
+        <s:Label id="scaleLbl"
+                 text="{photoScale * 100 + '%'}"
+                 fontSize="16"
+                 mouseChildren="false" mouseEnabled="false"
+                 color="{AppColors.HELL_TÜRKIS}"/>
+
+        <button:RoundButton id="incScaleBtn"
+                            fontSize="16"
+                            click="incPictureScale(event)"
+                            label="+" width="25" height="25" color="#ffFFff"/>
+
+        <button:RoundButton id="decScaleBtn"
+                            fontSize="16"
+                            click="decPictureScale(event)"
+                            label="–" width="25" height="25" color="#ffFFff"/>
+
+        <s:Label id="sizeLbl"
+                 fontSize="16"
+                 mouseChildren="false" mouseEnabled="false"
+                 color="{AppColors.HELL_TÜRKIS}"/>
+
+        <button:StrokeButton id="savePhotoBtn"
+                             click="savePhotoBtnClickHandler(event)"
+                             label="Als JPG speichern" color="#ffFFff"/>
+    </s:HGroup>
+
+</s:Group>

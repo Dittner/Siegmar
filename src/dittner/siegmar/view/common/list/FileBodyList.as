@@ -14,6 +14,17 @@ public class FileBodyList extends ReordableList {
 	}
 
 	//--------------------------------------
+	//  loadPhotoFunc
+	//--------------------------------------
+	private var _loadPhotoFunc:Function;
+	public function get loadPhotoFunc():Function {return _loadPhotoFunc;}
+	public function set loadPhotoFunc(value:Function):void {
+		if (_loadPhotoFunc != value) {
+			_loadPhotoFunc = value;
+		}
+	}
+
+	//--------------------------------------
 	//  clickArea
 	//--------------------------------------
 	private var _clickableArea:Number = 0;
@@ -42,7 +53,7 @@ public class FileBodyList extends ReordableList {
 		tempPoint.x = event.localX;
 		var point:Point = (event.target as DisplayObject).localToGlobal(tempPoint);
 		point = globalToLocal(point);
-		if (point.x <= clickableArea) super.renderer_clickHandler(event);
+		if (clickableArea == 0 || point.x <= clickableArea) super.renderer_clickHandler(event);
 	}
 
 	override protected function addedToStageHandler(event:Event):void {

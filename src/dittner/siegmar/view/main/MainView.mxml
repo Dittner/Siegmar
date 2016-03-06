@@ -55,7 +55,7 @@
 
         <stylecomponents:Background color="#191f36" alpha=".5" width="100%" height="100%"/>
 
-        <busyindicator:BusyIndicator horizontalCenter="0" bottom="10"/>
+        <busyindicator:BusyIndicator horizontalCenter="0" bottom="-15"/>
 
     </s:Group>
 

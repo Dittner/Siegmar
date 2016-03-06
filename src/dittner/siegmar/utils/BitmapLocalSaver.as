@@ -10,6 +10,8 @@ import flash.filesystem.FileMode;
 import flash.filesystem.FileStream;
 import flash.utils.ByteArray;
 
+import mx.graphics.codec.JPEGEncoder;
+
 import mx.graphics.codec.PNGEncoder;
 
 public class BitmapLocalSaver {
@@ -21,11 +23,11 @@ public class BitmapLocalSaver {
 	private static var curPng:ByteArray;
 	private static var fileName:String;
 
-	public static function save(bd:BitmapData, fileName:String):IAsyncOperation {
+	public static function save(bd:BitmapData, fileName:String, asPNG:Boolean = true):IAsyncOperation {
 		if (curOp && curOp.isProcessing) return curOp;
 
 		if (curPng) curPng.clear();
-		curPng = new PNGEncoder().encode(bd);
+		curPng = asPNG ? new PNGEncoder().encode(bd) : new JPEGEncoder(100).encode(bd);
 		BitmapLocalSaver.fileName = fileName;
 
 		curOp = new AsyncOperation();

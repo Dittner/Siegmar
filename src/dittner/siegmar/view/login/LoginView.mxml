@@ -32,20 +32,18 @@
 
         public function registerUser():void {
             setCurrentState("registration");
-            if (stage) stage.focus = userNameInput;
         }
 
         public function authorizeUser():void {
             setCurrentState("authorization");
-            if (stage) stage.focus = passwordInput;
         }
 
-        public function setFocusToInput():void {
+        private function setFocusToInput():void {
             if (stage && currentState == "registration") {
-                stage.focus = userNameInput;
+                userNameInput.setFocus();
             }
             else if (stage && currentState == "authorization") {
-                stage.focus = passwordInput;
+                passwordInput.setFocus();
             }
         }
 
@@ -102,7 +100,8 @@
                      fontSize="30"
                      textAlign="right"
                      text="Name, Nachname:"/>
-            <s:TextInput id="userNameInput" width="500" styleName="loginInput"
+            <s:TextInput id="userNameInput"
+                         width="500" styleName="loginInput"
                          addedToStage="setFocusToInput()"/>
         </s:HGroup>
 
@@ -116,7 +115,8 @@
             <s:TextInput id="passwordInput"
                          width="500" height="50"
                          styleName="loginInput"
-                         displayAsPassword.authorization="true"/>
+                         displayAsPassword.authorization="true"
+                         addedToStage="setFocusToInput()"/>
         </s:HGroup>
 
         <s:HGroup width="100%" gap="10" verticalAlign="middle">
