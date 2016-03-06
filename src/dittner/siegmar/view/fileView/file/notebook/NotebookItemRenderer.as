@@ -12,7 +12,8 @@ public class NotebookItemRenderer extends DraggableNoteItemRenderer {
 
 	private static const TEXT_FORMAT:TextFormat = new TextFormat(FontName.BASIC_MX, 20, AppColors.TEXT_BLACK);
 
-	private static const PAD:uint = 20;
+	private static const HPAD:uint = 20;
+	private static const VPAD:uint = 30;
 	private static const SEP_COLOR:uint = 0;
 
 	public function NotebookItemRenderer() {
@@ -53,20 +54,20 @@ public class NotebookItemRenderer extends DraggableNoteItemRenderer {
 
 		measuredWidth = unscaledWidth;
 
-		textTf.width = measuredWidth - 2 * PAD - INDEX_COLUMN_WID + TEXT_DEFAULT_OFFSET;
-		measuredMinHeight = measuredHeight = textTf.textHeight + 2 * PAD + TEXT_DEFAULT_OFFSET;
+		textTf.width = measuredWidth - 2 * HPAD - INDEX_COLUMN_WID + TEXT_DEFAULT_OFFSET;
+		measuredMinHeight = measuredHeight = textTf.textHeight + 2 * VPAD + TEXT_DEFAULT_OFFSET;
 	}
 
 	override protected function updateDisplayList(w:Number, h:Number):void {
 		super.updateDisplayList(w, h);
 		var g:Graphics = graphics;
-		g.lineStyle(1, SEP_COLOR, 0.25);
+		g.lineStyle(1, SEP_COLOR, 0.5);
 		g.moveTo(INDEX_COLUMN_WID, h - 1);
 		g.lineTo(w, h - 1);
 
-		textTf.x = PAD - TEXT_DEFAULT_OFFSET + INDEX_COLUMN_WID;
-		textTf.y = PAD - TEXT_DEFAULT_OFFSET;
-		adjustSize(textTf, w - textTf.x - PAD);
+		textTf.x = HPAD - TEXT_DEFAULT_OFFSET + INDEX_COLUMN_WID;
+		textTf.y = VPAD - TEXT_DEFAULT_OFFSET;
+		adjustSize(textTf, w - textTf.x - HPAD);
 	}
 
 }

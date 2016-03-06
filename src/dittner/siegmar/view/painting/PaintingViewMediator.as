@@ -98,7 +98,7 @@ public class PaintingViewMediator extends WalterMediator {
 	}
 
 	private function imageBrowsed(op:IAsyncOperation):void {
-		var loadedBd:BitmapData = op.isSuccess ? (op.result as Bitmap).bitmapData : null;
+		var loadedBd:BitmapData = op.isSuccess ? (op.result[0] as Bitmap).bitmapData : null;
 		if (loadedBd) {
 			var res:BitmapData = new BitmapData(loadedBd.width, loadedBd.height, true, 0);
 			res.copyPixels(loadedBd, new Rectangle(0, 0, loadedBd.width, loadedBd.height), new Point());
@@ -176,7 +176,7 @@ public class PaintingViewMediator extends WalterMediator {
 	}
 
 	private function bgBrowsed(op:IAsyncOperation):void {
-		openedFileBody.bg = op.isSuccess ? (op.result as Bitmap).bitmapData : null;
+		openedFileBody.bg = op.isSuccess ? (op.result[0] as Bitmap).bitmapData : null;
 		updatePicture();
 	}
 

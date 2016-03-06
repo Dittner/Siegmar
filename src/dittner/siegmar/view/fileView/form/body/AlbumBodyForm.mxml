@@ -186,7 +186,10 @@
         }
 
         private function imageBrowsed(op:IAsyncOperation):void {
-            selectedPhoto = op.isSuccess ? (op.result as Bitmap).bitmapData : null;
+            if(op.isSuccess && op.result) {
+                selectedPhoto = op.isSuccess ? (op.result[0] as Bitmap).bitmapData : null;
+                textInput.text = (op.result[1] as File).name;
+            }
         }
 
         private function addImagesFolder():void {

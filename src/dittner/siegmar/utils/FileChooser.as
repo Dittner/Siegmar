@@ -19,6 +19,7 @@ public class FileChooser {
 
 	private static var curOp:AsyncOperation;
 	private static var fileLoader:Loader;
+	private static var file:File;
 
 	public static function browse(filters:Array):IAsyncOperation {
 		if (curOp && curOp.isProcessing) return curOp;
@@ -41,7 +42,7 @@ public class FileChooser {
 	}
 
 	private static function fileSelected(event:Event):void {
-		var file:File = event.target as File;
+		file = event.target as File;
 		LocalStorage.write(LAST_OPENED_FILE_PATH, file.nativePath);
 		loadFile(file.url)
 	}
@@ -64,7 +65,7 @@ public class FileChooser {
 
 	private static function fileLoaded(event:Event):void {
 		removeListeners(fileLoader);
-		curOp.dispatchSuccess(event.target.content);
+		curOp.dispatchSuccess([event.target.content, file]);
 	}
 
 	private static function addListeners(ldr:Loader):void {
