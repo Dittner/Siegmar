@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         xmlns:spinner="cosmoLib.components.spinner.*">
+
+    <fx:Script><![CDATA[
+        import de.dittner.siegmar.domain.fileSystem.body.picture.action.DrawLinesAction;
+
+        //--------------------------------------
+        //  actionChanged
+        //--------------------------------------
+        private var actionChanged:Boolean = false;
+        private var _action:DrawLinesAction;
+        [Bindable("actionChanged")]
+        public function get action():DrawLinesAction {return _action;}
+        public function set action(value:DrawLinesAction):void {
+            if (_action != value) {
+                _action = value;
+                actionChanged = true;
+                invalidateProperties();
+                dispatchEvent(new Event("actionChanged"));
+            }
+        }
+
+        override protected function commitProperties():void {
+            super.commitProperties();
+            if (actionChanged && action) {
+                actionChanged = false;
+                lineWeightSpinner.value = action.lineWeight;
+                lineStepSpinner.value = action.lineStep;
+                verticalLineCheckBox.selected = action.isVerticalPos;
+            }
+        }
+
+        public function storeChanges():void {
+            action.lineWeight = lineWeightSpinner.value
+            action.lineStep = lineStepSpinner.value
+            action.isVerticalPos = verticalLineCheckBox.selected
+        }
+        ]]></fx:Script>
+
+    <s:layout>
+        <s:VerticalLayout gap="10"/>
+    </s:layout>
+
+    <s:HGroup verticalAlign="middle">
+        <spinner:SimpleSpinner id="lineWeightSpinner"
+                               minimum="1" maximum="2000" value="1"/>
+        <s:Label color="#ffFFff" text="das Gewicht der Linie (px)"/>
+    </s:HGroup>
+
+    <s:HGroup verticalAlign="middle">
+        <spinner:SimpleSpinner id="lineStepSpinner"
+                               minimum="1" maximum="2000" value="1"/>
+        <s:Label color="#ffFFff" text="der Schritt der Linie (px)"/>
+    </s:HGroup>
+
+    <s:HGroup verticalAlign="middle">
+        <s:CheckBox id="verticalLineCheckBox" selected="false"/>
+        <s:Label color="#ffFFff" text="die senkrechte Linien"/>
+    </s:HGroup>
+</s:Group>

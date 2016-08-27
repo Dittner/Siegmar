@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+               xmlns:s="library://ns.adobe.com/flex/spark"
+               frameRate="30"
+               usePreloader="true"
+               preloader="de.dittner.siegmar.view.common.preloader.AppPreloader"
+               backgroundColor="#172141"
+               addedToStage="addedToStage(event)"
+               uncaughtError="uncaughtErrorHandler(event)">
+
+    <fx:Script><![CDATA[
+        import de.dittner.siegmar.SiegmarConfig;
+        import de.dittner.siegmar.view.common.utils.TextFieldFactory;
+
+        import dittner.async.Async;
+
+        import mx.logging.Log;
+
+        public static var root:SiegmarApp;
+        public static var stage:Stage;
+
+        private function addedToStage(event:Event):void {
+            Async.fps = 30;
+            Async.stage = stage;
+            SiegmarApp.stage = stage;
+            SiegmarApp.root = this;
+            TextFieldFactory.useEmbedFonts = true;
+            var config:SiegmarConfig = new SiegmarConfig();
+            config.start(this);
+        }
+
+        private function uncaughtErrorHandler(event:UncaughtErrorEvent):void {
+            var error:* = event.error;
+            if (error is Error) {
+                Log.getLogger("UnchaughtErrors").error((error as Error).getStackTrace().toString());
+            }
+            else {
+                Log.getLogger("UnchaughtErrors").error(error ? error.toString() : "unknown error");
+            }
+        }
+        ]]></fx:Script>
+
+    <fx:Style source="CosmoStyle.css"/>
+    <fx:Style source="/SiegmarStyle.css"/>
+
+</s:Application>

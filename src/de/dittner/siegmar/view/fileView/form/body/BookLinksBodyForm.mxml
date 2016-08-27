@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         xmlns:input="de.dittner.siegmar.view.common.input.*"
+         xmlns:button="de.dittner.siegmar.view.common.button.*"
+         implements="de.dittner.siegmar.view.common.form.IBodyForm">
+
+    <fx:Script><![CDATA[
+        import de.dittner.siegmar.view.common.utils.AppColors;
+        import de.dittner.siegmar.view.common.utils.FontName;
+
+        import dittner.async.AsyncOperation;
+        import dittner.async.IAsyncOperation;
+        import dittner.async.utils.invalidateOf;
+        import de.dittner.siegmar.domain.fileSystem.body.links.BookLink;
+        import de.dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
+        import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
+        import de.dittner.siegmar.view.common.utils.AppColors;
+        import de.dittner.siegmar.view.common.utils.FontName;
+
+        //----------------------------------------------------------------------------------------------
+        //
+        //  Interface Methods
+        //
+        //----------------------------------------------------------------------------------------------
+
+        private var operation:IAsyncOperation;
+        private var file:SiegmarFile;
+        private var fileBody:BookLinksBody;
+        public function createNote(file:SiegmarFile):IAsyncOperation {
+            operation = new AsyncOperation();
+            this.file = file;
+            this.fileBody = file.body as BookLinksBody;
+            reservedTitleHash = getReservedTitleHash();
+            currentState = "add";
+            invalidateOf(focusTextInput);
+            return operation;
+        }
+
+        public function editNote(file:SiegmarFile):IAsyncOperation {
+            operation = new AsyncOperation();
+            this.file = file;
+            this.fileBody = file.body as BookLinksBody;
+            reservedTitleHash = getReservedTitleHash();
+            var link:BookLink = file.selectedNote as BookLink;
+
+            authorNameInput.text = link.authorName;
+            bookNameInput.text = link.bookName;
+            publicationPlaceInput.text = link.publicationPlace;
+            publisherNameInput.text = link.publisherName;
+            publicationYearInput.text = link.publicationYear;
+            pagesNumInput.text = link.pagesNum;
+            currentState = "edit";
+            invalidateOf(focusTextInput);
+            return operation;
+        }
+
+        private function focusTextInput():void {
+            if (stage) stage.focus = authorNameInput;
+        }
+
+        public function removeNote(file:SiegmarFile):IAsyncOperation {
+            operation = new AsyncOperation();
+            this.file = file;
+            this.fileBody = file.body as BookLinksBody;
+            var link:BookLink = file.selectedNote as BookLink;
+            removeLbl.text = link.authorName + "\n" + link.bookName + "\n" + link.publicationYear + "г.";
+            currentState = "remove";
+            return operation;
+        }
+
+        public function clear():void {
+            authorNameInput.text = "";
+            bookNameInput.text = "";
+            publicationPlaceInput.text = "";
+            publisherNameInput.text = "";
+            publicationYearInput.text = "";
+            pagesNumInput.text = "";
+            operation = null;
+            reservedTitleHash = null;
+        }
+
+        //----------------------------------------------------------------------------------------------
+        //
+        //  Private Methods
+        //
+        //----------------------------------------------------------------------------------------------
+
+        private var reservedTitleHash:Object;
+        private function getReservedTitleHash():Object {
+            var hash:Object = {};
+            for each(var link:BookLink in fileBody.bookLinks)
+                hash[link.authorName + link.bookName + link.publicationYear] = link != file.selectedNote;
+            return hash;
+        }
+
+        private function isApplyBtnEnabled(currentState:String, authorName:String, bookName:String, publicationYear:String, pagesNum:String):Boolean {
+            if (currentState == "remove") return true;
+            else return authorName && bookName && publicationYear && !reservedTitleHash[authorName + bookName + publicationYear] && pagesNum;
+        }
+
+        private function cancelBtnClickHandler():void {
+            operation.dispatchSuccess(false);
+        }
+
+        private function applyBtnClickHandler():void {
+            if (currentState == "add") {
+                fileBody.addLink(getBookLink());
+            }
+            else if (currentState == "edit") {
+                fileBody.replaceLink(file.selectedNote, getBookLink());
+            }
+            else if (currentState == "remove") {
+                fileBody.removeLink(file.selectedNote);
+            }
+            operation.dispatchSuccess(true);
+        }
+
+        private function getBookLink():BookLink {
+            var res:BookLink = new BookLink();
+            res.authorName = authorNameInput.text;
+            res.bookName = bookNameInput.text;
+            res.publicationPlace = publicationPlaceInput.text;
+            res.publisherName = publisherNameInput.text;
+            res.publicationYear = publicationYearInput.text;
+            res.pagesNum = pagesNumInput.text;
+            return res;
+        }
+        ]]></fx:Script>
+
+    <s:states>
+        <s:State name="add"/>
+        <s:State name="edit"/>
+        <s:State name="remove"/>
+    </s:states>
+
+    <s:layout>
+        <s:VerticalLayout gap="10"/>
+    </s:layout>
+
+    <s:Label text.add="NEUE NOTIZ"
+             text.edit="AUFBEREITUNG"
+             text.remove="ENTFERNUNG"
+             width="100%"
+             fontFamily="{FontName.MYRIAD}" fontSize="16"
+             mouseChildren="false" mouseEnabled="false" paddingBottom="30"
+             color="{AppColors.HELL_TÜRKIS}"/>
+
+    <input:TextInputForm id="authorNameInput"
+                         visible.remove="false" includeInLayout.remove="false"
+                         width="100%" title="Name des Autors:"/>
+
+    <input:TextInputForm id="bookNameInput"
+                         visible.remove="false" includeInLayout.remove="false"
+                         width="100%" title="Name des Buches:"/>
+
+    <input:TextInputForm id="publicationPlaceInput"
+                         visible.remove="false" includeInLayout.remove="false"
+                         width="100%" title="Erscheinungsort:"/>
+
+    <input:TextInputForm id="publisherNameInput"
+                         visible.remove="false" includeInLayout.remove="false"
+                         width="100%" title="Verlagshaus:"/>
+
+    <input:TextInputForm id="publicationYearInput"
+                         visible.remove="false" includeInLayout.remove="false"
+                         width="100%" title="Erscheinungsjahr:"/>
+
+    <input:TextInputForm id="pagesNumInput"
+                         visible.remove="false" includeInLayout.remove="false"
+                         width="100%" title="Anzahl der Seiten:"/>
+
+    <s:Label styleName="header"
+             paddingTop="30" paddingBottom="30"
+             text="Sind Sie sicher, dass Sie diese Note entfernen möchten?"
+             visible="false" includeInLayout="false"
+             visible.remove="true" includeInLayout.remove="true"
+             width="100%"
+             textAlign="center" verticalAlign="middle"
+             mouseChildren="false" mouseEnabled="false"
+             color="{AppColors.HELL_TÜRKIS}"/>
+
+    <s:Label id="removeLbl"
+             visible="false"
+             visible.remove="true"
+             width="100%" height="100%" textAlign="center" verticalAlign="middle"
+             fontFamily="{FontName.MYRIAD}" fontSize="18"
+             mouseChildren="false" mouseEnabled="false"
+             maxDisplayedLines="8"
+             color="{AppColors.TEXT_LIGHT}"/>
+
+    <s:HGroup width="100%" gap="10">
+        <button:StrokeButton id="cancelBtn"
+                             width="100%"
+                             color="{AppColors.HELL_TÜRKIS}"
+                             label="Abbrechen"
+                             click="cancelBtnClickHandler()"/>
+
+        <button:ColorButton id="applyBtn"
+                            width="100%"
+                            bgColor="{AppColors.HELL_TÜRKIS}"
+                            textColor="0"
+                            label="Bestätigen"
+                            enabled="{isApplyBtnEnabled(currentState, authorNameInput.text, bookNameInput.text, publicationYearInput.text, pagesNumInput.text)}"
+                            click="applyBtnClickHandler()"/>
+    </s:HGroup>
+
+</s:Group>

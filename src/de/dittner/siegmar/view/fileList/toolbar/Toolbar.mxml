@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         xmlns:button="de.dittner.siegmar.view.common.button.*"
+         xmlns:common="cosmoLib.components.styleComponents.*">
+
+    <fx:Script><![CDATA[
+        import de.dittner.siegmar.view.common.button.ToolButton;
+        import de.dittner.siegmar.view.common.utils.AppColors;
+
+        import de.dittner.siegmar.view.common.utils.AppColors;
+
+        public var selectedOpCallBack:Function;
+
+        //--------------------------------------
+        //  showNoteBtns
+        //--------------------------------------
+        private var _showNoteBtns:Boolean = true;
+        [Bindable("showNoteBtnsChanged")]
+        public function get showNoteBtns():Boolean {return _showNoteBtns;}
+        public function set showNoteBtns(value:Boolean):void {
+            if (_showNoteBtns != value) {
+                _showNoteBtns = value;
+                dispatchEvent(new Event("showNoteBtnsChanged"));
+            }
+        }
+
+        //--------------------------------------
+        //  showFavoriteBtn
+        //--------------------------------------
+        private var _showFavoriteBtn:Boolean = false;
+        [Bindable("showFavoriteBtnChanged")]
+        public function get showFavoriteBtn():Boolean {return _showFavoriteBtn;}
+        public function set showFavoriteBtn(value:Boolean):void {
+            if (_showFavoriteBtn != value) {
+                _showFavoriteBtn = value;
+                dispatchEvent(new Event("showFavoriteBtnChanged"));
+            }
+        }
+
+        //--------------------------------------
+        //  showCloseBtn
+        //--------------------------------------
+        private var _showCloseBtn:Boolean = true;
+        [Bindable("showCloseBtnChanged")]
+        public function get showCloseBtn():Boolean {return _showCloseBtn;}
+        public function set showCloseBtn(value:Boolean):void {
+            if (_showCloseBtn != value) {
+                _showCloseBtn = value;
+                dispatchEvent(new Event("showCloseBtnChanged"));
+            }
+        }
+        //--------------------------------------
+        //  showSettingsBtn
+        //--------------------------------------
+        private var _showSettingsBtn:Boolean = true;
+        [Bindable("showSettingsBtnChanged")]
+        public function get showSettingsBtn():Boolean {return _showSettingsBtn;}
+        public function set showSettingsBtn(value:Boolean):void {
+            if (_showSettingsBtn != value) {
+                _showSettingsBtn = value;
+                dispatchEvent(new Event("showSettingsBtnChanged"));
+            }
+        }
+
+        private function btnClickHandler(event:MouseEvent):void {
+            if (selectedOpCallBack != null) {
+                selectedOpCallBack((event.target as ToolButton).toolId);
+            }
+        }
+        ]]></fx:Script>
+    <common:Background width="100%" height="100%" color="{AppColors.TOOLBAR}"/>
+
+    <s:VGroup width="100%" height="100%" verticalAlign="bottom"
+              paddingLeft="5" paddingRight="5" paddingTop="10" paddingBottom="10" gap="10">
+
+        <button:ToolButton toolId="{ToolAction.LOGOUT}"
+                           image="@Embed(source='/assets/btn/logout_btn.png')"
+                           click="btnClickHandler(event)"/>
+
+        <button:ToolButton toolId="{ToolAction.SETTINGS}"
+                           image="@Embed(source='/assets/btn/settings_btn.png')"
+                           visible="{showSettingsBtn}"
+                           includeInLayout="{showSettingsBtn}"
+                           click="btnClickHandler(event)"/>
+
+        <button:ToolButton toolId="{ToolAction.CLOSE}"
+                           image="@Embed(source='/assets/btn/close_btn.png')"
+                           visible="{showCloseBtn}"
+                           includeInLayout="{showCloseBtn}"
+                           click="btnClickHandler(event)"/>
+
+        <s:Spacer height="100%"/>
+
+        <button:ToolButton id="addBtn"
+                           toolId="{ToolAction.CREATE}"
+                           image="@Embed(source='/assets/btn/add_btn.png')"
+                           click="btnClickHandler(event)"
+                           visible="{showNoteBtns}"/>
+        <button:ToolButton id="editBtn"
+                           enabled="false"
+                           toolId="{ToolAction.EDIT}"
+                           image="@Embed(source='/assets/btn/edit_btn.png')"
+                           click="btnClickHandler(event)"
+                           visible="{showNoteBtns}"/>
+        <button:ToolButton id="removeBtn"
+                           enabled="false"
+                           toolId="{ToolAction.REMOVE}"
+                           image="@Embed(source='/assets/btn/delete_btn.png')"
+                           click="btnClickHandler(event)"
+                           visible="{showNoteBtns}"/>
+
+        <button:ToolButton id="favoriteBtn"
+                           enabled="false"
+                           toolId="{ToolAction.ADD_TO_FAVORITE}"
+                           image="@Embed(source='/assets/btn/favorite_btn.png')"
+                           click="btnClickHandler(event)"
+                           visible="{showFavoriteBtn}"
+                           includeInLayout="{showFavoriteBtn}"/>
+    </s:VGroup>
+
+</s:Group>

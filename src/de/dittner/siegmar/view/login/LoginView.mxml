@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<core:ViewBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+               xmlns:core="de.dittner.siegmar.view.common.view.*"
+               xmlns:s="library://ns.adobe.com/flex/spark"
+               xmlns:button="de.dittner.siegmar.view.common.button.*">
+
+    <fx:Script><![CDATA[
+        import de.dittner.siegmar.view.common.utils.AppColors;
+        import de.dittner.siegmar.view.common.utils.FontName;
+
+        import de.dittner.siegmar.utils.AppInfo;
+        import de.dittner.siegmar.utils.InputUtils;
+        import de.dittner.siegmar.view.common.utils.AppColors;
+        import de.dittner.siegmar.view.common.utils.FontName;
+
+        import spark.events.TextOperationEvent;
+
+        //--------------------------------------
+        //  vm
+        //--------------------------------------
+        private var _vm:LoginViewMediator;
+        [Bindable("vmChanged")]
+        public function get vm():LoginViewMediator {return _vm;}
+        public function set vm(value:LoginViewMediator):void {
+            if (_vm != value) {
+                _vm = value;
+                dispatchEvent(new Event("vmChanged"));
+            }
+        }
+        //--------------------------------------
+        //  userName
+        //--------------------------------------
+        private var _userName:String = "";
+        [Bindable("userNameChanged")]
+        public function get userName():String {return _userName;}
+        public function set userName(value:String):void {
+            if (_userName != value) {
+                _userName = value;
+                dispatchEvent(new Event("userNameChanged"));
+            }
+        }
+
+        [Bindable]
+        public var isLoginWithError:Boolean;
+        [Bindable]
+        public var isLoginSuccess:Boolean = false;
+
+        public function registerUser():void {
+            setCurrentState("registration");
+        }
+
+        public function authorizeUser():void {
+            setCurrentState("authorization");
+        }
+
+        private function setFocusToInput(input:TextInput):void {
+            if (stage && input == userNameInput && currentState == "registration") {
+                input.setFocus();
+            }
+            else if (stage && input == passwordInput && currentState == "authorization") {
+                input.setFocus();
+            }
+            else if (stage) {
+                input.setFocus();
+            }
+        }
+
+        private function validateRegistrationData(userNameField:String, passwordField:String):Boolean {
+            return (userNameField || userName) && passwordField && passwordField.length > AppInfo.MIN_PWD_LEN;
+        }
+
+        public function clear():void {
+            privacyLevelInput.text = "";
+            passwordInput.text = "";
+            userNameInput.text = "";
+            prevPrivacyLevelText = "";
+        }
+
+        private var prevPrivacyLevelText:String = "";
+        private static var regexp:RegExp = InputUtils.NO_DIGITS;
+        private function validationPrivacyLevelHandler(event:TextOperationEvent):void {
+            if (prevPrivacyLevelText == privacyLevelInput.text) return;
+
+            if (regexp.test(privacyLevelInput.text)) privacyLevelInput.text = prevPrivacyLevelText;
+            else prevPrivacyLevelText = privacyLevelInput.text
+        }
+
+        private function login():void {
+            if (validateRegistrationData(userNameInput.text, passwordInput.text))
+                vm.login();
+        }
+        ]]></fx:Script>
+
+    <core:states>
+        <s:State name="authorization"/>
+        <s:State name="registration"/>
+    </core:states>
+
+    <s:BitmapImage width="100%" height="100%" source="@Embed(source='/bg_pattern.png')" fillMode="repeat"/>
+
+    <s:SWFLoader visible.authorization="{!isLoginSuccess}" visible.registration="false"
+                 horizontalCenter="0" top="50" source="@Embed(source='/swf/lock.swf')"/>
+
+    <s:BitmapImage visible="{isLoginSuccess}"
+                   visible.registration="false"
+                   horizontalCenter="-32" top="50" source="@Embed(source='/assets/unlock.png')"/>
+
+    <s:VGroup width="100%" height="100%"
+              gap="25" horizontalAlign="center"
+              paddingTop="30" paddingBottom="20"
+              verticalAlign="middle">
+
+        <s:Label styleName="header"
+                 fontSize="50" width="100%" textAlign="center"
+                 paddingBottom="60"
+                 text="Die Chiffriermaschine Siegmar"/>
+
+        <s:HGroup width="100%" gap="10" verticalAlign="middle"
+                  visible.authorization="false" includeInLayout.authorization="false">
+            <s:Label fontFamily="{FontName.MYRIAD}"
+                     color="{AppColors.TEXT_RED}"
+                     width="{width/2 - 260}"
+                     fontSize="30"
+                     textAlign="right"
+                     text="Name, Nachname:"/>
+            <s:TextInput id="userNameInput"
+                         width="500" styleName="loginInput"
+                         addedToStage="setFocusToInput(userNameInput)"/>
+        </s:HGroup>
+
+        <s:HGroup width="100%" gap="10" verticalAlign="middle">
+            <s:Label fontFamily="{FontName.MYRIAD}"
+                     color="{AppColors.TEXT_RED}"
+                     width="{width/2 - 260}"
+                     fontSize="30"
+                     textAlign="right"
+                     text="Schlüssel:"/>
+            <s:TextInput id="passwordInput"
+                         width="500" height="50"
+                         styleName="loginInput"
+                         displayAsPassword.authorization="true"
+                         addedToStage="setFocusToInput(passwordInput)"
+                         enter="setFocusToInput(privacyLevelInput)"/>
+        </s:HGroup>
+
+        <s:HGroup width="100%" gap="10" verticalAlign="middle">
+            <s:Label fontFamily="{FontName.MYRIAD}"
+                     color="{AppColors.TEXT_RED}"
+                     width="{width/2 - 260}"
+                     fontSize="30"
+                     textAlign="right"
+                     text="Geheimhaltungsgrad:"/>
+            <s:TextInput id="privacyLevelInput"
+                         width="500" height="50"
+                         maxChars="10"
+                         styleName="loginInput"
+                         changing="validationPrivacyLevelHandler(event)"
+                         displayAsPassword.authorization="true"
+                         enter="setFocusToInput(dataBasePasswordInput)"/>
+        </s:HGroup>
+
+        <s:HGroup width="100%" gap="10" verticalAlign="middle">
+            <s:Label fontFamily="{FontName.MYRIAD}"
+                     color="{AppColors.TEXT_RED}"
+                     width="{width/2 - 260}"
+                     fontSize="30"
+                     textAlign="right"
+                     text="Datenbankschlüssel:"/>
+            <s:TextInput id="dataBasePasswordInput"
+                         width="500" height="50"
+                         styleName="loginInput"
+                         displayAsPassword.authorization="true"
+                         enter="login()"/>
+        </s:HGroup>
+
+        <button:BlackButton id="completeBtn"
+                            enabled="{validateRegistrationData(userNameInput.text, passwordInput.text)}"
+                            width="500"
+                            label.registration="Bestätigen"
+                            label.authorization="Einloggen"
+                            click="login()"/>
+
+        <s:Label id="errorLbl"
+                 fontFamily="{FontName.BASIC}"
+                 fontWeight="bold"
+                 visible="{isLoginWithError}"
+                 color="{AppColors.TEXT_INVALID}"
+                 width="100%"
+                 fontSize="20"
+                 textAlign="center"
+                 text="Ungültig!"/>
+
+    </s:VGroup>
+
+</core:ViewBase>

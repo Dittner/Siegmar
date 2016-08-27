@@ -1,8 +1,8 @@
 @namespace s "library://ns.adobe.com/flex/spark";
-@namespace input "dittner.siegmar.view.common.input.*";
-@namespace list "dittner.siegmar.view.common.list.*";
-@namespace spinner "dittner.siegmar.view.common.spinner.*";
-@namespace cap "dittner.siegmar.view.common.scroll.cap.*";
+@namespace input "de.dittner.siegmar.view.common.input.*";
+@namespace list "de.dittner.siegmar.view.common.list.*";
+@namespace spinner "de.dittner.siegmar.view.common.spinner.*";
+@namespace cap "de.dittner.siegmar.view.common.scroll.cap.*";
 
 @font-face {
     src: url("/fonts/Courier-New.ttf");
@@ -131,7 +131,7 @@ s|Label.header {
 /************************** INPUT **************************/
 
 input|TextInputForm {
-    skinClass: ClassReference("dittner.siegmar.view.common.input.DesktopTextInputFormSkin");
+    skinClass: ClassReference("de.dittner.siegmar.view.common.input.DesktopTextInputFormSkin");
     contentBackgroundAlpha: 1;
     borderColor: #c7c7cf;
     focusSkin: ClassReference("mx.core.UIComponent");
@@ -148,7 +148,7 @@ s|TextInput.loginInput {
     borderVisible: false;
     focusedTextSelectionColor: #595ab6;
     focusSkin: ClassReference("mx.core.UIComponent");
-    skinClass: ClassReference("dittner.siegmar.view.common.input.LoginTextInputSkin");
+    skinClass: ClassReference("de.dittner.siegmar.view.common.input.LoginTextInputSkin");
 }
 
 s|TextArea {
@@ -165,7 +165,7 @@ s|TextArea {
 
 /************************** LIST **************************/
 list|ListForm {
-    skinClass: ClassReference("dittner.siegmar.view.common.list.ListFormSkin");
+    skinClass: ClassReference("de.dittner.siegmar.view.common.list.ListFormSkin");
     borderVisible: false;
     focusSkin: ClassReference("mx.core.UIComponent");
     fontFamily: MyriadProMX;
@@ -177,7 +177,7 @@ list|ListForm {
 
 s|Scroller {
     interactionMode: mouse;
-    skinClass: ClassReference("dittner.siegmar.view.common.scroll.cap.CapScrollerSkin");
+    skinClass: ClassReference("de.dittner.siegmar.view.common.scroll.cap.CapScrollerSkin");
 }
 
 s|Scroller.cosmoScrollerStyle {
@@ -186,42 +186,42 @@ s|Scroller.cosmoScrollerStyle {
 }
 
 cap|CapVScrollBarSkin #decrementButton {
-    skin-class: ClassReference("dittner.siegmar.view.common.scroll.cap.ArrowButtonSkin");
+    skin-class: ClassReference("de.dittner.siegmar.view.common.scroll.cap.ArrowButtonSkin");
     icon: Embed(source="/assets/scroll/vtop_arrow_icon.png");
 }
 
 cap|CapVScrollBarSkin #incrementButton {
-    skin-class: ClassReference("dittner.siegmar.view.common.scroll.cap.ArrowButtonSkin");
+    skin-class: ClassReference("de.dittner.siegmar.view.common.scroll.cap.ArrowButtonSkin");
     icon: Embed(source="/assets/scroll/vbottom_arrow_icon.png");
 }
 
 cap|CapHScrollBarSkin #decrementButton {
-    skin-class: ClassReference("dittner.siegmar.view.common.scroll.cap.ArrowButtonSkin");
+    skin-class: ClassReference("de.dittner.siegmar.view.common.scroll.cap.ArrowButtonSkin");
     icon: Embed(source="/assets/scroll/hleft_arrow_icon.png");
 }
 
 cap|CapHScrollBarSkin #incrementButton {
-    skin-class: ClassReference("dittner.siegmar.view.common.scroll.cap.ArrowButtonSkin");
+    skin-class: ClassReference("de.dittner.siegmar.view.common.scroll.cap.ArrowButtonSkin");
     icon: Embed(source="/assets/scroll/hright_arrow_icon.png");
 }
 
 /************************** OTHER COMPONENTS **************************/
 s|TabBar {
     fontSize: 15px;
-    skinClass: ClassReference("dittner.siegmar.view.common.tabBar.TabBarSkin");
+    skinClass: ClassReference("de.dittner.siegmar.view.common.tabBar.TabBarSkin");
 }
 
 s|CheckBox {
-    skinClass: ClassReference("dittner.siegmar.view.common.checkBox.CustomCheckBoxSkin");
+    skinClass: ClassReference("de.dittner.siegmar.view.common.checkBox.CustomCheckBoxSkin");
 }
 
 s|RadioButton {
     fontSize: 15px;
-    skinClass: ClassReference("dittner.siegmar.view.common.radioButton.CustomRadioButtonSkin");
+    skinClass: ClassReference("de.dittner.siegmar.view.common.radioButton.CustomRadioButtonSkin");
 }
 
 spinner|CustomSpinner {
-    skin-class: ClassReference("dittner.siegmar.view.common.spinner.CustomSpinnerSkin");
+    skin-class: ClassReference("de.dittner.siegmar.view.common.spinner.CustomSpinnerSkin");
     fontSize: 15px;
     color: #4e4f61;
 }

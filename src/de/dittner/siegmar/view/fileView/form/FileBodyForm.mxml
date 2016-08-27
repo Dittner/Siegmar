@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         xmlns:bodyForm="de.dittner.siegmar.view.fileView.form.body.*"
+         xmlns:stylecomponents="cosmoLib.components.styleComponents.*">
+
+    <fx:Script><![CDATA[
+        import dittner.async.IAsyncOperation;
+        import de.dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
+        import de.dittner.siegmar.domain.fileSystem.file.FileType;
+        import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
+        import de.dittner.siegmar.view.common.form.IBodyForm;
+        import de.dittner.siegmar.view.fileList.toolbar.ToolAction;
+        import de.dittner.siegmar.view.fileView.FileViewMediator;
+
+        //--------------------------------------
+        //  vm
+        //--------------------------------------
+        private var _vm:FileViewMediator;
+        [Bindable("vmChanged")]
+        public function get vm():FileViewMediator {return _vm;}
+        public function set vm(value:FileViewMediator):void {
+            if (_vm != value) {
+                _vm = value;
+                dispatchEvent(new Event("vmChanged"));
+            }
+        }
+
+        //--------------------------------------
+        //  bookLinksBody
+        //--------------------------------------
+        private var _bookLinksBody:BookLinksBody;
+        [Bindable("bookLinksBodyChanged")]
+        public function get bookLinksBody():BookLinksBody {return _bookLinksBody;}
+        public function set bookLinksBody(value:BookLinksBody):void {
+            if (_bookLinksBody != value) {
+                _bookLinksBody = value;
+                dispatchEvent(new Event("bookLinksBodyChanged"));
+            }
+        }
+
+        private var curBodyForm:IBodyForm;
+
+        public function activate(file:SiegmarFile, toolAction:String):IAsyncOperation {
+            switch (file.header.fileType) {
+                case FileType.ARTICLE :
+                    curBodyForm = articleBodyForm;
+                    setCurrentState("article");
+                    break;
+                case FileType.DICTIONARY :
+                    curBodyForm = dictionaryBodyForm;
+                    setCurrentState("dictionary");
+                    break;
+                case FileType.NOTEBOOK :
+                    setCurrentState("notebook");
+                    curBodyForm = noteBodyForm;
+                    break;
+                case FileType.BOOK_LINKS :
+                    setCurrentState("bookLinks");
+                    curBodyForm = bookLinksBodyForm;
+                    break;
+                case FileType.ALBUM :
+                    setCurrentState("album");
+                    curBodyForm = albumBodyForm;
+                    break;
+                default :
+                    throw new Error("Unknown file type: " + file.header.fileType);
+            }
+
+            switch (toolAction) {
+                case ToolAction.CREATE :
+                    return curBodyForm.createNote(file);
+                case ToolAction.EDIT :
+                    return curBodyForm.editNote(file);
+                case ToolAction.REMOVE :
+                    return curBodyForm.removeNote(file);
+            }
+            return null;
+        }
+
+        //----------------------------------------------------------------------------------------------
+        //
+        //  Interface Methods
+        //
+        //----------------------------------------------------------------------------------------------
+
+        public function clear():void {
+            if (curBodyForm) curBodyForm.clear();
+        }
+        ]]></fx:Script>
+
+    <s:states>
+        <s:State name="notebook"/>
+        <s:State name="article"/>
+        <s:State name="dictionary"/>
+        <s:State name="bookLinks"/>
+        <s:State name="album"/>
+    </s:states>
+
+    <s:BitmapImage width="100%" height="100%" alpha=".25"
+                   source="@Embed(source='/assets/form_bg_pattern.png')" fillMode="repeat"/>
+
+    <stylecomponents:Background width="75%" height="75%"
+                                horizontalCenter="0" verticalCenter="0"
+                                color="#202131"/>
+
+    <s:Group width="75%" height="75%" verticalCenter="0" horizontalCenter="0">
+        <bodyForm:NotebookBodyForm id="noteBodyForm"
+                                   includeInLayout="false" visible="false"
+                                   includeInLayout.notebook="true" visible.notebook="true"
+                                   left="10" top="10" bottom="10" right="10"/>
+
+        <bodyForm:DictionaryBodyForm id="dictionaryBodyForm"
+                                     includeInLayout="false" visible="false"
+                                     includeInLayout.dictionary="true" visible.dictionary="true"
+                                     left="10" top="10" bottom="10" right="10"/>
+
+        <bodyForm:BookLinksBodyForm id="bookLinksBodyForm"
+                                    includeInLayout="false" visible="false"
+                                    includeInLayout.bookLinks="true" visible.bookLinks="true"
+                                    left="10" top="10" bottom="10" right="10"/>
+
+        <bodyForm:ArticleBodyForm id="articleBodyForm"
+                                  bookLinksBody="{bookLinksBody}"
+                                  includeInLayout="false" visible="false"
+                                  includeInLayout.article="true" visible.article="true"
+                                  left="10" top="10" bottom="10" right="10"/>
+
+        <bodyForm:AlbumBodyForm id="albumBodyForm"
+                                vm="{vm}"
+                                includeInLayout="false" visible="false"
+                                includeInLayout.album="true" visible.album="true"
+                                left="10" top="10" bottom="10" right="10"/>
+    </s:Group>
+
+</s:Group>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         xmlns:busyindicator="de.dittner.siegmar.view.common.busyIndicator.*"
+         xmlns:stylecomponents="cosmoLib.components.styleComponents.*"
+         addedToStage="addedToStageHandler(event)">
+
+    <fx:Script><![CDATA[
+        import de.dittner.siegmar.view.common.popup.SimplePopup;
+        import de.dittner.siegmar.view.common.view.ViewBase;
+
+        private function addedToStageHandler(event:Event):void {
+            SimplePopup.container.percentHeight = 100;
+            SimplePopup.container.percentWidth = 100;
+            popupLayer.addElement(SimplePopup.container);
+        }
+
+        public function addView(view:ViewBase):void {
+            viewCont.addElement(view);
+        }
+
+        public function removeView():void {
+            viewCont.removeAllElements();
+        }
+
+        public function lock():void {
+            setCurrentState("lock");
+        }
+
+        public function unlock():void {
+            setCurrentState("normal");
+        }
+        ]]></fx:Script>
+
+    <s:states>
+        <s:State name="disabled"/>
+        <s:State name="normal"/>
+        <s:State name="lock"/>
+    </s:states>
+
+    <s:BitmapImage width="100%" height="100%"
+                   fillMode="scale"
+                   scaleMode="zoom"
+                   source="@Embed('/assets/app_bg.png')"/>
+
+    <s:Group id="viewCont"
+             width="100%"
+             height="100%"/>
+
+    <s:Group id="popupLayer" width="100%" height="100%"/>
+
+    <s:Group id="busyIndicatorLayer"
+             width="100%" height="100%"
+             visible="false" visible.lock="true">
+
+        <stylecomponents:Background color="#191f36" alpha=".5" width="100%" height="100%"/>
+
+        <busyindicator:BusyIndicator horizontalCenter="0" bottom="-15"/>
+
+    </s:Group>
+
+</s:Group>
