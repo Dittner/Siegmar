@@ -50,7 +50,7 @@
             super.commitProperties();
             if (fileChanged) {
                 fileChanged = false;
-                var coll:ArrayCollection = new ArrayCollection((file.body as NoteListBody).items);
+                var coll:ArrayCollection = (file.body as NoteListBody).noteColl;
                 coll.filterFunction = filterFunction;
                 list.dataProvider = coll;
             }

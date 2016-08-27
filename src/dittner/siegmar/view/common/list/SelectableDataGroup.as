@@ -70,9 +70,7 @@ public class SelectableDataGroup extends DataGroup {
 	private var _haveRenderersClickListeners:Boolean = true;
 	private var _allowSelectByClick:Boolean = true;
 	[Bindable("allowSelectByClickChange")]
-	public function get allowSelectByClick():Boolean {
-		return _allowSelectByClick;
-	}
+	public function get allowSelectByClick():Boolean {return _allowSelectByClick;}
 	public function set allowSelectByClick(value:Boolean):void {
 		if (value == _allowSelectByClick)return;
 		_allowSelectByClick = value;

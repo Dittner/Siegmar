@@ -259,7 +259,7 @@
 
     <s:Label styleName="header"
              paddingTop="30" paddingBottom="30"
-             text="Sind Sie sicher, das Sie entfernen möchten?"
+             text="Sind Sie sicher, dass Sie dieses Foto entfernen möchten?"
              visible="false" includeInLayout="false"
              visible.remove="true" includeInLayout.remove="true"
              width="100%"

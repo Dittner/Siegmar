@@ -10,10 +10,6 @@ import dittner.siegmar.domain.user.User;
 import dittner.siegmar.message.MediatorMsg;
 import dittner.siegmar.utils.AppInfo;
 
-import flash.events.MouseEvent;
-
-import mx.events.FlexEvent;
-
 public class LoginViewMediator extends WalterMediator {
 
 	[Inject]
@@ -28,12 +24,8 @@ public class LoginViewMediator extends WalterMediator {
 	public var system:SiegmarFileSystem;
 
 	override protected function activate():void {
+		view.vm = this;
 		view.isLoginSuccess = false;
-		view.completeBtn.addEventListener(MouseEvent.CLICK, completeHandler);
-		view.passwordInput.addEventListener(FlexEvent.ENTER, completeHandler);
-		view.privacyLevelInput.addEventListener(FlexEvent.ENTER, completeHandler);
-		view.dataBasePasswordInput.addEventListener(FlexEvent.ENTER, completeHandler);
-		view.userNameInput.addEventListener(FlexEvent.ENTER, completeHandler);
 
 		if (user.isRegistered) {
 			view.userName = user.userName;
@@ -45,7 +37,7 @@ public class LoginViewMediator extends WalterMediator {
 		}
 	}
 
-	private function completeHandler(event:*):void {
+	public function login():void {
 		if (view.isLoginSuccess) return;
 		if (view.passwordInput.text.length <= AppInfo.MIN_PWD_LEN) return;
 		var op:IAsyncOperation;
@@ -93,11 +85,6 @@ public class LoginViewMediator extends WalterMediator {
 	}
 
 	override protected function deactivate():void {
-		view.completeBtn.removeEventListener(MouseEvent.CLICK, completeHandler);
-		view.passwordInput.removeEventListener(FlexEvent.ENTER, completeHandler);
-		view.privacyLevelInput.removeEventListener(FlexEvent.ENTER, completeHandler);
-		view.dataBasePasswordInput.removeEventListener(FlexEvent.ENTER, completeHandler);
-		view.userNameInput.removeEventListener(FlexEvent.ENTER, completeHandler);
 		view.clear();
 	}
 }

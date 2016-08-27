@@ -1,6 +1,5 @@
 package dittner.siegmar.view.fileView {
 import dittner.async.IAsyncOperation;
-import dittner.async.utils.doLaterInSec;
 import dittner.siegmar.bootstrap.navigator.ViewNavigator;
 import dittner.siegmar.bootstrap.viewFactory.ViewID;
 import dittner.siegmar.bootstrap.walter.WalterMediator;
@@ -59,13 +58,8 @@ public class FileViewMediator extends WalterMediator {
 			case ToolAction.REMOVE:
 				var completeOp:IAsyncOperation = view.showForm(system.openedFile, action);
 				completeOp.addCompleteCallback(function (op:IAsyncOperation):void {
-					if (system.openedFile) {
+					if (system.openedFile)
 						view.closeForm();
-						if (op.isSuccess && op.result) {
-							doLaterInSec(view.refresh, 1);
-							if (action == ToolAction.CREATE) view.scrollToBottom();
-						}
-					}
 				});
 				break;
 			case ToolAction.CLOSE:

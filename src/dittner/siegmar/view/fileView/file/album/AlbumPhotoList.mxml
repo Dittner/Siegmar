@@ -71,14 +71,14 @@
             if (fileChanged) {
                 fileChanged = false;
                 if (file && file.body is AlbumBody) {
-                    var op:IAsyncOperation = (file.body as AlbumBody).loadPhotosInfo();
-                    op.addCompleteCallback(photosInfoLoaded);
+                    var op:IAsyncOperation = (file.body as AlbumBody).loadPhotoColl();
+                    op.addCompleteCallback(photoCollLoaded);
                 }
             }
         }
 
-        private function photosInfoLoaded(op:IAsyncOperation):void {
-            var coll:ArrayCollection = new ArrayCollection(op.result);
+        private function photoCollLoaded(op:IAsyncOperation):void {
+            var coll:ArrayCollection = op.result;
             coll.filterFunction = filterFunction;
             list.dataProvider = coll;
         }
@@ -97,7 +97,6 @@
 
         private function loadPhotoFunc(photoID:int):IAsyncOperation {
             return (file.body as AlbumBody).loadPreview(photoID);
-            ;
         }
 
         private var selectedPhoto:BitmapData;
@@ -135,6 +134,17 @@
                         updatedScale = 1;
                         break;
                     case 1 :
+                        updatedScale = 1.25;
+                        break;
+                    case 1.25 :
+                        updatedScale = 1.5;
+                        break;
+                    case 1.5 :
+                        updatedScale = 1.75;
+                        break;
+                    case 1.75 :
+                        updatedScale = 2;
+                        break;
                     case 2 :
                     case 3 :
                     case 4 :
@@ -165,7 +175,18 @@
                     case 1 :
                         updatedScale = 0.75;
                         break;
+                    case 1.25 :
+                        updatedScale = 1;
+                        break;
+                    case 1.5 :
+                        updatedScale = 1.25;
+                        break;
+                    case 1.75 :
+                        updatedScale = 1.5;
+                        break;
                     case 2 :
+                        updatedScale = 1.75;
+                        break;
                     case 3 :
                     case 4 :
                     case 5 :
@@ -235,6 +256,8 @@
         <s:Label id="scaleLbl"
                  text="{photoScale * 100 + '%'}"
                  fontSize="16"
+                 width="100"
+                 textAlign="right"
                  mouseChildren="false" mouseEnabled="false"
                  color="{AppColors.HELL_TÜRKIS}"/>
 

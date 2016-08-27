@@ -13,6 +13,18 @@
         import spark.events.TextOperationEvent;
 
         //--------------------------------------
+        //  vm
+        //--------------------------------------
+        private var _vm:LoginViewMediator;
+        [Bindable("vmChanged")]
+        public function get vm():LoginViewMediator {return _vm;}
+        public function set vm(value:LoginViewMediator):void {
+            if (_vm != value) {
+                _vm = value;
+                dispatchEvent(new Event("vmChanged"));
+            }
+        }
+        //--------------------------------------
         //  userName
         //--------------------------------------
         private var _userName:String = "";
@@ -38,12 +50,15 @@
             setCurrentState("authorization");
         }
 
-        private function setFocusToInput():void {
-            if (stage && currentState == "registration") {
-                userNameInput.setFocus();
+        private function setFocusToInput(input:TextInput):void {
+            if (stage && input == userNameInput && currentState == "registration") {
+                input.setFocus();
             }
-            else if (stage && currentState == "authorization") {
-                passwordInput.setFocus();
+            else if (stage && input == passwordInput && currentState == "authorization") {
+                input.setFocus();
+            }
+            else if (stage) {
+                input.setFocus();
             }
         }
 
@@ -65,6 +80,11 @@
 
             if (regexp.test(privacyLevelInput.text)) privacyLevelInput.text = prevPrivacyLevelText;
             else prevPrivacyLevelText = privacyLevelInput.text
+        }
+
+        private function login():void {
+            if (validateRegistrationData(userNameInput.text, passwordInput.text))
+                vm.login();
         }
         ]]></fx:Script>
 
@@ -102,7 +122,7 @@
                      text="Name, Nachname:"/>
             <s:TextInput id="userNameInput"
                          width="500" styleName="loginInput"
-                         addedToStage="setFocusToInput()"/>
+                         addedToStage="setFocusToInput(userNameInput)"/>
         </s:HGroup>
 
         <s:HGroup width="100%" gap="10" verticalAlign="middle">
@@ -116,7 +136,8 @@
                          width="500" height="50"
                          styleName="loginInput"
                          displayAsPassword.authorization="true"
-                         addedToStage="setFocusToInput()"/>
+                         addedToStage="setFocusToInput(passwordInput)"
+                         enter="setFocusToInput(privacyLevelInput)"/>
         </s:HGroup>
 
         <s:HGroup width="100%" gap="10" verticalAlign="middle">
@@ -131,7 +152,8 @@
                          maxChars="10"
                          styleName="loginInput"
                          changing="validationPrivacyLevelHandler(event)"
-                         displayAsPassword.authorization="true"/>
+                         displayAsPassword.authorization="true"
+                         enter="setFocusToInput(dataBasePasswordInput)"/>
         </s:HGroup>
 
         <s:HGroup width="100%" gap="10" verticalAlign="middle">
@@ -144,14 +166,16 @@
             <s:TextInput id="dataBasePasswordInput"
                          width="500" height="50"
                          styleName="loginInput"
-                         displayAsPassword.authorization="true"/>
+                         displayAsPassword.authorization="true"
+                         enter="login()"/>
         </s:HGroup>
 
         <button:BlackButton id="completeBtn"
                             enabled="{validateRegistrationData(userNameInput.text, passwordInput.text)}"
                             width="500"
                             label.registration="Bestätigen"
-                            label.authorization="Einloggen"/>
+                            label.authorization="Einloggen"
+                            click="login()"/>
 
         <s:Label id="errorLbl"
                  fontFamily="{FontName.BASIC}"

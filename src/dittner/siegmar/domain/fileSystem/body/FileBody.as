@@ -4,12 +4,15 @@ import dittner.siegmar.bootstrap.walter.Walter;
 import dittner.siegmar.bootstrap.walter.walter_namespace;
 import dittner.siegmar.domain.store.FileStorage;
 
+import flash.events.EventDispatcher;
+
 import flash.utils.ByteArray;
 
 use namespace walter_namespace;
 
-public class FileBody {
+public class FileBody extends EventDispatcher {
 	public function FileBody() {
+		super();
 		Walter.instance.injector.inject(this);
 	}
 

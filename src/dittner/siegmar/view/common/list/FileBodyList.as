@@ -63,9 +63,16 @@ public class FileBodyList extends ReordableList {
 		TapEventKit.registerLongTapListener(this, longTapPressed, clickableArea ? new Rectangle(0, 0, clickableArea, 2000) : null);
 	}
 
-	public function scrollToBottom():void {
-		if (measuredHeight > height) verticalScrollPosition = measuredHeight - height;
+	//чтобы после удаления/добавления элемента в коллекцию скрол позиция не сбрасывалась
+	override public function set verticalScrollPosition(value:Number):void {
+		value = value < 0 ? 0 : value;
+		if (value == 0) {
+			if (verticalScrollPosition < 400)
+				super.verticalScrollPosition = value;
+		}
+		else {
+			super.verticalScrollPosition = value;
+		}
 	}
-
 }
 }

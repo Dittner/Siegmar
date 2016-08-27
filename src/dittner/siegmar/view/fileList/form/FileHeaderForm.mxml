@@ -145,7 +145,7 @@
         private function getHeader(formMode:String):String {
             if (formMode == FileFormMode.ADD) return "Wählen Sie bitte den Typ der Datei aus";
             else if (formMode == FileFormMode.EDIT) return "Hier können Sie die Dateien erneuern";
-            else if (formMode == FileFormMode.REMOVE) return "Sind Sie sicher, das Sie entfernen möchten?";
+            else if (formMode == FileFormMode.REMOVE) return "Sind Sie sicher, dass Sie diese Note entfernen möchten?";
             return "";
         }
         ]]></fx:Script>

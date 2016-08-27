@@ -5,10 +5,10 @@
          implements="dittner.siegmar.view.fileView.file.IFileContent">
 
     <fx:Script><![CDATA[
-        import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
         import dittner.siegmar.domain.fileSystem.body.NoteListBody;
         import dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
         import dittner.siegmar.domain.fileSystem.body.note.TitledNote;
+        import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
 
         import mx.collections.ArrayCollection;
 
@@ -50,7 +50,7 @@
             super.commitProperties();
             if (fileChanged) {
                 fileChanged = false;
-                var coll:ArrayCollection = new ArrayCollection((file.body as NoteListBody).items);
+                var coll:ArrayCollection = (file.body as NoteListBody).noteColl;
                 coll.filterFunction = filterFunction;
                 list.dataProvider = coll;
             }

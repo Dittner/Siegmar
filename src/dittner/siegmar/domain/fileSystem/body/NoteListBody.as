@@ -1,8 +1,12 @@
 package dittner.siegmar.domain.fileSystem.body {
 import dittner.siegmar.bootstrap.walter.walter_namespace;
+import dittner.siegmar.domain.fileSystem.body.note.ArticleNote;
 import dittner.siegmar.domain.fileSystem.body.note.Note;
 
+import flash.events.Event;
 import flash.utils.ByteArray;
+
+import mx.collections.ArrayCollection;
 
 use namespace walter_namespace;
 
@@ -11,11 +15,25 @@ public class NoteListBody extends FileBody {
 		super();
 	}
 
-	public var items:Array = [];
+	//--------------------------------------
+	//  noteColl
+	//--------------------------------------
+	private var _noteColl:ArrayCollection = new ArrayCollection();
+	[Bindable("noteCollChanged")]
+	public function get noteColl():ArrayCollection {return _noteColl;}
+	private function setNoteColl(value:ArrayCollection):void {
+		if (_noteColl != value) {
+			_noteColl = value;
+			dispatchEvent(new Event("noteCollChanged"));
+		}
+	}
 
 	public function addNote(note:Note):void {
 		if (note) {
-			items.push(note);
+			if (note is ArticleNote)
+				noteColl.addItem(note);
+			else
+				noteColl.addItemAt(note, 0);
 			store();
 		}
 	}
@@ -28,23 +46,19 @@ public class NoteListBody extends FileBody {
 	}
 
 	public function removeNote(note:Note):void {
-		for (var i:int = 0; i < items.length; i++)
-			if (items[i] == note) {
-				items.splice(i, 1);
-				store();
-				break;
-			}
+		if (noteColl.removeItem(note))
+			store();
 	}
 
 	override public function serialize():ByteArray {
 		var byteArray:ByteArray = new ByteArray();
-		byteArray.writeObject(items);
+		byteArray.writeObject(noteColl.source);
 		byteArray.position = 0;
 		return byteArray;
 	}
 
 	override public function deserialize(ba:ByteArray):void {
-		items = ba.readObject() as Array || [];
+		setNoteColl(new ArrayCollection(ba.readObject() as Array || []));
 	}
 
 }

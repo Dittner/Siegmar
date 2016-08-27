@@ -77,7 +77,7 @@
         private var reservedTitleHash:Object;
         private function getReservedTitleHash():Object {
             var hash:Object = {};
-            for each(var note:TitledNote in (file.body as NoteListBody).items)
+            for each(var note:TitledNote in (file.body as NoteListBody).noteColl)
                 hash[note.title] = note != file.selectedNote;
             return hash;
         }
@@ -142,7 +142,7 @@
 
     <s:Label styleName="header"
              paddingTop="30" paddingBottom="30"
-             text="Sind Sie sicher, das Sie entfernen möchten?"
+             text="Sind Sie sicher, dass Sie diese Note entfernen möchten?"
              visible="false" includeInLayout="false"
              visible.remove="true" includeInLayout.remove="true"
              width="100%"

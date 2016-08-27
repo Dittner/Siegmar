@@ -14,7 +14,6 @@
 
     <fx:Script><![CDATA[
         import dittner.async.IAsyncOperation;
-        import dittner.async.utils.invalidateOf;
         import dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
         import dittner.siegmar.domain.fileSystem.file.FileType;
         import dittner.siegmar.domain.fileSystem.file.SiegmarFile;
@@ -22,8 +21,6 @@
         import dittner.siegmar.view.common.popup.SimplePopup;
         import dittner.siegmar.view.common.utils.AppColors;
         import dittner.siegmar.view.fileView.file.IFileContent;
-
-        import mx.collections.ICollectionView;
 
         //--------------------------------------
         //  vm
@@ -74,17 +71,6 @@
         public function filterNotes(txt:String):void {
             if (activeFile)
                 activeFile.filterNotes(txt);
-        }
-
-        public function refresh():void {
-            if (activeFile) {
-                activeFile.fileBodyList.refresh();
-                (activeFile.fileBodyList.dataProvider as ICollectionView).refresh();
-            }
-        }
-
-        public function scrollToBottom():void {
-            invalidateOf(activeFile.fileBodyList.scrollToBottom);
         }
 
         public function clear():void {

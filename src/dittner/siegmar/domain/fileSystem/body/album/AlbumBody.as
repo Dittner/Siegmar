@@ -4,14 +4,28 @@ import dittner.async.IAsyncOperation;
 import dittner.siegmar.domain.fileSystem.body.*;
 
 import flash.display.BitmapData;
+import flash.events.Event;
 import flash.utils.ByteArray;
+
+import mx.collections.ArrayCollection;
 
 public class AlbumBody extends FileBody {
 	public function AlbumBody() {
 		super();
 	}
 
-	private var photosInfo:Array;
+	//--------------------------------------
+	//  photoColl
+	//--------------------------------------
+	private var _photoColl:ArrayCollection = new ArrayCollection();
+	[Bindable("photoCollChanged")]
+	public function get photoColl():ArrayCollection {return _photoColl;}
+	private function setPhotoColl(value:ArrayCollection):void {
+		if (_photoColl != value) {
+			_photoColl = value;
+			dispatchEvent(new Event("photoCollChanged"));
+		}
+	}
 
 	public function addPhoto(bitmap:BitmapData, title:String):IAsyncOperation {
 		var op:IAsyncOperation = fileStorage.storePhoto(bitmap, title, fileID);
@@ -20,51 +34,61 @@ public class AlbumBody extends FileBody {
 	}
 
 	private function addPhotoComplete(op:IAsyncOperation):void {
-		if (photosInfo && op.isSuccess) {
-			photosInfo.push(op.result);
+		if (op.isSuccess) {
+			photoColl.addItem(op.result);
 		}
 	}
 
 	public function updatePhoto(id:int, bitmap:BitmapData, title:String):IAsyncOperation {
-		if (photosInfo) {
-			for each(var info:Object in photosInfo) {
-				if (info.id == id) {
-					info.title = title;
-					break;
-				}
+		for each(var info:Object in photoColl) {
+			if (info.id == id) {
+				info.title = title;
+				break;
 			}
 		}
 		return fileStorage.updatePhoto(id, bitmap, title, fileID);
 	}
 
 	public function removePhoto(id:int):IAsyncOperation {
-		if (photosInfo) {
-			for (var i:int = 0; i < photosInfo.length; i++) {
-				var info:Object = photosInfo[i];
-				if (info.id == id) {
-					photosInfo.splice(i, 1);
-					break;
-				}
+		for (var i:int = 0; i < photoColl.length; i++) {
+			var info:Object = photoColl[i];
+			if (info.id == id) {
+				photoColl.removeItemAt(i);
+				break;
 			}
 		}
 		return fileStorage.removePhoto(id);
 	}
 
-	public function loadPhotosInfo():IAsyncOperation {
+	private var loadPhotoCollOp:IAsyncOperation;
+	public function loadPhotoColl():IAsyncOperation {
 		var op:IAsyncOperation;
-		if (photosInfo) {
-			op = new AsyncOperation();
-			op.dispatchSuccess(photosInfo);
-		}
-		else {
+
+		if (!loadPhotoCollOp) {
+			loadPhotoCollOp = new AsyncOperation();
 			op = fileStorage.loadPhotosInfo(fileID);
 			op.addCompleteCallback(photosInfoLoaded);
+			return loadPhotoCollOp;
 		}
-		return op;
+		else if (loadPhotoCollOp.isProcessing) {
+			return loadPhotoCollOp;
+		}
+		else {
+			op = new AsyncOperation();
+			op.dispatchSuccess(photoColl);
+			return op;
+		}
 	}
 
 	private function photosInfoLoaded(op:IAsyncOperation):void {
-		if (op.isSuccess) photosInfo = op.result;
+		if (op.isSuccess) {
+			setPhotoColl(new ArrayCollection(op.result));
+			loadPhotoCollOp.dispatchSuccess(photoColl);
+		}
+		else {
+			loadPhotoCollOp.dispatchError();
+			loadPhotoCollOp = null;
+		}
 	}
 
 	public function loadPhoto(id:int):IAsyncOperation {
