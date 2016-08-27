@@ -1,12 +1,12 @@
 package de.dittner.siegmar {
-import de.dittner.siegmar.backend.encryption.EncryptionService;
-import de.dittner.siegmar.bootstrap.navigator.ViewNavigator;
-import de.dittner.siegmar.bootstrap.viewFactory.ViewFactory;
-import de.dittner.siegmar.bootstrap.viewFactory.ViewID;
-import de.dittner.siegmar.bootstrap.viewMediatorFactory.ViewMediatorFactory;
+import de.dittner.siegmar.backend.EncryptionService;
+import de.dittner.siegmar.view.common.view.ViewNavigator;
+import de.dittner.siegmar.view.common.view.ViewFactory;
+import de.dittner.siegmar.view.common.view.ViewID;
+import de.dittner.siegmar.view.common.view.ViewMediatorFactory;
 import de.dittner.siegmar.bootstrap.walter.Walter;
 import de.dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
-import de.dittner.siegmar.domain.store.FileStorage;
+import de.dittner.siegmar.backend.FileStorage;
 import de.dittner.siegmar.domain.user.User;
 import de.dittner.siegmar.view.main.MainView;
 import de.dittner.siegmar.view.main.MainViewMediator;

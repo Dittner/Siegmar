@@ -1,5 +1,5 @@
 package de.dittner.siegmar.utils {
-import dittner.async.ProgressOperation;
+import de.dittner.async.ProgressOperation;
 
 import flash.display.Loader;
 import flash.events.ErrorEvent;

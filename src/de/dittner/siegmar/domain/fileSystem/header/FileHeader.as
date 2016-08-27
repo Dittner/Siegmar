@@ -1,10 +1,10 @@
 package de.dittner.siegmar.domain.fileSystem.header {
-import dittner.async.IAsyncOperation;
+import de.dittner.async.IAsyncOperation;
 import de.dittner.siegmar.bootstrap.walter.Walter;
 import de.dittner.siegmar.bootstrap.walter.walter_namespace;
 import de.dittner.siegmar.domain.fileSystem.file.FileType;
 import de.dittner.siegmar.domain.fileSystem.file.FileTypeName;
-import de.dittner.siegmar.domain.store.FileStorage;
+import de.dittner.siegmar.backend.FileStorage;
 import de.dittner.siegmar.view.common.utils.AppColors;
 
 use namespace walter_namespace;

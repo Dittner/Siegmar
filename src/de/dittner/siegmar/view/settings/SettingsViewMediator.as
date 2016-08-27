@@ -1,10 +1,8 @@
 package de.dittner.siegmar.view.settings {
-import de.dittner.siegmar.view.settings.*;
-import dittner.async.IAsyncOperation;
-import dittner.async.ProgressCommand;
-import dittner.ftpClient.FtpClient;
-import SiegmarApp;
-import de.dittner.siegmar.bootstrap.navigator.ViewNavigator;
+import de.dittner.async.IAsyncOperation;
+import de.dittner.async.ProgressCommand;
+import de.dittner.ftpClient.FtpClient;
+import de.dittner.siegmar.view.common.view.ViewNavigator;
 import de.dittner.siegmar.bootstrap.walter.WalterMediator;
 import de.dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
 import de.dittner.siegmar.domain.fileSystem.body.settings.Settings;

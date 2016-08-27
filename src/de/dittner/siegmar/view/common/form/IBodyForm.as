@@ -1,5 +1,5 @@
 package de.dittner.siegmar.view.common.form {
-import dittner.async.IAsyncOperation;
+import de.dittner.async.IAsyncOperation;
 import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
 
 public interface IBodyForm {

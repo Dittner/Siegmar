@@ -1,8 +1,8 @@
 package de.dittner.siegmar.domain.fileSystem.body.album {
 import de.dittner.siegmar.domain.fileSystem.body.FileBody;
 
-import dittner.async.AsyncOperation;
-import dittner.async.IAsyncOperation;
+import de.dittner.async.AsyncOperation;
+import de.dittner.async.IAsyncOperation;
 
 import flash.display.BitmapData;
 import flash.events.Event;

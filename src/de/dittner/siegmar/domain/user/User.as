@@ -2,12 +2,12 @@ package de.dittner.siegmar.domain.user {
 
 import com.adobe.crypto.MD5;
 
-import dittner.async.AsyncOperation;
-import dittner.async.IAsyncOperation;
-import de.dittner.siegmar.backend.encryption.EncryptionService;
+import de.dittner.async.AsyncOperation;
+import de.dittner.async.IAsyncOperation;
+import de.dittner.siegmar.backend.EncryptionService;
 import de.dittner.siegmar.bootstrap.walter.WalterProxy;
 import de.dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
-import de.dittner.siegmar.utils.LocalStorage;
+import de.dittner.siegmar.backend.LocalStorage;
 
 public class User extends WalterProxy {
 	private static const USER_NAME:String = "USER_NAME";

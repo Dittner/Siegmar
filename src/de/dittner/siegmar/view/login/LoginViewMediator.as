@@ -1,15 +1,15 @@
 package de.dittner.siegmar.view.login {
-import de.dittner.siegmar.view.login.*;
-import dittner.async.IAsyncOperation;
-import dittner.async.utils.doLaterInMSec;
-import de.dittner.siegmar.bootstrap.navigator.ViewNavigator;
-import de.dittner.siegmar.bootstrap.viewFactory.ViewID;
+import de.dittner.async.utils.doLaterInMSec;
+import de.dittner.siegmar.view.common.view.ViewNavigator;
+import de.dittner.siegmar.view.common.view.ViewID;
 import de.dittner.siegmar.bootstrap.walter.WalterMediator;
 import de.dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
-import de.dittner.siegmar.domain.store.FileStorage;
+import de.dittner.siegmar.backend.FileStorage;
 import de.dittner.siegmar.domain.user.User;
 import de.dittner.siegmar.message.MediatorMsg;
 import de.dittner.siegmar.utils.AppInfo;
+
+import de.dittner.async.IAsyncOperation;
 
 public class LoginViewMediator extends WalterMediator {
 

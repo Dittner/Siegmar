@@ -8,10 +8,10 @@
     <fx:Script><![CDATA[
         import de.dittner.siegmar.view.common.utils.AppColors;
 
-        import dittner.async.AsyncOperation;
-        import dittner.async.IAsyncOperation;
-        import dittner.async.ProgressOperation;
-        import dittner.async.utils.invalidateOf;
+        import de.dittner.async.AsyncOperation;
+        import de.dittner.async.IAsyncOperation;
+        import de.dittner.async.ProgressOperation;
+        import de.dittner.async.utils.invalidateOf;
         import de.dittner.siegmar.domain.fileSystem.body.album.AlbumBody;
         import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
         import de.dittner.siegmar.utils.FileChooser;

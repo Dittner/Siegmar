@@ -1,6 +1,7 @@
 package de.dittner.siegmar.utils {
-import dittner.async.AsyncOperation;
-import dittner.async.IAsyncOperation;
+import de.dittner.async.AsyncOperation;
+import de.dittner.async.IAsyncOperation;
+import de.dittner.siegmar.backend.LocalStorage;
 
 import flash.display.Loader;
 import flash.events.ErrorEvent;

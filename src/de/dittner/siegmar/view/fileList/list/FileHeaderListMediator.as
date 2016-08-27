@@ -1,12 +1,12 @@
 package de.dittner.siegmar.view.fileList.list {
-import de.dittner.siegmar.bootstrap.navigator.ViewNavigator;
-import de.dittner.siegmar.bootstrap.viewFactory.ViewID;
+import de.dittner.siegmar.view.common.view.ViewNavigator;
+import de.dittner.siegmar.view.common.view.ViewID;
 import de.dittner.siegmar.bootstrap.walter.WalterMediator;
 import de.dittner.siegmar.bootstrap.walter.message.WalterMessage;
 import de.dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
 import de.dittner.siegmar.domain.fileSystem.file.FileType;
 import de.dittner.siegmar.domain.fileSystem.header.FileHeader;
-import de.dittner.siegmar.domain.store.FileStorage;
+import de.dittner.siegmar.backend.FileStorage;
 import de.dittner.siegmar.view.common.list.SelectableDataGroupEvent;
 
 import flash.events.MouseEvent;

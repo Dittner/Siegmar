@@ -1,12 +1,10 @@
 package de.dittner.siegmar.view.main {
-import de.dittner.siegmar.view.main.*;
-
-import de.dittner.siegmar.backend.encryption.EncryptionService;
-import de.dittner.siegmar.bootstrap.navigator.ViewNavigator;
+import de.dittner.siegmar.backend.EncryptionService;
 import de.dittner.siegmar.bootstrap.walter.WalterMediator;
 import de.dittner.siegmar.bootstrap.walter.message.WalterMessage;
 import de.dittner.siegmar.message.MediatorMsg;
 import de.dittner.siegmar.view.common.view.ViewBase;
+import de.dittner.siegmar.view.common.view.ViewNavigator;
 
 public class MainViewMediator extends WalterMediator {
 

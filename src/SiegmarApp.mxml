@@ -9,10 +9,9 @@
                uncaughtError="uncaughtErrorHandler(event)">
 
     <fx:Script><![CDATA[
+        import de.dittner.async.AsyncCallbacksLib;
         import de.dittner.siegmar.SiegmarConfig;
         import de.dittner.siegmar.view.common.utils.TextFieldFactory;
-
-        import dittner.async.Async;
 
         import mx.logging.Log;
 
@@ -20,8 +19,8 @@
         public static var stage:Stage;
 
         private function addedToStage(event:Event):void {
-            Async.fps = 30;
-            Async.stage = stage;
+            AsyncCallbacksLib.fps = 30;
+            AsyncCallbacksLib.stage = stage;
             SiegmarApp.stage = stage;
             SiegmarApp.root = this;
             TextFieldFactory.useEmbedFonts = true;

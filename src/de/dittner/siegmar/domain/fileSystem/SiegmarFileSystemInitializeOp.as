@@ -1,6 +1,6 @@
 package de.dittner.siegmar.domain.fileSystem {
-import dittner.async.AsyncOperation;
-import dittner.async.IAsyncOperation;
+import de.dittner.async.AsyncOperation;
+import de.dittner.async.IAsyncOperation;
 import de.dittner.siegmar.domain.fileSystem.file.FileType;
 import de.dittner.siegmar.domain.fileSystem.file.FileTypeName;
 import de.dittner.siegmar.domain.fileSystem.header.FileHeader;

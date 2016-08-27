@@ -5,7 +5,7 @@
          xmlns:stylecomponents="cosmoLib.components.styleComponents.*">
 
     <fx:Script><![CDATA[
-        import dittner.async.IAsyncOperation;
+        import de.dittner.async.IAsyncOperation;
         import de.dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
         import de.dittner.siegmar.domain.fileSystem.file.FileType;
         import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;

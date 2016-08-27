@@ -1,6 +1,6 @@
 package de.dittner.siegmar.bootstrap.walter.injector {
 import de.dittner.siegmar.bootstrap.walter.injector.*;
-import dittner.async.utils.invalidateOf;
+import de.dittner.async.utils.invalidateOf;
 import de.dittner.siegmar.bootstrap.walter.Walter;
 import de.dittner.siegmar.bootstrap.walter.WalterProxy;
 import de.dittner.siegmar.bootstrap.walter.walter_namespace;

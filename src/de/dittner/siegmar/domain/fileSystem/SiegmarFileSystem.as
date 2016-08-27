@@ -1,6 +1,6 @@
 package de.dittner.siegmar.domain.fileSystem {
 import de.dittner.siegmar.domain.fileSystem.*;
-import dittner.async.IAsyncOperation;
+import de.dittner.async.IAsyncOperation;
 import de.dittner.siegmar.bootstrap.walter.WalterProxy;
 import de.dittner.siegmar.bootstrap.walter.message.WalterMessage;
 import de.dittner.siegmar.bootstrap.walter.walter_namespace;
@@ -14,7 +14,7 @@ import de.dittner.siegmar.domain.fileSystem.file.FileType;
 import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
 import de.dittner.siegmar.domain.fileSystem.header.FileHeader;
 import de.dittner.siegmar.domain.fileSystem.header.RootFolderHeader;
-import de.dittner.siegmar.domain.store.FileStorage;
+import de.dittner.siegmar.backend.FileStorage;
 import de.dittner.siegmar.domain.user.User;
 
 use namespace walter_namespace;

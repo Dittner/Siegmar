@@ -39,9 +39,10 @@ public class TapEventKit {
 }
 }
 
-import dittner.async.utils.clearDelay;
-import dittner.async.utils.doLaterInMSec;
-import dittner.async.utils.doLaterInSec;
+import de.dittner.async.utils.doLaterInMSec;
+
+import de.dittner.async.utils.clearDelay;
+import de.dittner.async.utils.doLaterInSec;
 
 import flash.display.DisplayObject;
 import flash.events.MouseEvent;

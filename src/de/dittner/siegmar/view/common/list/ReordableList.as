@@ -1,6 +1,5 @@
 package de.dittner.siegmar.view.common.list {
-import de.dittner.siegmar.view.common.list.*;
-import dittner.async.utils.doLaterInMSec;
+import de.dittner.async.utils.doLaterInMSec;
 import de.dittner.siegmar.view.common.utils.TapEventKit;
 
 import flash.display.Bitmap;

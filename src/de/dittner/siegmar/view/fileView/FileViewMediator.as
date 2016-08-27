@@ -1,8 +1,8 @@
 package de.dittner.siegmar.view.fileView {
 import de.dittner.siegmar.view.fileView.*;
-import dittner.async.IAsyncOperation;
-import de.dittner.siegmar.bootstrap.navigator.ViewNavigator;
-import de.dittner.siegmar.bootstrap.viewFactory.ViewID;
+import de.dittner.async.IAsyncOperation;
+import de.dittner.siegmar.view.common.view.ViewNavigator;
+import de.dittner.siegmar.view.common.view.ViewID;
 import de.dittner.siegmar.bootstrap.walter.WalterMediator;
 import de.dittner.siegmar.bootstrap.walter.message.WalterMessage;
 import de.dittner.siegmar.domain.fileSystem.SiegmarFileSystem;

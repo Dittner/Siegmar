@@ -1,5 +1,5 @@
 package de.dittner.siegmar.view.fileView.file.album {
-import dittner.async.IAsyncOperation;
+import de.dittner.async.IAsyncOperation;
 import de.dittner.siegmar.view.common.utils.AppColors;
 import de.dittner.siegmar.view.common.utils.FontName;
 import de.dittner.siegmar.view.fileView.file.DraggableNoteItemRenderer;
