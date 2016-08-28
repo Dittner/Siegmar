@@ -5,12 +5,11 @@
          implements="de.dittner.siegmar.view.fileView.file.IFileContent">
 
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.view.common.list.FileBodyList;
-
         import de.dittner.siegmar.domain.fileSystem.body.NoteListBody;
         import de.dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
         import de.dittner.siegmar.domain.fileSystem.body.note.Note;
         import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
+        import de.dittner.siegmar.view.common.list.FileBodyList;
 
         import mx.collections.ArrayCollection;
 
@@ -52,9 +51,11 @@
             super.commitProperties();
             if (fileChanged) {
                 fileChanged = false;
-                var coll:ArrayCollection = (file.body as NoteListBody).noteColl;
-                coll.filterFunction = filterFunction;
-                list.dataProvider = coll;
+                if (file) {
+                    var coll:ArrayCollection = (file.body as NoteListBody).noteColl;
+                    coll.filterFunction = filterFunction;
+                    list.dataProvider = coll;
+                }
             }
         }
 

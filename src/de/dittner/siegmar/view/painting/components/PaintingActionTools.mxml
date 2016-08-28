@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         xmlns:button="de.dittner.siegmar.view.common.button.*"
+         xmlns:list="de.dittner.siegmar.view.common.list.*"
+         xmlns:common="cosmoLib.components.styleComponents.*"
+         xmlns:actionform="de.dittner.siegmar.view.painting.components.actionForm.*">
+    <fx:Script><![CDATA[
+        import de.dittner.siegmar.domain.fileSystem.body.picture.action.PaintingAction;
+        import de.dittner.siegmar.view.common.colorChooser.SelectColorEvent;
+        import de.dittner.siegmar.view.common.popup.SimplePopup;
+        import de.dittner.siegmar.view.painting.*;
+
+        import mx.collections.ArrayCollection;
+
+        //--------------------------------------
+        //  vm
+        //--------------------------------------
+        private var _vm:PaintingVM;
+        [Bindable("vmChanged")]
+        public function get vm():PaintingVM {return _vm;}
+        public function set vm(value:PaintingVM):void {
+            if (_vm != value) {
+                _vm = value;
+                dispatchEvent(new Event("vmChanged"));
+            }
+        }
+
+        private function showAvailableActionList():void {
+            SimplePopup.show(availableActionListCont, true, availableActionListCloseHandler);
+        }
+
+        private function availableActionListCloseHandler():void {
+            availableActionList.selectedItem = false;
+        }
+
+        private function availableActionListItemSelectedHandler(event:Event):void {
+            SimplePopup.close();
+            vm.addAction(availableActionList.selectedItem);
+            availableActionList.selectedItem = null;
+        }
+
+        private function bgColorSelected(event:SelectColorEvent):void {
+            if (actionForm.action) actionForm.action.bgColor = event.color;
+            vm.picture.store();
+        }
+
+        private function saveResultLocally():void {
+
+        }
+        ]]></fx:Script>
+    <s:layout>
+        <s:VerticalLayout gap="15" paddingLeft="10" paddingRight="10"/>
+    </s:layout>
+
+    <fx:Declarations>
+        <s:Group id="availableActionListCont"
+                 width="50%" height="30%"
+                 verticalCenter="0" horizontalCenter="0">
+            <s:Label text="Wählen Sie gewünschte Aktion aus:" color="#ffFFff"/>
+            <common:Background width="100%" top="20" bottom="0" color="#ffFFff"/>
+            <s:Scroller width="100%" top="20" bottom="0" horizontalScrollPolicy="off">
+                <list:SelectableDataGroup id="availableActionList"
+                                          width="100%"
+                                          dataProvider="{new ArrayCollection(PaintingAction.ALL)}"
+                                          selectedItemChange="availableActionListItemSelectedHandler(event)"
+                                          itemRenderer="de.dittner.siegmar.view.painting.renderer.PaintingActionKeyRenderer">
+                    <list:layout>
+                        <s:VerticalLayout gap="0" useVirtualLayout="false"/>
+                    </list:layout>
+                </list:SelectableDataGroup>
+            </s:Scroller>
+        </s:Group>
+    </fx:Declarations>
+
+    <s:TabBar id="showModeChooser"
+              dataProvider="{new ArrayCollection(vm.showModes)}"
+              width="100%" height="40"
+              change="vm.selectedShowMode = showModeChooser.selectedItem"/>
+
+    <s:HGroup width="100%" gap="10">
+        <button:StrokeButton id="addImageBtn"
+                             width="50%"
+                             label="+ Bild" color="#ffFFff"
+                             click="vm.addImage()"/>
+
+        <button:StrokeButton id="addBgBtn"
+                             width="50%"
+                             label="+ Hintergrund" color="#ffFFff"
+                             click="vm.addBg()"/>
+    </s:HGroup>
+
+    <button:StrokeButton id="saveResultBtn"
+                         width="100%"
+                         label="Als PNG speichern" color="#ffFFff"
+                         click="vm.saveResultLocally()"/>
+
+    <s:Group width="100%" height="30%">
+        <s:Label text="Aktionen:" color="#ffFFff"/>
+        <common:Background width="100%" top="20" bottom="0" color="#ffFFff"/>
+        <s:Scroller width="100%" top="20" bottom="0" horizontalScrollPolicy="off">
+            <list:SelectableDataGroup id="actionList"
+                                      dataProvider="{vm.actionColl}"
+                                      width="100%"
+                                      deselectEnabled="true"
+                                      itemRemoved="vm.removeAction(event.data)"
+                                      itemRenderer="de.dittner.siegmar.view.painting.renderer.PaintingActionRenderer">
+                <list:layout>
+                    <s:VerticalLayout gap="0" useVirtualLayout="false"/>
+                </list:layout>
+            </list:SelectableDataGroup>
+        </s:Scroller>
+    </s:Group>
+
+    <button:StrokeButton id="addActionBtn"
+                         width="50%"
+                         click="showAvailableActionList()"
+                         label="+ Aktion" color="#ffFFff"/>
+
+    <actionform:ActionForm id="actionForm"
+                           action="{actionList.selectedItem}"
+                           visible="{actionList.selectedItem != null}"
+                           width="100%" height="100%"
+                           colorSelected="bgColorSelected(event)"
+                           storeChanges="vm.storeChanges(); actionForm.storeChanges();"/>
+
+</s:Group>

@@ -1,4 +1,8 @@
 package de.dittner.siegmar.view.common.preloader {
+import de.dittner.async.AsyncCallbacksLib;
+import de.dittner.siegmar.logging.CLog;
+import de.dittner.siegmar.logging.LogCategory;
+import de.dittner.siegmar.model.Device;
 import de.dittner.siegmar.view.common.utils.AppColors;
 
 import flash.desktop.NativeApplication;
@@ -29,7 +33,6 @@ public final class AppPreloader extends SparkDownloadProgressBar {
 	//----------------------------------------------------------------------------------------------
 
 	public function AppPreloader(color:uint = 0xFFffFF):void {
-		var nativeApplication:NativeApplication = NativeApplication.nativeApplication;
 		addEventListener(Event.ADDED_TO_STAGE, addedToStage);
 	}
 
@@ -43,6 +46,12 @@ public final class AppPreloader extends SparkDownloadProgressBar {
 
 	private function addedToStage(event:Event):void {
 		removeEventListener(Event.ADDED_TO_STAGE, addedToStage);
+		Device.init(stage);
+		AsyncCallbacksLib.fps = 30;
+		AsyncCallbacksLib.stage = stage;
+		CLog.run();
+		CLog.info(LogCategory.SYSTEM, "Device mode: " + (Device.stage.wmodeGPU ? "gpu" : "cpu"));
+		CLog.logMemoryAndFPS(true);
 
 		var bg:Bitmap = new BgClass();
 		var g:Graphics = graphics;

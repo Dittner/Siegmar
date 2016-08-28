@@ -3,9 +3,9 @@ import flash.events.Event;
 
 public class SelectableDataGroupEvent extends Event {
 
-	public static const SELECTED:String = "selectedItemChange";
-	public static const DOUBLE_CLICKED:String = "doubleClicked";
-	public static const REMOVE:String = "remove";
+	public static const ITEM_SELECTED:String = "selectedItemChange";
+	public static const ITEM_DOUBLE_CLICKED:String = "itemDoubleClicked";
+	public static const ITEM_REMOVED:String = "itemRemoved";
 
 	public function SelectableDataGroupEvent(type:String, data:* = null, index:int = -1, bubbles:Boolean = true, cancelable:Boolean = false) {
 		super(type, bubbles, cancelable);

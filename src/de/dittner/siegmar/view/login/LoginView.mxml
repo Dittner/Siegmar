@@ -1,72 +1,52 @@
 <?xml version="1.0"?>
-<core:ViewBase xmlns:fx="http://ns.adobe.com/mxml/2009"
-               xmlns:core="de.dittner.siegmar.view.common.view.*"
-               xmlns:s="library://ns.adobe.com/flex/spark"
-               xmlns:button="de.dittner.siegmar.view.common.button.*">
+<view:SmartView xmlns:fx="http://ns.adobe.com/mxml/2009"
+                xmlns:view="de.dittner.siegmar.view.common.view.*"
+                xmlns:s="library://ns.adobe.com/flex/spark"
+                xmlns:button="de.dittner.siegmar.view.common.button.*">
 
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.view.common.utils.AppColors;
-        import de.dittner.siegmar.view.common.utils.FontName;
-
         import de.dittner.siegmar.utils.AppInfo;
         import de.dittner.siegmar.utils.InputUtils;
         import de.dittner.siegmar.view.common.utils.AppColors;
         import de.dittner.siegmar.view.common.utils.FontName;
+        import de.dittner.siegmar.view.common.view.ViewModelFactory;
 
         import spark.events.TextOperationEvent;
 
-        //--------------------------------------
-        //  vm
-        //--------------------------------------
-        private var _vm:LoginViewMediator;
-        [Bindable("vmChanged")]
-        public function get vm():LoginViewMediator {return _vm;}
-        public function set vm(value:LoginViewMediator):void {
-            if (_vm != value) {
-                _vm = value;
-                dispatchEvent(new Event("vmChanged"));
-            }
-        }
-        //--------------------------------------
-        //  userName
-        //--------------------------------------
-        private var _userName:String = "";
-        [Bindable("userNameChanged")]
-        public function get userName():String {return _userName;}
-        public function set userName(value:String):void {
-            if (_userName != value) {
-                _userName = value;
-                dispatchEvent(new Event("userNameChanged"));
-            }
-        }
-
         [Bindable]
-        public var isLoginWithError:Boolean;
-        [Bindable]
-        public var isLoginSuccess:Boolean = false;
+        public var vm:LoginVM;
 
-        public function registerUser():void {
-            setCurrentState("registration");
+        override protected function activating():void {
+            vm = ViewModelFactory.instance.loginVM;
+            vm.lockView();
         }
 
-        public function authorizeUser():void {
-            setCurrentState("authorization");
+        override protected function activate():void {
+            vm.unlockView();
+            vm.viewActivated();
+            if (vm.user.isRegistered) setCurrentState("authorization");
+            else setCurrentState("registration");
+        }
+
+        override protected function deactivate():void {
+            clear();
+            vm.viewDeactivated();
         }
 
         private function setFocusToInput(input:TextInput):void {
             if (stage && input == userNameInput && currentState == "registration") {
-                input.setFocus();
+                stage.focus = input;
             }
             else if (stage && input == passwordInput && currentState == "authorization") {
-                input.setFocus();
+                stage.focus = input;
             }
             else if (stage) {
-                input.setFocus();
+                stage.focus = input;
             }
         }
 
         private function validateRegistrationData(userNameField:String, passwordField:String):Boolean {
-            return (userNameField || userName) && passwordField && passwordField.length > AppInfo.MIN_PWD_LEN;
+            return userNameField && passwordField && passwordField.length > AppInfo.MIN_PWD_LEN;
         }
 
         public function clear():void {
@@ -87,23 +67,17 @@
 
         private function login():void {
             if (validateRegistrationData(userNameInput.text, passwordInput.text))
-                vm.login();
+                vm.login(vm.user.userName, passwordInput.text, privacyLevelInput.text, dataBasePasswordInput.text);
         }
         ]]></fx:Script>
 
-    <core:states>
+    <view:states>
         <s:State name="authorization"/>
         <s:State name="registration"/>
-    </core:states>
+    </view:states>
 
     <s:BitmapImage width="100%" height="100%" source="@Embed(source='/bg_pattern.png')" fillMode="repeat"/>
 
-    <s:SWFLoader visible.authorization="{!isLoginSuccess}" visible.registration="false"
-                 horizontalCenter="0" top="50" source="@Embed(source='/swf/lock.swf')"/>
-
-    <s:BitmapImage visible="{isLoginSuccess}"
-                   visible.registration="false"
-                   horizontalCenter="-32" top="50" source="@Embed(source='/assets/unlock.png')"/>
 
     <s:VGroup width="100%" height="100%"
               gap="25" horizontalAlign="center"
@@ -124,6 +98,7 @@
                      textAlign="right"
                      text="Name, Nachname:"/>
             <s:TextInput id="userNameInput"
+                         text="{vm.user.userName}"
                          width="500" styleName="loginInput"
                          addedToStage="setFocusToInput(userNameInput)"/>
         </s:HGroup>
@@ -183,13 +158,13 @@
         <s:Label id="errorLbl"
                  fontFamily="{FontName.BASIC}"
                  fontWeight="bold"
-                 visible="{isLoginWithError}"
+                 visible="{vm.isLoginWithError}"
                  color="{AppColors.TEXT_INVALID}"
                  width="100%"
                  fontSize="20"
                  textAlign="center"
-                 text="Ungültig!"/>
+                 text="{vm.errorText || 'Ungültig!'}"/>
 
     </s:VGroup>
 
-</core:ViewBase>
+</view:SmartView>

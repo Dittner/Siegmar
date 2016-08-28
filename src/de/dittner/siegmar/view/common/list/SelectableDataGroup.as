@@ -12,6 +12,8 @@ import spark.components.IItemRenderer;
 import spark.events.RendererExistenceEvent;
 
 [Event(name="selectedItemChange", type="de.dittner.siegmar.view.common.list.SelectableDataGroupEvent")]
+[Event(name="itemDoubleClicked", type="de.dittner.siegmar.view.common.list.SelectableDataGroupEvent")]
+[Event(name="itemRemoved", type="de.dittner.siegmar.view.common.list.SelectableDataGroupEvent")]
 public class SelectableDataGroup extends DataGroup {
 
 	public function SelectableDataGroup() {
@@ -50,7 +52,7 @@ public class SelectableDataGroup extends DataGroup {
 	public function set selectedItem(value:*):void {
 		if (value == _selectedItem) {
 			if (allowSelectLastItem)
-				dispatchEvent(new SelectableDataGroupEvent(SelectableDataGroupEvent.SELECTED, selectedItem));
+				dispatchEvent(new SelectableDataGroupEvent(SelectableDataGroupEvent.ITEM_SELECTED, selectedItem));
 			return;
 		}
 
@@ -60,7 +62,7 @@ public class SelectableDataGroup extends DataGroup {
 			var renderer:IItemRenderer = getElementAt(i) as IItemRenderer;
 			if (renderer) renderer.selected = (renderer.data == value);
 		}
-		dispatchEvent(new SelectableDataGroupEvent(SelectableDataGroupEvent.SELECTED, selectedItem));
+		dispatchEvent(new SelectableDataGroupEvent(SelectableDataGroupEvent.ITEM_SELECTED, selectedItem));
 	}
 
 	//--------------------------------------------------------------------------------
@@ -240,7 +242,7 @@ public class SelectableDataGroup extends DataGroup {
 	//--------------------------------------------------------------------------------
 	protected function renderer_double_clickHandler(event:MouseEvent):void {
 		var dataRenderer:IDataRenderer = event.currentTarget as IDataRenderer;
-		dispatchEvent(new SelectableDataGroupEvent(SelectableDataGroupEvent.DOUBLE_CLICKED, dataRenderer.data));
+		dispatchEvent(new SelectableDataGroupEvent(SelectableDataGroupEvent.ITEM_DOUBLE_CLICKED, dataRenderer.data));
 	}
 }
 }

@@ -5,9 +5,9 @@ import com.adobe.crypto.MD5;
 import de.dittner.async.AsyncOperation;
 import de.dittner.async.IAsyncOperation;
 import de.dittner.siegmar.backend.EncryptionService;
-import de.dittner.siegmar.bootstrap.walter.WalterProxy;
-import de.dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
 import de.dittner.siegmar.backend.LocalStorage;
+import de.dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
+import de.dittner.walter.WalterProxy;
 
 public class User extends WalterProxy {
 	private static const USER_NAME:String = "USER_NAME";
@@ -15,6 +15,7 @@ public class User extends WalterProxy {
 	private static const ENCRYPTED_DB_PWD:String = "ENCRYPTED_DB_PWD";
 
 	public function User() {
+		super();
 		_userName = LocalStorage.read(USER_NAME) || "";
 		encryptedRandomText = LocalStorage.read(ENCRYPTED_RANDOM_TEXT) || "";
 		encryptedDataBasePwd = LocalStorage.read(ENCRYPTED_DB_PWD) || "";

@@ -3,14 +3,13 @@
          xmlns:s="library://ns.adobe.com/flex/spark"
          xmlns:button="de.dittner.siegmar.view.common.button.*"
          xmlns:common="cosmoLib.components.styleComponents.*">
-
+    <fx:Metadata>
+        [Event(name="actionSelected", type="de.dittner.siegmar.view.fileList.toolbar.ToolbarActionEvent")]
+    </fx:Metadata>
     <fx:Script><![CDATA[
+        import de.dittner.siegmar.domain.fileSystem.body.links.BookLink;
         import de.dittner.siegmar.view.common.button.ToolButton;
         import de.dittner.siegmar.view.common.utils.AppColors;
-
-        import de.dittner.siegmar.view.common.utils.AppColors;
-
-        public var selectedOpCallBack:Function;
 
         //--------------------------------------
         //  showNoteBtns
@@ -63,10 +62,47 @@
             }
         }
 
-        private function btnClickHandler(event:MouseEvent):void {
-            if (selectedOpCallBack != null) {
-                selectedOpCallBack((event.target as ToolButton).toolId);
+        //--------------------------------------
+        //  editBtnEnabled
+        //--------------------------------------
+        private var _editBtnEnabled:Boolean = false;
+        [Bindable("editBtnEnabledChanged")]
+        public function get editBtnEnabled():Boolean {return _editBtnEnabled;}
+        public function set editBtnEnabled(value:Boolean):void {
+            if (_editBtnEnabled != value) {
+                _editBtnEnabled = value;
+                dispatchEvent(new Event("editBtnEnabledChanged"));
             }
+        }
+
+        //--------------------------------------
+        //  removeBtnEnabled
+        //--------------------------------------
+        private var _removeBtnEnabled:Boolean = false;
+        [Bindable("removeBtnEnabledChanged")]
+        public function get removeBtnEnabled():Boolean {return _removeBtnEnabled;}
+        public function set removeBtnEnabled(value:Boolean):void {
+            if (_removeBtnEnabled != value) {
+                _removeBtnEnabled = value;
+                dispatchEvent(new Event("removeBtnEnabledChanged"));
+            }
+        }
+
+        //--------------------------------------
+        //  favoriteBtnEnabled
+        //--------------------------------------
+        private var _favoriteBtnEnabled:Boolean = false;
+        [Bindable("favoriteBtnEnabledChanged")]
+        public function get favoriteBtnEnabled():Boolean {return _favoriteBtnEnabled;}
+        public function set favoriteBtnEnabled(value:Boolean):void {
+            if (_favoriteBtnEnabled != value) {
+                _favoriteBtnEnabled = value;
+                dispatchEvent(new Event("favoriteBtnEnabledChanged"));
+            }
+        }
+
+        private function btnClickHandler(event:MouseEvent):void {
+            dispatchEvent(new ToolbarActionEvent(ToolbarActionEvent.ACTION_SELECTED, (event.target as ToolButton).toolId));
         }
         ]]></fx:Script>
     <common:Background width="100%" height="100%" color="{AppColors.TOOLBAR}"/>
@@ -97,21 +133,23 @@
                            image="@Embed(source='/assets/btn/add_btn.png')"
                            click="btnClickHandler(event)"
                            visible="{showNoteBtns}"/>
+
         <button:ToolButton id="editBtn"
-                           enabled="false"
+                           enabled="{editBtnEnabled}"
                            toolId="{ToolAction.EDIT}"
                            image="@Embed(source='/assets/btn/edit_btn.png')"
                            click="btnClickHandler(event)"
                            visible="{showNoteBtns}"/>
+
         <button:ToolButton id="removeBtn"
-                           enabled="false"
+                           enabled="{removeBtnEnabled}"
                            toolId="{ToolAction.REMOVE}"
                            image="@Embed(source='/assets/btn/delete_btn.png')"
                            click="btnClickHandler(event)"
                            visible="{showNoteBtns}"/>
 
         <button:ToolButton id="favoriteBtn"
-                           enabled="false"
+                           enabled="{favoriteBtnEnabled}"
                            toolId="{ToolAction.ADD_TO_FAVORITE}"
                            image="@Embed(source='/assets/btn/favorite_btn.png')"
                            click="btnClickHandler(event)"

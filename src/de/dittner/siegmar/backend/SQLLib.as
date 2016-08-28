@@ -1,7 +1,5 @@
 package de.dittner.siegmar.backend {
-import de.dittner.siegmar.bootstrap.walter.WalterProxy;
-
-public class SQLLib extends WalterProxy {
+public class SQLLib {
 	public function SQLLib() {}
 
 	//--------------------------------------

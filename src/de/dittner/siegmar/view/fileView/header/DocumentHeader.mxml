@@ -4,9 +4,10 @@
          xmlns:list="de.dittner.siegmar.view.fileList.list.*"
          xmlns:input="de.dittner.siegmar.view.common.input.*">
 
+    <fx:Metadata>
+        [Event(name="filterChange", type="flash.events.Event")]
+    </fx:Metadata>
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.view.common.utils.FontName;
-
         import de.dittner.siegmar.domain.fileSystem.FileOptionKeys;
         import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
         import de.dittner.siegmar.view.common.utils.FontName;
@@ -62,7 +63,8 @@
                              width="300" showTitle="false"
                              contentBackgroundAlpha="0"
                              borderColor="{file.header.color}"
-                             color="{file.header.color}"/>
+                             color="{file.header.color}"
+                             change="dispatchEvent(new Event('filterChange'))"/>
     </s:HGroup>
 
 </s:Group>

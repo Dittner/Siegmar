@@ -1,57 +1,74 @@
 package de.dittner.siegmar.backend {
 import de.dittner.async.IAsyncCommand;
+import de.dittner.async.IAsyncOperation;
 import de.dittner.async.utils.clearDelay;
-import de.dittner.async.utils.doLaterInSec;
+import de.dittner.async.utils.doLaterInMSec;
+import de.dittner.siegmar.view.main.MainVM;
+import de.dittner.walter.WalterProxy;
 
-public class DeferredCommandManager {
+import flash.events.Event;
 
-	private static const TIME_OUT_IN_SEC:Number = 180;
+public class DeferredCommandManager extends WalterProxy {
 
-	public function DeferredCommandManager() {}
+	private static const TIME_OUT:Number = 60 * 1000;//ms
 
-	private var processingCmd:IAsyncCommand;
-	private var commandsQueue:Array = [];
-	private var urgentCommandsQueue:Array = [];
-	private var timeOutFuncIndex:Number;
+	public function DeferredCommandManager() {
+		super();
+	}
+
+	[Inject]
+	public var mainVM:MainVM;
 
 	//--------------------------------------
-	//  isStopped
+	//  isRunning
 	//--------------------------------------
-	private var _isStopped:Boolean = false;
-	public function get isStopped():Boolean {return _isStopped;}
-	public function set isStopped(value:Boolean):void {
-		if (_isStopped != value) {
-			_isStopped = value;
-			executeNextCmd();
+	private var _isRunning:Boolean = false;
+	[Bindable("isRunningChanged")]
+	public function get isRunning():Boolean {return _isRunning;}
+	private function setIsRunning(value:Boolean):void {
+		if (_isRunning != value) {
+			_isRunning = value;
+			dispatchEvent(new Event("isRunningChanged"));
 		}
 	}
 
+	public function start():void {
+		setIsRunning(true);
+		executeNextCommand();
+	}
+
+	public function stop():void {
+		setIsRunning(false);
+	}
+
+	private var processingCmd:IAsyncCommand;
+	private var commandsQueue:Array = [];
+	private var timeOutFuncIndex:Number;
+
 	public function add(cmd:IAsyncCommand):void {
 		commandsQueue.push(cmd);
-		executeNextCmd();
+		if (isRunning) executeNextCommand();
 	}
 
-	public function addAsUrgent(cmd:IAsyncCommand):void {
-		urgentCommandsQueue.push(cmd);
-		executeNextCmd();
-	}
-
-	private function executeNextCmd():void {
-		if (!processingCmd && !isStopped && hasDeferredCmd()) {
-			processingCmd = urgentCommandsQueue.length > 0 ? urgentCommandsQueue.shift() : commandsQueue.shift();
-			processingCmd.addCompleteCallback(cmdCompleteHandler);
-			timeOutFuncIndex = doLaterInSec(timeOutHandler, TIME_OUT_IN_SEC);
+	private function executeNextCommand():void {
+		if (!processingCmd && hasDeferredCmd()) {
+			mainVM.viewLocked = true;
+			processingCmd = commandsQueue.shift();
+			//trace("deferred deferredOperation: " + getQualifiedClassName(processingCmd) + ", start processing...");
+			processingCmd.addCompleteCallback(commandCompleteHandler);
+			timeOutFuncIndex = doLaterInMSec(timeOutHandler, TIME_OUT);
 			processingCmd.execute();
 		}
 	}
 
 	private function hasDeferredCmd():Boolean {
-		return commandsQueue.length > 0 || urgentCommandsQueue.length > 0;
+		return commandsQueue.length > 0;
 	}
 
-	private function cmdCompleteHandler(cmd:IAsyncCommand):void {
+	private function commandCompleteHandler(op:IAsyncOperation):void {
+		mainVM.viewLocked = false;
 		destroyProcessingCmd();
-		executeNextCmd();
+		executeNextCommand();
 	}
 
 	private function destroyProcessingCmd():void {
@@ -61,7 +78,8 @@ public class DeferredCommandManager {
 	}
 
 	private function timeOutHandler():void {
-		cmdCompleteHandler(processingCmd);
+		trace("time out");
+		commandCompleteHandler(processingCmd);
 	}
 }
 }

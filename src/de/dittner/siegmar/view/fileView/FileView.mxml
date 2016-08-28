@@ -1,48 +1,62 @@
 <?xml version="1.0"?>
-<view:ViewBase xmlns:fx="http://ns.adobe.com/mxml/2009"
-               xmlns:s="library://ns.adobe.com/flex/spark"
-               xmlns:view="de.dittner.siegmar.view.common.view.*"
-               xmlns:toolbar="de.dittner.siegmar.view.fileList.toolbar.*"
-               xmlns:form="de.dittner.siegmar.view.fileView.form.*"
-               xmlns:dictionary="de.dittner.siegmar.view.fileView.file.dictionary.*"
-               xmlns:notebook="de.dittner.siegmar.view.fileView.file.notebook.*"
-               xmlns:header="de.dittner.siegmar.view.fileView.header.*"
-               xmlns:common="cosmoLib.components.styleComponents.*"
-               xmlns:booklinks="de.dittner.siegmar.view.fileView.file.bookLinks.*"
-               xmlns:article="de.dittner.siegmar.view.fileView.file.article.*"
-               xmlns:album="de.dittner.siegmar.view.fileView.file.album.*">
+<view:SmartView xmlns:fx="http://ns.adobe.com/mxml/2009"
+                xmlns:s="library://ns.adobe.com/flex/spark"
+                xmlns:view="de.dittner.siegmar.view.common.view.*"
+                xmlns:toolbar="de.dittner.siegmar.view.fileList.toolbar.*"
+                xmlns:form="de.dittner.siegmar.view.fileView.form.*"
+                xmlns:dictionary="de.dittner.siegmar.view.fileView.file.dictionary.*"
+                xmlns:notebook="de.dittner.siegmar.view.fileView.file.notebook.*"
+                xmlns:header="de.dittner.siegmar.view.fileView.header.*"
+                xmlns:common="cosmoLib.components.styleComponents.*"
+                xmlns:booklinks="de.dittner.siegmar.view.fileView.file.bookLinks.*"
+                xmlns:article="de.dittner.siegmar.view.fileView.file.article.*"
+                xmlns:album="de.dittner.siegmar.view.fileView.file.album.*">
 
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.view.common.utils.AppColors;
-
         import de.dittner.async.IAsyncOperation;
-        import de.dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
         import de.dittner.siegmar.domain.fileSystem.file.FileType;
         import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
         import de.dittner.siegmar.view.common.list.SelectableDataGroupEvent;
         import de.dittner.siegmar.view.common.popup.SimplePopup;
         import de.dittner.siegmar.view.common.utils.AppColors;
+        import de.dittner.siegmar.view.common.view.ViewModelFactory;
+        import de.dittner.siegmar.view.fileList.toolbar.ToolAction;
         import de.dittner.siegmar.view.fileView.file.IFileContent;
 
+        [Bindable]
+        public var vm:FileViewVM;
+
+        override protected function activating():void {
+            vm = ViewModelFactory.instance.fileViewVM;
+            vm.lockView();
+        }
+
+        override protected function activate():void {
+            vm.unlockView();
+            vm.viewActivated();
+        }
+
+        override protected function deactivate():void {
+            vm.viewDeactivated();
+        }
+
         //--------------------------------------
-        //  vm
+        //  openedFile
         //--------------------------------------
-        private var _vm:FileViewMediator;
-        [Bindable("vmChanged")]
-        public function get vm():FileViewMediator {return _vm;}
-        public function set vm(value:FileViewMediator):void {
-            if (_vm != value) {
-                _vm = value;
-                dispatchEvent(new Event("vmChanged"));
+        private var _openedFile:SiegmarFile;
+        [Bindable("openedFileChanged")]
+        public function get openedFile():SiegmarFile {return _openedFile;}
+        public function set openedFile(value:SiegmarFile):void {
+            if (_openedFile != value) {
+                _openedFile = value;
+                if(openedFile) updateState();
+                dispatchEvent(new Event("openedFileChanged"));
             }
         }
 
         private var activeFile:IFileContent;
-        public function activate(file:SiegmarFile, bookLinksBody:BookLinksBody):void {
-            form.bookLinksBody = bookLinksBody;
-            bg.color = file.header.color;
-            header.file = file;
-            switch (file.header.fileType) {
+        public function updateState():void {
+            switch (openedFile.header.fileType) {
                 case FileType.DICTIONARY :
                     setCurrentState("dictionary");
                     activeFile = dictionary;
@@ -65,9 +79,9 @@
                     break;
             }
 
-            activeFile.bookLinksBody = bookLinksBody;
-            activeFile.file = file;
-            activeFile.fileBodyList.addEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
+            activeFile.file = openedFile;
+            activeFile.fileBodyList.addEventListener(SelectableDataGroupEvent.ITEM_SELECTED, noteSelected);
+            activeFile.fileBodyList.addEventListener("orderChanged", notesOrderChanged);
         }
 
         public function filterNotes(txt:String):void {
@@ -78,25 +92,60 @@
         public function clear():void {
             if (activeFile) {
                 activeFile.filterNotes("");
-                activeFile.fileBodyList.removeEventListener(SelectableDataGroupEvent.SELECTED, noteSelected);
+                activeFile.fileBodyList.removeEventListener(SelectableDataGroupEvent.ITEM_SELECTED, noteSelected);
+                activeFile.fileBodyList.removeEventListener("orderChanged", notesOrderChanged);
+
             }
         }
 
         private function noteSelected(event:SelectableDataGroupEvent):void {
-            dispatchEvent(event.clone());
+            if (vm.openedFile)
+                vm.openedFile.selectedNote = event.data;
         }
 
-        public function showForm(file:SiegmarFile, toolAction:String):IAsyncOperation {
+        private function notesOrderChanged(event:Event):void {
+            if (vm.openedFile)
+                vm.openedFile.body.store();
+        }
+
+
+
+        private function filterChanged(event:Event):void {
+            filterNotes(docHeader.filterInput.text.toLowerCase());
+        }
+
+        private function handleToolbarAction(toolAction:String):void {
+            switch (toolAction) {
+                case ToolAction.CREATE:
+                case ToolAction.EDIT:
+                case ToolAction.REMOVE:
+                    var completeOp:IAsyncOperation = showForm(vm.openedFile, toolAction);
+                    completeOp.addCompleteCallback(function (op:IAsyncOperation):void {
+                        if (vm.openedFile)
+                            closeForm();
+                    });
+                    break;
+                case ToolAction.CLOSE:
+                    vm.closeFile();
+                    break;
+                case ToolAction.LOGOUT:
+                    vm.logout();
+                    break;
+            }
+        }
+
+        private function showForm(file:SiegmarFile, toolAction:String):IAsyncOperation {
             var completeOp:IAsyncOperation = form.activate(file, toolAction);
             SimplePopup.show(form, true);
             return completeOp;
         }
 
-        public function closeForm():void {
+        private function closeForm():void {
             SimplePopup.close();
             form.clear();
         }
         ]]></fx:Script>
+    <fx:Binding source="vm.openedFile" destination="openedFile"/>
 
     <fx:Declarations>
         <form:FileBodyForm id="form"
@@ -113,42 +162,55 @@
         <s:State name="album"/>
     </view:states>
 
-    <common:Background id="bg" width="100%" height="100%"/>
-    <common:Background width="40" height="100%" color="{AppColors.TOOLBAR}"/>
+    <common:Background id="bg"
+                       width="100%" height="100%"
+                       color="{vm.system.selectedFileHeader.color}"/>
+    <common:Background width="40" height="100%"
+                       color="{AppColors.TOOLBAR}"/>
 
     <s:VGroup height="100%" left="0" right="40"
               gap="0" horizontalAlign="right">
-        <header:DocumentHeader id="header"
+        <header:DocumentHeader id="docHeader"
+                               file="{vm.openedFile}"
+                               filterChange="filterChanged(event)"
                                width="{width - 80}"/>
 
         <notebook:Notebook id="notebook"
                            includeInLayout="false" visible="false"
                            includeInLayout.notebook="true" visible.notebook="true"
-                           width="100%" height="100%"/>
+                           width="100%" height="100%"
+                           bookLinksBody="{vm.bookLinksBody}"/>
 
         <dictionary:Dictionary id="dictionary"
                                includeInLayout="false" visible="false"
                                includeInLayout.dictionary="true" visible.dictionary="true"
-                               width="100%" height="100%"/>
+                               width="100%" height="100%"
+                               bookLinksBody="{vm.bookLinksBody}"/>
 
         <booklinks:BookLinkList id="bookLinkList"
                                 includeInLayout="false" visible="false"
                                 includeInLayout.links="true" visible.links="true"
-                                width="100%" height="100%"/>
+                                width="100%" height="100%"
+                                bookLinksBody="{vm.bookLinksBody}"/>
 
         <article:ArticleList id="articleList"
                              includeInLayout="false" visible="false"
                              includeInLayout.article="true" visible.article="true"
-                             width="100%" height="100%"/>
+                             width="100%" height="100%"
+                             bookLinksBody="{vm.bookLinksBody}"/>
 
         <album:AlbumPhotoList id="albumPhotoList"
                               includeInLayout="false" visible="false"
                               includeInLayout.album="true" visible.album="true"
-                              width="100%" height="100%"/>
+                              width="100%" height="100%"
+                              bookLinksBody="{vm.bookLinksBody}"/>
     </s:VGroup>
 
     <toolbar:Toolbar id="toolbar"
+                     actionSelected="handleToolbarAction(event.toolAction)"
+                     removeBtnEnabled="{vm.openedFile.selectedNote}"
+                     editBtnEnabled="{vm.openedFile.selectedNote}"
                      showSettingsBtn="false"
                      width="40" right="0" height="100%"/>
 
-</view:ViewBase>
+</view:SmartView>

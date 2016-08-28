@@ -1,4 +1,5 @@
 package de.dittner.siegmar.view.fileList.favorites {
+import de.dittner.siegmar.domain.fileSystem.header.FileHeader;
 import de.dittner.siegmar.view.common.list.SelectableDataGroupEvent;
 import de.dittner.siegmar.view.fileList.list.FileHeaderRenderer;
 
@@ -37,7 +38,8 @@ public class FavoriteFileHeaderRenderer extends FileHeaderRenderer {
 
 	private function downHandler(event:MouseEvent):void {
 		if (selected && event.localX >= deleteBtnIcon.x)
-			if (parent is DataGroup) dispatchEvent(new SelectableDataGroupEvent(SelectableDataGroupEvent.REMOVE, data, itemIndex));
+			if (parent is DataGroup)
+				dispatchEvent(new SelectableDataGroupEvent(SelectableDataGroupEvent.ITEM_REMOVED, data as FileHeader));
 			else event.stopImmediatePropagation();
 	}
 }

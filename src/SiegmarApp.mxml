@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
                xmlns:s="library://ns.adobe.com/flex/spark"
+               xmlns:main="de.dittner.siegmar.view.main.*"
                frameRate="30"
                usePreloader="true"
                preloader="de.dittner.siegmar.view.common.preloader.AppPreloader"
@@ -9,23 +10,15 @@
                uncaughtError="uncaughtErrorHandler(event)">
 
     <fx:Script><![CDATA[
-        import de.dittner.async.AsyncCallbacksLib;
-        import de.dittner.siegmar.SiegmarConfig;
+        import de.dittner.siegmar.model.Bootstrap;
         import de.dittner.siegmar.view.common.utils.TextFieldFactory;
 
         import mx.logging.Log;
 
-        public static var root:SiegmarApp;
-        public static var stage:Stage;
-
         private function addedToStage(event:Event):void {
-            AsyncCallbacksLib.fps = 30;
-            AsyncCallbacksLib.stage = stage;
-            SiegmarApp.stage = stage;
-            SiegmarApp.root = this;
             TextFieldFactory.useEmbedFonts = true;
-            var config:SiegmarConfig = new SiegmarConfig();
-            config.start(this);
+            var boot:Bootstrap = new Bootstrap(mainView);
+            boot.start();
         }
 
         private function uncaughtErrorHandler(event:UncaughtErrorEvent):void {
@@ -41,5 +34,8 @@
 
     <fx:Style source="CosmoStyle.css"/>
     <fx:Style source="/SiegmarStyle.css"/>
+
+    <main:MainView id="mainView"
+                   width="100%" height="100%"/>
 
 </s:Application>

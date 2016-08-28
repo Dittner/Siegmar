@@ -1,11 +1,10 @@
 package de.dittner.siegmar.domain.fileSystem.body {
 import de.dittner.async.IAsyncOperation;
-import de.dittner.siegmar.bootstrap.walter.Walter;
-import de.dittner.siegmar.bootstrap.walter.walter_namespace;
 import de.dittner.siegmar.backend.FileStorage;
+import de.dittner.walter.Walter;
+import de.dittner.walter.walter_namespace;
 
 import flash.events.EventDispatcher;
-
 import flash.utils.ByteArray;
 
 use namespace walter_namespace;

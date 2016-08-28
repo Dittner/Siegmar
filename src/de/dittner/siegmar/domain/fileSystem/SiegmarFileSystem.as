@@ -1,9 +1,7 @@
 package de.dittner.siegmar.domain.fileSystem {
-import de.dittner.siegmar.domain.fileSystem.*;
+import de.dittner.async.AsyncOperation;
 import de.dittner.async.IAsyncOperation;
-import de.dittner.siegmar.bootstrap.walter.WalterProxy;
-import de.dittner.siegmar.bootstrap.walter.message.WalterMessage;
-import de.dittner.siegmar.bootstrap.walter.walter_namespace;
+import de.dittner.siegmar.backend.FileStorage;
 import de.dittner.siegmar.domain.fileSystem.body.FileBody;
 import de.dittner.siegmar.domain.fileSystem.body.NoteListBody;
 import de.dittner.siegmar.domain.fileSystem.body.album.AlbumBody;
@@ -14,16 +12,24 @@ import de.dittner.siegmar.domain.fileSystem.file.FileType;
 import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
 import de.dittner.siegmar.domain.fileSystem.header.FileHeader;
 import de.dittner.siegmar.domain.fileSystem.header.RootFolderHeader;
-import de.dittner.siegmar.backend.FileStorage;
 import de.dittner.siegmar.domain.user.User;
+import de.dittner.walter.WalterProxy;
+import de.dittner.walter.message.WalterMessage;
+import de.dittner.walter.walter_namespace;
+
+import flash.events.Event;
+
+import mx.collections.ArrayCollection;
 
 use namespace walter_namespace;
 
 public class SiegmarFileSystem extends WalterProxy {
+	public function SiegmarFileSystem() {
+		super();
+	}
 
 	public static const FILE_SELECTED:String = "fileSelected";
 	public static const HEADERS_UPDATED:String = "headersUpdated";
-	public static const FILE_OPENED:String = "fileOpened";
 	public static const FOLDER_OPENED:String = "folderOpened";
 
 	[Inject]
@@ -54,6 +60,25 @@ public class SiegmarFileSystem extends WalterProxy {
 			_openedFolderHeader = value;
 			sendMessage(FOLDER_OPENED, _openedFolderHeader);
 			loadFileHeaders();
+			if (openedFolderHeader) {
+				var path:String = "";
+				for each(var header:FileHeader in openedFolderStack)
+					path += header.title + " / ";
+				setOpenedFolderPath(path);
+			}
+		}
+	}
+
+	//--------------------------------------
+	//  openedFolderPath
+	//--------------------------------------
+	private var _openedFolderPath:String = "";
+	[Bindable("openedFolderPathChanged")]
+	public function get openedFolderPath():String {return _openedFolderPath;}
+	private function setOpenedFolderPath(value:String):void {
+		if (_openedFolderPath != value) {
+			_openedFolderPath = value;
+			dispatchEvent(new Event("openedFolderPathChanged"));
 		}
 	}
 
@@ -61,23 +86,27 @@ public class SiegmarFileSystem extends WalterProxy {
 	//  selectedFileHeader
 	//--------------------------------------
 	private var _selectedFileHeader:FileHeader;
+	[Bindable("selectedFileHeaderChanged")]
 	public function get selectedFileHeader():FileHeader {return _selectedFileHeader;}
 	public function set selectedFileHeader(value:FileHeader):void {
 		if (_selectedFileHeader != value) {
 			_selectedFileHeader = value;
+			dispatchEvent(new Event("selectedFileHeaderChanged"));
 			sendMessage(FILE_SELECTED, _selectedFileHeader);
 		}
 	}
 
 	//--------------------------------------
-	//  availableHeaders
+	//  availableHeaderColl
 	//--------------------------------------
-	private var _availableHeaders:Array = [];
-	public function get availableHeaders():Array {return _availableHeaders;}
-	private function setAvailableHeaders(value:Array):void {
-		if (_availableHeaders != value) {
-			_availableHeaders = value;
-			sendMessage(HEADERS_UPDATED, _availableHeaders);
+	private var _availableHeaderColl:ArrayCollection;
+	[Bindable("availableHeaderCollChanged")]
+	public function get availableHeaderColl():ArrayCollection {return _availableHeaderColl;}
+	private function setAvailableHeaderColl(value:ArrayCollection):void {
+		if (_availableHeaderColl != value) {
+			_availableHeaderColl = value;
+			dispatchEvent(new Event("availableHeaderCollChanged"));
+			sendMessage(HEADERS_UPDATED, availableHeaderColl);
 		}
 	}
 
@@ -85,11 +114,12 @@ public class SiegmarFileSystem extends WalterProxy {
 	//  openedFile
 	//--------------------------------------
 	private var _openedFile:SiegmarFile;
+	[Bindable("openedFileChanged")]
 	public function get openedFile():SiegmarFile {return _openedFile;}
 	private function setOpenedFile(value:SiegmarFile):void {
 		if (_openedFile != value) {
 			_openedFile = value;
-			sendMessage(FILE_OPENED, _openedFile);
+			dispatchEvent(new Event("openedFileChanged"));
 		}
 	}
 
@@ -132,14 +162,26 @@ public class SiegmarFileSystem extends WalterProxy {
 
 	override protected function activate():void {}
 
-	public function openSelectedFile():void {
-		if (selectedFileHeader && !selectedFileHeader.isFolder) {
+	private var openSelectedFileOp:IAsyncOperation;
+	public function openSelectedFile():IAsyncOperation {
+		if (openSelectedFileOp && openSelectedFileOp.isProcessing) return openSelectedFileOp;
+		openSelectedFileOp = new AsyncOperation();
+
+		if (openedFile) {
+			openSelectedFileOp.dispatchSuccess(openedFile);
+		}
+		else if (selectedFileHeader && !selectedFileHeader.isFolder) {
 			var op:IAsyncOperation = fileStorage.loadFileBody(selectedFileHeader);
 			op.addCompleteCallback(fileBodyLoaded)
 		}
 		else {
 			_openedFile = null;
+			if(!selectedFileHeader)
+				openSelectedFileOp.dispatchError("No selected file header to load!");
+			else if(selectedFileHeader.isFolder)
+				openSelectedFileOp.dispatchError("Folder is not a file!");
 		}
+		return openSelectedFileOp;
 	}
 
 	private function fileBodyLoaded(op:IAsyncOperation):void {
@@ -149,6 +191,10 @@ public class SiegmarFileSystem extends WalterProxy {
 			file.header = selectedFileHeader;
 			file.body = op.result as FileBody;
 			setOpenedFile(file);
+			openSelectedFileOp.dispatchSuccess(file);
+		}
+		else {
+			openSelectedFileOp.dispatchError(op.error);
 		}
 	}
 
@@ -204,13 +250,13 @@ public class SiegmarFileSystem extends WalterProxy {
 
 	private function loadFileHeaders():void {
 		var op:IAsyncOperation = fileStorage.loadFileHeaders(openedFolderHeader.fileID);
-		op.addCompleteCallback(filesLoaded);
+		op.addCompleteCallback(headersLoaded);
 	}
 
-	private function filesLoaded(op:IAsyncOperation):void {
-		var files:Array = op.isSuccess ? op.result as Array : [];
-		files.sortOn(["fileType", "title"], [Array.NUMERIC, Array.CASEINSENSITIVE]);
-		setAvailableHeaders(files);
+	private function headersLoaded(op:IAsyncOperation):void {
+		var headers:Array = op.isSuccess ? op.result as Array : [];
+		headers.sortOn(["fileType", "title"], [Array.NUMERIC, Array.CASEINSENSITIVE]);
+		setAvailableHeaderColl(new ArrayCollection(headers));
 		selectedFileHeader = null;
 	}
 
@@ -221,7 +267,7 @@ public class SiegmarFileSystem extends WalterProxy {
 				setOpenedFolderHeader(header);
 			}
 			else {
-				sendMessage(HEADERS_UPDATED, _availableHeaders);
+				sendMessage(HEADERS_UPDATED, availableHeaderColl);
 			}
 		}
 	}
@@ -229,13 +275,6 @@ public class SiegmarFileSystem extends WalterProxy {
 	public function openPrevFolder():void {
 		if (openedFolderStack.length > 1) openedFolderStack.pop();
 		setOpenedFolderHeader(openedFolderStack[openedFolderStack.length - 1]);
-	}
-
-	public function openedFolderStackToString():String {
-		var res:String = "";
-		for each(var header:FileHeader in openedFolderStack)
-			res += header.title + " / ";
-		return res;
 	}
 
 	public function closeOpenedFile():void {
@@ -247,7 +286,8 @@ public class SiegmarFileSystem extends WalterProxy {
 		_openedFile = null;
 		_openedFolderHeader = null;
 		openedFolderStack.length = 0;
-		availableHeaders.length = 0;
+		setAvailableHeaderColl(new ArrayCollection());
+		user.logout();
 	}
 
 }

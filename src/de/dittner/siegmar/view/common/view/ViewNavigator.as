@@ -1,34 +1,33 @@
 package de.dittner.siegmar.view.common.view {
-import de.dittner.siegmar.view.common.view.IViewFactory;
-import de.dittner.siegmar.view.common.view.IViewMediatorFactory;
-import de.dittner.siegmar.bootstrap.walter.WalterMediator;
-import de.dittner.siegmar.bootstrap.walter.WalterProxy;
-import de.dittner.siegmar.bootstrap.walter.walter_namespace;
-import de.dittner.siegmar.view.common.view.ViewBase;
+import de.dittner.walter.WalterProxy;
+import de.dittner.walter.walter_namespace;
+
+import flash.events.Event;
 
 use namespace walter_namespace;
 
 public class ViewNavigator extends WalterProxy {
 	public static const SELECTED_VIEW_CHANGED_MSG:String = "selectedViewChangedMsg";
+	public function ViewNavigator() {
+		super();
+	}
 
 	[Inject]
 	public var viewFactory:IViewFactory;
-	[Inject]
-	public var viewMediatorFactory:IViewMediatorFactory;
 
-	private var selectedMediator:WalterMediator;
-
-	//--------------------------------------
-	//  selectedViewID
-	//--------------------------------------
-	private var _selectedViewID:String = "";
-	public function get selectedViewID():String {return _selectedViewID;}
 
 	//--------------------------------------
 	//  selectedView
 	//--------------------------------------
 	private var _selectedView:ViewBase;
+	[Bindable("selectedViewChanged")]
 	public function get selectedView():ViewBase {return _selectedView;}
+	private function setSelectedView(value:ViewBase):void {
+		if (_selectedView != value) {
+			_selectedView = value;
+			dispatchEvent(new Event("selectedViewChanged"));
+		}
+	}
 
 	//----------------------------------------------------------------------------------------------
 	//
@@ -37,24 +36,13 @@ public class ViewNavigator extends WalterProxy {
 	//----------------------------------------------------------------------------------------------
 
 	public function navigate(viewID:String):void {
-		if (_selectedViewID != viewID) {
-			unregisterMediator();
-			_selectedViewID = viewID;
-			_selectedView = viewFactory.createView(selectedViewID);
-			registerMediator();
-			sendMessage(SELECTED_VIEW_CHANGED_MSG, selectedView);
-		}
-	}
+		if (selectedView && selectedView.viewID == viewID) return;
+		if (_selectedView) _selectedView.invalidate(NavigationPhase.VIEW_REMOVE);
 
-	private function unregisterMediator():void {
-		if (!selectedView) return;
-		walter.unregisterMediator(selectedMediator);
-	}
+		setSelectedView(viewFactory.createView(viewID));
+		selectedView.invalidate(NavigationPhase.VIEW_ACTIVATE);
 
-	private function registerMediator():void {
-		var mediator:WalterMediator = viewMediatorFactory.create(selectedViewID);
-		walter.registerMediator(selectedView, mediator);
-		selectedMediator = mediator;
+		sendMessage(SELECTED_VIEW_CHANGED_MSG, selectedView);
 	}
 
 	override protected function activate():void {}

@@ -3,32 +3,70 @@
                xmlns:s="library://ns.adobe.com/flex/spark"
                xmlns:view="de.dittner.siegmar.view.common.view.*"
                xmlns:toolbar="de.dittner.siegmar.view.fileList.toolbar.*"
-               xmlns:paintingview="de.dittner.siegmar.view.painting.*">
+               xmlns:components="de.dittner.siegmar.view.painting.components.*">
+    <fx:Script><![CDATA[
+        import de.dittner.siegmar.domain.fileSystem.body.picture.PictureBody;
+        import de.dittner.siegmar.view.common.view.ViewModelFactory;
+        import de.dittner.siegmar.view.fileList.toolbar.ToolAction;
+
+        [Bindable]
+        public var vm:PaintingVM;
+
+        override protected function activating():void {
+            vm = ViewModelFactory.instance.paintingVM;
+            vm.lockView();
+        }
+
+        override protected function activate():void {
+            vm.unlockView();
+            vm.viewActivated();
+        }
+
+        override protected function deactivate():void {
+            vm.viewDeactivated();
+        }
+
+        private function handleToolbarAction(toolAction:String):void {
+            switch (toolAction) {
+                case ToolAction.CLOSE:
+                    vm.closeFile();
+                    break;
+                case ToolAction.LOGOUT:
+                    vm.logout();
+                    break;
+            }
+        }
+        ]]></fx:Script>
 
     <view:layout>
         <s:HorizontalLayout gap="0"/>
     </view:layout>
 
-    <paintingview:PicturePanel id="picturePanel"
-                               width="100%" height="100%"/>
+    <components:PicturePanel id="picturePanel"
+                             pictureScale="{vm.pictureBitmapDataScale}"
+                             source="{vm.pictureBitmapData}"
+                             width="100%" height="100%"/>
 
     <s:VGroup width="400" height="100%" gap="0">
-        <paintingview:PictureInfoBoard id="pictureInfo"
-                                       pictureScale="{picturePanel.pictureScale}"
-                                       width="100%"/>
+        <components:PictureInfoBoard id="pictureInfo"
+                                     title="{vm.system.selectedFileHeader}"
+                                     picture="{vm.system.openedFile.body as PictureBody}"
+                                     pictureScale="{picturePanel.pictureScale}"
+                                     width="100%"
+                                     scaleIncreased="vm.incPictureScale()"
+                                     scaleDecreased="vm.decPictureScale()"/>
 
         <s:Spacer height="15"/>
 
-        <paintingview:PaintingActionTools id="actionTools"
-                                          width="100%" height="100%"/>
+        <components:PaintingActionTools id="actionTools"
+                                        vm="{vm}"
+                                        width="100%" height="100%"/>
 
     </s:VGroup>
 
     <toolbar:Toolbar id="toolbar"
+                     actionSelected="handleToolbarAction(event.toolAction)"
                      showNoteBtns="false"
                      width="40" height="100%"/>
 
-    <fx:Script><![CDATA[
-        import de.dittner.siegmar.view.painting.*;
-        ]]></fx:Script>
 </view:ViewBase>

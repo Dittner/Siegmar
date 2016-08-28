@@ -6,8 +6,6 @@
          implements="de.dittner.siegmar.view.common.form.IBodyForm">
 
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.view.common.utils.AppColors;
-
         import de.dittner.async.AsyncOperation;
         import de.dittner.async.IAsyncOperation;
         import de.dittner.async.ProgressOperation;
@@ -18,17 +16,17 @@
         import de.dittner.siegmar.utils.FileLoader;
         import de.dittner.siegmar.utils.FolderChooser;
         import de.dittner.siegmar.view.common.utils.AppColors;
-        import de.dittner.siegmar.view.fileView.FileViewMediator;
+        import de.dittner.siegmar.view.fileView.FileViewVM;
 
         private static const BROWSE_FILE_FILTERS:Array = [new FileFilter("PNG-file", "*.png"), new FileFilter("JPG-file", "*.jpg"), new FileFilter("JPEG-file", "*.jpeg")];
 
         //--------------------------------------
         //  vm
         //--------------------------------------
-        private var _vm:FileViewMediator;
+        private var _vm:FileViewVM;
         [Bindable("vmChanged")]
-        public function get vm():FileViewMediator {return _vm;}
-        public function set vm(value:FileViewMediator):void {
+        public function get vm():FileViewVM {return _vm;}
+        public function set vm(value:FileViewVM):void {
             if (_vm != value) {
                 _vm = value;
                 dispatchEvent(new Event("vmChanged"));
@@ -152,7 +150,7 @@
         }
 
         private function loadFiles():void {
-            vm.lock();
+            vm.lockView();
             var fileLoader:FileLoader = new FileLoader();
             fileLoader.addProgressCallback(progressHandler);
             fileLoader.addCompleteCallback(photosLoadedHandler);
@@ -164,7 +162,7 @@
         }
 
         private function photosLoadedHandler(op:IAsyncOperation):void {
-            vm.unlock();
+            vm.unlockView();
             if (op.isSuccess) {
                 progressLbl.text = "100% Fotos wurde heruntergeladen";
                 operation.dispatchSuccess(true);
@@ -188,7 +186,7 @@
         }
 
         private function imageBrowsed(op:IAsyncOperation):void {
-            if(op.isSuccess && op.result) {
+            if (op.isSuccess && op.result) {
                 selectedPhoto = op.isSuccess ? (op.result[0] as Bitmap).bitmapData : null;
                 textInput.text = (op.result[1] as File).name;
             }

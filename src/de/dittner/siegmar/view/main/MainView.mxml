@@ -1,36 +1,97 @@
 <?xml version="1.0"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
          xmlns:s="library://ns.adobe.com/flex/spark"
-         xmlns:busyindicator="de.dittner.siegmar.view.common.busyIndicator.*"
-         xmlns:stylecomponents="cosmoLib.components.styleComponents.*"
-         addedToStage="addedToStageHandler(event)">
+         creationComplete="creationCompleteHandler(event)"
+         currentState="{vm.currentState}">
 
     <fx:Script><![CDATA[
+        import de.dittner.siegmar.logging.CLog;
+        import de.dittner.siegmar.logging.LogPanel;
+        import de.dittner.siegmar.utils.Values;
         import de.dittner.siegmar.view.common.popup.SimplePopup;
+        import de.dittner.siegmar.view.common.utils.TapEventKit;
         import de.dittner.siegmar.view.common.view.ViewBase;
+        import de.dittner.siegmar.view.common.view.ViewModelFactory;
 
-        private function addedToStageHandler(event:Event):void {
+        import mx.collections.ArrayCollection;
+        import mx.events.FlexEvent;
+
+        [Bindable]
+        public var vm:MainVM;
+
+        //--------------------------------------
+        //  isActive
+        //--------------------------------------
+        private var _isActive:Boolean = false;
+        public function get isActive():Boolean {return _isActive;}
+
+        //--------------------------------------
+        //  selectedView
+        //--------------------------------------
+        private var _selectedView:ViewBase;
+        private var selectedViewChanged:Boolean;
+        public function get selectedView():ViewBase {return _selectedView;}
+        public function set selectedView(value:ViewBase):void {
+            if (_selectedView != value) {
+                _selectedView = value;
+                selectedViewChanged = true;
+                invalidateProperties();
+            }
+        }
+
+        //----------------------------------------------------------------------------------------------
+        //
+        //  Methods
+        //
+        //----------------------------------------------------------------------------------------------
+
+        public function activate():void {
+            _isActive = true;
+            if (!vm) vm = ViewModelFactory.instance.mainVM;
+        }
+
+        override protected function commitProperties():void {
+            super.commitProperties();
+            if (selectedViewChanged) {
+                selectedViewChanged = false;
+                if (selectedView) {
+                    viewCont.removeAllElements();
+                    viewCont.addElement(selectedView);
+                }
+            }
+        }
+
+        private function creationCompleteHandler(event:FlexEvent):void {
             SimplePopup.container.percentHeight = 100;
             SimplePopup.container.percentWidth = 100;
-            popupLayer.addElement(SimplePopup.container);
+            logsLayer.addElement(SimplePopup.container);
+            TapEventKit.registerLongTapListener(parent, showHideConsole, new Rectangle(0, 0, 3000, INTERACTION_AREA_HEI));
         }
 
-        public function addView(view:ViewBase):void {
-            viewCont.addElement(view);
+        private static const INTERACTION_AREA_HEI:uint = Values.PT50;
+        private var logPanel:LogPanel;
+
+        private function showHideConsole():void {
+            if (!logPanel) {
+                logPanel = new LogPanel();
+                logPanel.logNoteColl = new ArrayCollection(CLog.logBank);
+                CLog.changeCallback = scrollToLastLogNote;
+            }
+
+            if (logPanel.parent) {
+                logsLayer.removeElement(logPanel);
+            }
+            else {
+                logsLayer.addElement(logPanel);
+                logPanel.y = INTERACTION_AREA_HEI;
+            }
         }
 
-        public function removeView():void {
-            viewCont.removeAllElements();
-        }
-
-        public function lock():void {
-            setCurrentState("lock");
-        }
-
-        public function unlock():void {
-            setCurrentState("normal");
+        private function scrollToLastLogNote():void {
+            if (logPanel.parent) logPanel.refresh();
         }
         ]]></fx:Script>
+    <fx:Binding source="vm.viewNavigator.selectedView" destination="selectedView"/>
 
     <s:states>
         <s:State name="disabled"/>
@@ -38,25 +99,43 @@
         <s:State name="lock"/>
     </s:states>
 
+    <s:transitions>
+        <s:Transition fromState="*" toState="lock" autoReverse="true">
+            <s:Parallel>
+                <s:Fade duration="1000" target="{busyIndicatorLayer}" alphaFrom="0" alphaTo="1"/>
+            </s:Parallel>
+        </s:Transition>
+    </s:transitions>
+
     <s:BitmapImage width="100%" height="100%"
                    fillMode="scale"
                    scaleMode="zoom"
                    source="@Embed('/assets/app_bg.png')"/>
 
     <s:Group id="viewCont"
-             width="100%"
-             height="100%"/>
+             mouseEnabled="false" mouseChildren="false"
+             mouseEnabled.normal="true" mouseChildren.normal="true"
+             width="100%" height="100%"/>
 
-    <s:Group id="popupLayer" width="100%" height="100%"/>
+    <s:Group id="popupLayer"
+             mouseEnabled="false" mouseChildren="false"
+             mouseEnabled.normal="true" mouseChildren.normal="true"
+             width="100%" height="100%"/>
 
     <s:Group id="busyIndicatorLayer"
              width="100%" height="100%"
-             visible="false" visible.lock="true">
-
-        <stylecomponents:Background color="#191f36" alpha=".5" width="100%" height="100%"/>
-
-        <busyindicator:BusyIndicator horizontalCenter="0" bottom="-15"/>
-
+             mouseEnabled="false" mouseChildren="false"
+             alpha.normal="0" alpha.disabled="0" alpha.lock="1">
+        <s:Rect width="100%" height="100%"
+                visible="{busyIndicatorLayer.alpha != 0}">
+            <s:fill>
+                <s:SolidColor color="#0" alpha="0"/>
+            </s:fill>
+        </s:Rect>
+        <s:BitmapImage bottom="30" horizontalCenter="0"
+                       source="@Embed(source='/assets/clock_icon.png')"/>
     </s:Group>
+
+    <s:Group id="logsLayer" width="100%" height="100%"/>
 
 </s:Group>

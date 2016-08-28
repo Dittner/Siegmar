@@ -1,5 +1,6 @@
 package de.dittner.siegmar.view.common.list {
 import de.dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
+import de.dittner.siegmar.model.Device;
 import de.dittner.siegmar.view.common.utils.TapEventKit;
 
 import flash.display.DisplayObject;
@@ -67,8 +68,9 @@ public class FileBodyList extends ReordableList {
 	override public function set verticalScrollPosition(value:Number):void {
 		value = value < 0 ? 0 : value;
 		if (value == 0) {
-			if (verticalScrollPosition < 400)
+			if (verticalScrollPosition < Device.stage.height) {
 				super.verticalScrollPosition = value;
+			}
 		}
 		else {
 			super.verticalScrollPosition = value;

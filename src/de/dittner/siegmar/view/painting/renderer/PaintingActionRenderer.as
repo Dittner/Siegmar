@@ -104,7 +104,7 @@ public class PaintingActionRenderer extends ItemRendererBase {
 
 	private function downHandler(event:MouseEvent):void {
 		if (selected && event.localX >= deleteBtnIcon.x)
-			if (parent is DataGroup) dispatchEvent(new SelectableDataGroupEvent(SelectableDataGroupEvent.REMOVE, data, itemIndex));
+			if (parent is DataGroup) dispatchEvent(new SelectableDataGroupEvent(SelectableDataGroupEvent.ITEM_REMOVED, data, itemIndex));
 			else event.stopImmediatePropagation();
 	}
 }

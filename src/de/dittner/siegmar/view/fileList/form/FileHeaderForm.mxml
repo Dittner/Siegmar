@@ -5,15 +5,9 @@
          xmlns:button="de.dittner.siegmar.view.common.button.*"
          xmlns:list="de.dittner.siegmar.view.common.list.*"
          xmlns:stylecomponents="cosmoLib.components.styleComponents.*"
-         creationComplete="creationCompleteHandler(event)">
+         visible="{vm.curOperation}">
 
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.domain.fileSystem.file.FileType;
-        import de.dittner.siegmar.domain.fileSystem.file.FileTypeName;
-        import de.dittner.siegmar.view.common.utils.AppColors;
-        import de.dittner.siegmar.view.common.utils.FontName;
-
-        import de.dittner.siegmar.domain.fileSystem.FileOptionKeys;
         import de.dittner.siegmar.domain.fileSystem.file.FileType;
         import de.dittner.siegmar.domain.fileSystem.file.FileTypeName;
         import de.dittner.siegmar.domain.fileSystem.header.FileHeader;
@@ -21,55 +15,20 @@
         import de.dittner.siegmar.view.common.utils.AppColors;
         import de.dittner.siegmar.view.common.utils.FontName;
 
-        import mx.collections.ArrayCollection;
-        import mx.events.FlexEvent;
-        import mx.formatters.DateFormatter;
-
-        private static var dateFormatter:DateFormatter;
-
         //--------------------------------------
-        //  destinationFolderColl
+        //  headerFormVM
         //--------------------------------------
-        private var _destinationFolderColl:ArrayCollection;
-        [Bindable("destinationFolderCollChanged")]
-        public function get destinationFolderColl():ArrayCollection {return _destinationFolderColl;}
-        public function set destinationFolderColl(value:ArrayCollection):void {
-            if (_destinationFolderColl != value) {
-                _destinationFolderColl = value;
-                dispatchEvent(new Event("destinationFolderCollChanged"));
+        private var _vm:FileHeaderFormVM;
+        [Bindable("vmChanged")]
+        public function get vm():FileHeaderFormVM {return _vm;}
+        public function set vm(value:FileHeaderFormVM):void {
+            if (_vm != value) {
+                _vm = value;
+                dispatchEvent(new Event("vmChanged"));
             }
         }
 
-        //--------------------------------------
-        //  userName
-        //--------------------------------------
-        private var _userName:String;
-        [Bindable("userNameChanged")]
-        public function get userName():String {return _userName;}
-        public function set userName(value:String):void {
-            if (_userName != value) {
-                _userName = value;
-                dispatchEvent(new Event("userNameChanged"));
-            }
-        }
-
-        //--------------------------------------
-        //  mode
-        //--------------------------------------
-        private var _mode:String = FileFormMode.ADD;
-        [Bindable("modeChanged")]
-        public function get mode():String {return _mode;}
-
-        [Bindable("modeChanged")]
-        public function get isAddMode():Boolean {return _mode == FileFormMode.ADD;}
-
-        [Bindable("modeChanged")]
-        public function get isRemoveMode():Boolean {return _mode == FileFormMode.REMOVE;}
-
-        [Bindable("modeChanged")]
-        public function get isEditMode():Boolean {return _mode == FileFormMode.EDIT;}
-
-        private function setFileType(fileType:uint):void {
+        private function set fileType(fileType:uint):void {
             switch (fileType) {
                 case FileType.FOLDER :
                     setCurrentState("folder");
@@ -95,37 +54,6 @@
         }
 
         private var reservedTitleHash:Object = {};
-        public function add(reservedTitleHash:Object):void {
-            this.reservedTitleHash = reservedTitleHash;
-            _mode = FileFormMode.ADD;
-            dateInput.text = dateFormatter.format(new Date());
-            authorInput.text = userName;
-            dispatchEvent(new Event("modeChanged"));
-        }
-
-        public function edit(fileHeader:FileHeader, reservedTitleHash:Object):void {
-            this.reservedTitleHash = reservedTitleHash;
-            _mode = FileFormMode.EDIT;
-            titleInput.text = fileHeader.title;
-            authorInput.text = fileHeader.options[FileOptionKeys.AUTHOR] || "";
-            dateInput.text = fileHeader.options[FileOptionKeys.DATE_CREATED] || "";
-            setFileType(fileHeader.fileType);
-            dispatchEvent(new Event("modeChanged"));
-        }
-
-        public function remove(fileHeader:FileHeader):void {
-            _mode = FileFormMode.REMOVE;
-            removeLbl.text = fileHeader.isFolder ? "Ordner: " : "Datei: ";
-            removeLbl.text += fileHeader.title.toUpperCase();
-            dispatchEvent(new Event("modeChanged"));
-        }
-
-        public function clear():void {
-            titleInput.text = "";
-            authorInput.text = "";
-            dateInput.text = "";
-            setCurrentState("folder");
-        }
 
         private function getTitle(formMode:String):String {
             return formMode == FileFormMode.ADD ? "NEUES DOKUMENT" : formMode == FileFormMode.EDIT ? "AUFBEREITUNG" : "ENTFERNUNG";
@@ -136,15 +64,18 @@
             else return docTitle && !reservedTitleHash[docTitle];
         }
 
-        private function radioBtnClickHandler(event:MouseEvent):void {
-            setFileType((event.target as RadioButton).value as uint);
+        private function isBackBtnEnabled(folderStackLength:int):Boolean {
+            return folderStackLength > 1;
         }
 
-        private function creationCompleteHandler(event:FlexEvent):void {
-            if (!dateFormatter) {
-                dateFormatter = new DateFormatter();
-                dateFormatter.formatString = 'MM.DD.YYYY JJ:NN';
-            }
+        private function isApplyDestFolderBtnEnabled(selectedFolder:FileHeader, appliedFolder:FileHeader):Boolean {
+            var isFileFolder:Boolean = appliedFolder ? appliedFolder.fileID == selectedFolder.fileID : vm.system.openedFolderHeader.fileID == selectedFolder.fileID;
+            pathLbl.setStyle("color", isFileFolder ? AppColors.HELL_TÜRKIS : 0xffFFff);
+            return !isFileFolder;
+        }
+
+        private function radioBtnClickHandler(event:MouseEvent):void {
+            vm.selectedFileType = (event.target as RadioButton).value as uint;
         }
 
         private function getHeader(formMode:String):String {
@@ -154,6 +85,8 @@
             return "";
         }
         ]]></fx:Script>
+
+    <fx:Binding source="vm.selectedFileType" destination="fileType"/>
 
     <s:states>
         <s:State name="folder"/>
@@ -176,22 +109,22 @@
               paddingTop="20" paddingLeft="20" paddingRight="20" paddingBottom="20"
               gap="20">
 
-        <s:Label text="{getTitle(mode)}"
+        <s:Label text="{getTitle(vm.mode)}"
                  width="100%"
                  fontFamily="{FontName.MYRIAD}" fontSize="16"
                  mouseChildren="false" mouseEnabled="false" paddingBottom="50"
                  color="{AppColors.HELL_TÜRKIS}"/>
 
-        <s:Spacer height="25%" includeInLayout="{!isEditMode}"/>
+        <s:Spacer height="25%" includeInLayout="{!vm.isEditMode}"/>
 
-        <s:Label text="{getHeader(mode)}"
+        <s:Label text="{getHeader(vm.mode)}"
                  styleName="header"
                  width="100%" paddingBottom="0" textAlign="center"
                  mouseChildren="false" mouseEnabled="false"/>
 
-        <s:Spacer height="25%" includeInLayout="{!isEditMode}"/>
+        <s:Spacer height="25%" includeInLayout="{!vm.isEditMode}"/>
 
-        <s:Group width="100%" visible="{isAddMode}" includeInLayout="{isAddMode}">
+        <s:Group width="100%" visible="{vm.isAddMode}" includeInLayout="{vm.isAddMode}">
             <s:layout>
                 <s:TileLayout verticalGap="0" horizontalGap="10" paddingBottom="0" paddingTop="0"
                               requestedColumnCount="3" rowHeight="50"
@@ -243,25 +176,35 @@
         </s:Group>
 
         <s:VGroup width="100%"
-                  visible="{!isRemoveMode}" includeInLayout="{!isRemoveMode}">
-            <input:TextInputForm id="titleInput" width="100%" title="Titel:"/>
+                  visible="{!vm.isRemoveMode}" includeInLayout="{!vm.isRemoveMode}">
+            <input:TextInputForm id="titleInput"
+                                 text="@{vm.fileTitle}"
+                                 width="100%"
+                                 title="Titel:"/>
 
-            <input:TextInputForm id="authorInput" width="100%" title="Autor:"
+            <input:TextInputForm id="authorInput"
+                                 text="@{vm.author}"
+                                 width="100%"
+                                 title="Autor:"
                                  visible.folder="false" includeInLayout.folder="false"/>
 
-            <input:TextInputForm id="dateInput" width="100%" title="Datum der Ausgabe:"
+            <input:TextInputForm id="dateInput"
+                                 text="@{vm.curDateText}"
+                                 width="100%"
+                                 title="Datum der Ausgabe:"
                                  visible.folder="false" includeInLayout.folder="false"/>
         </s:VGroup>
 
         <s:Label id="removeLbl"
-                 visible="{isRemoveMode}" includeInLayout="{isRemoveMode}"
+                 visible="{vm.isRemoveMode}" includeInLayout="{vm.isRemoveMode}"
+                 text="{vm.infoOfRemovingFile}"
                  width="100%" textAlign="center"
                  fontFamily="{FontName.MYRIAD}" fontSize="18"
                  mouseChildren="false" mouseEnabled="false"
                  color="{AppColors.TEXT_LIGHT}"/>
 
         <s:Group width="100%" height="100%"
-                 visible="{isEditMode}" includeInLayout="{isEditMode}">
+                 visible="{vm.isEditMode}" includeInLayout="{vm.isEditMode}">
             <stylecomponents:Background top="20" bottom="60" width="100%"
                                         strokeColor="{AppColors.INPUT_BORDER}" weight="1" strokeAlpha="1"
                                         color="{AppColors.INPUT_CONTENT}"/>
@@ -277,8 +220,9 @@
                         horizontalScrollPolicy="off">
                 <list:SelectableDataGroup id="destinationFolderList"
                                           width="100%"
-                                          dataProvider="{destinationFolderColl}"
-                                          itemRenderer="de.dittner.siegmar.view.fileList.list.FolderRenderer">
+                                          dataProvider="{vm.destinationFolderColl}"
+                                          itemRenderer="de.dittner.siegmar.view.fileList.list.FolderRenderer"
+                                          itemDoubleClicked="vm.selectFolder(event.data as FileHeader)">
                     <list:layout>
                         <s:VerticalLayout gap="0" useVirtualLayout="true" variableRowHeight="false"/>
                     </list:layout>
@@ -287,40 +231,47 @@
 
             <s:HGroup width="100%" bottom="0" verticalAlign="middle">
                 <button:StrokeButton id="backBtn"
+                                     enabled="{isBackBtnEnabled(vm.folderStackLength)}"
                                      width="25%"
                                      color="#ffFFff"
                                      fontSize="12"
                                      fontFamily="{FontName.MYRIAD_MX}"
-                                     label="Zurück"/>
+                                     label="Zurück"
+                                     click="vm.openPrevFolder()"/>
 
                 <button:StrokeButton id="applyDestFolderBtn"
+                                     enabled="{isApplyDestFolderBtnEnabled(vm.selectedFolder, vm.appliedFolder)}"
                                      width="25%"
                                      color="#ffFFff"
                                      fontSize="12"
                                      fontFamily="{FontName.MYRIAD_MX}"
-                                     label="Umsetzen"/>
+                                     label="Umsetzen"
+                                     click="vm.appliedFolder = vm.selectedFolder"/>
 
                 <s:Label id="pathLbl"
+                         text="{vm.folderStackPath}"
                          verticalAlign="middle"
                          width="100%" height="50" fontSize="14"
                          color="#ffFFff"/>
             </s:HGroup>
         </s:Group>
 
-        <s:Spacer height="100%" includeInLayout="{!isEditMode}"/>
+        <s:Spacer height="100%" includeInLayout="{!vm.isEditMode}"/>
 
         <s:HGroup width="100%" gap="10">
             <button:StrokeButton id="cancelBtn"
                                  color="{AppColors.HELL_TÜRKIS}"
                                  width="100%"
-                                 label="Abbrechen"/>
+                                 label="Abbrechen"
+                                 click="vm.cancel()"/>
 
             <button:ColorButton id="applyBtn"
                                 width="100%"
                                 bgColor="{AppColors.HELL_TÜRKIS}"
                                 textColor="0"
                                 label="Bestätigen"
-                                enabled="{isApplyBtnEnabled(mode, titleInput.text)}"/>
+                                enabled="{isApplyBtnEnabled(vm.mode, titleInput.text)}"
+                                click="vm.apply()"/>
         </s:HGroup>
     </s:VGroup>
 

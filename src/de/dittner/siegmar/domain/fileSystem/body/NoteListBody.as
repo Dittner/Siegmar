@@ -1,7 +1,7 @@
 package de.dittner.siegmar.domain.fileSystem.body {
-import de.dittner.siegmar.bootstrap.walter.walter_namespace;
 import de.dittner.siegmar.domain.fileSystem.body.note.ArticleNote;
 import de.dittner.siegmar.domain.fileSystem.body.note.Note;
+import de.dittner.walter.walter_namespace;
 
 import flash.events.Event;
 import flash.utils.ByteArray;
