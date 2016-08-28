@@ -1,35 +1,30 @@
 package de.dittner.siegmar.backend.op {
-import de.dittner.async.AsyncCommand;
+import de.dittner.async.IAsyncCommand;
 import de.dittner.siegmar.backend.SQLLib;
 
 import flash.data.SQLConnection;
 import flash.data.SQLResult;
 import flash.data.SQLStatement;
-import flash.errors.SQLError;
 import flash.net.Responder;
 
-public class RemovePhotoByFileIDSQLOperation extends AsyncCommand {
+public class RemovePhotoByFileIDSQLOperation extends StorageOperation implements IAsyncCommand {
 
-	public function RemovePhotoByFileIDSQLOperation(sqlConnection:SQLConnection, fileID:int) {
-		this.sqlConnection = sqlConnection;
+	public function RemovePhotoByFileIDSQLOperation(photoDBConnection:SQLConnection, fileID:int) {
+		this.photoDBConnection = photoDBConnection;
 		this.fileID = fileID;
 	}
 
-	private var sqlConnection:SQLConnection;
+	private var photoDBConnection:SQLConnection;
 	private var fileID:int;
 
-	override public function execute():void {
+	public function execute():void {
 		var deleteStmt:SQLStatement = SQLUtils.createSQLStatement(SQLLib.DELETE_PHOTO_BY_FILE_ID, {fileID: fileID});
-		deleteStmt.sqlConnection = sqlConnection;
-		deleteStmt.execute(-1, new Responder(resultHandler, errorHandler));
+		deleteStmt.sqlConnection = photoDBConnection;
+		deleteStmt.execute(-1, new Responder(resultHandler, executeError));
 	}
 
 	private function resultHandler(result:SQLResult):void {
 		dispatchSuccess();
-	}
-
-	private function errorHandler(error:SQLError):void {
-		dispatchError(error.details);
 	}
 }
 }

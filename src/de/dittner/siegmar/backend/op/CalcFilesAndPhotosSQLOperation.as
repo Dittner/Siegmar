@@ -1,13 +1,12 @@
 package de.dittner.siegmar.backend.op {
-import de.dittner.async.AsyncCommand;
+import de.dittner.async.IAsyncCommand;
 import de.dittner.siegmar.backend.FileStorage;
 
 import flash.data.SQLResult;
 import flash.data.SQLStatement;
-import flash.errors.SQLError;
 import flash.net.Responder;
 
-public class CalcFilesAndPhotosSQLOperation extends AsyncCommand {
+public class CalcFilesAndPhotosSQLOperation extends StorageOperation implements IAsyncCommand {
 
 	public function CalcFilesAndPhotosSQLOperation(fileStorage:FileStorage) {
 		this.fileStorage = fileStorage;
@@ -15,10 +14,10 @@ public class CalcFilesAndPhotosSQLOperation extends AsyncCommand {
 
 	private var fileStorage:FileStorage;
 
-	override public function execute():void {
+	public function execute():void {
 		var stmt:SQLStatement = SQLUtils.createSQLStatement("SELECT COUNT(fileID) FROM header", {});
-		stmt.sqlConnection = fileStorage.sqlConnection;
-		stmt.execute(-1, new Responder(filesResultHandler, filesErrorHandler));
+		stmt.sqlConnection = fileStorage.textDBConnection;
+		stmt.execute(-1, new Responder(filesResultHandler, executeError));
 	}
 
 	private function filesResultHandler(result:SQLResult):void {
@@ -30,12 +29,8 @@ public class CalcFilesAndPhotosSQLOperation extends AsyncCommand {
 			}
 		}
 		var stmt:SQLStatement = SQLUtils.createSQLStatement("SELECT COUNT(id) FROM photo", {});
-		stmt.sqlConnection = fileStorage.sqlConnection;
-		stmt.execute(-1, new Responder(photosResultHandler, photosErrorHandler));
-	}
-
-	private function filesErrorHandler(error:SQLError):void {
-		dispatchError(error.details);
+		stmt.sqlConnection = fileStorage.photoDBConnection;
+		stmt.execute(-1, new Responder(photosResultHandler, executeError));
 	}
 
 	private function photosResultHandler(result:SQLResult):void {
@@ -49,8 +44,5 @@ public class CalcFilesAndPhotosSQLOperation extends AsyncCommand {
 		dispatchSuccess();
 	}
 
-	private function photosErrorHandler(error:SQLError):void {
-		dispatchError();
-	}
 }
 }

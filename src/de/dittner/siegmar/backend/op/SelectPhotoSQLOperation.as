@@ -1,5 +1,5 @@
 package de.dittner.siegmar.backend.op {
-import de.dittner.async.AsyncCommand;
+import de.dittner.async.IAsyncCommand;
 import de.dittner.siegmar.backend.SQLLib;
 
 import flash.data.SQLConnection;
@@ -9,7 +9,6 @@ import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Loader;
 import flash.display.LoaderInfo;
-import flash.errors.SQLError;
 import flash.events.ErrorEvent;
 import flash.events.Event;
 import flash.events.IOErrorEvent;
@@ -19,24 +18,24 @@ import flash.system.ImageDecodingPolicy;
 import flash.system.LoaderContext;
 import flash.utils.ByteArray;
 
-public class SelectPhotoSQLOperation extends AsyncCommand {
+public class SelectPhotoSQLOperation extends StorageOperation implements IAsyncCommand {
 
-	public function SelectPhotoSQLOperation(sqlConnection:SQLConnection, photoID:int, isPreview:Boolean = false) {
+	public function SelectPhotoSQLOperation(photoDBConnection:SQLConnection, photoID:int, isPreview:Boolean = false) {
 		this.photoID = photoID;
-		this.sqlConnection = sqlConnection;
+		this.photoDBConnection = photoDBConnection;
 		this.isPreview = isPreview;
 	}
 
 	private var photoID:int;
-	private var sqlConnection:SQLConnection;
+	private var photoDBConnection:SQLConnection;
 	private var photoBytes:ByteArray;
 	private var isPreview:Boolean = false;
 
-	override public function execute():void {
+	public function execute():void {
 		var sql:String = isPreview ? SQLLib.SELECT_PHOTO_PREVIEW : SQLLib.SELECT_PHOTO;
 		var insertStmt:SQLStatement = SQLUtils.createSQLStatement(sql, {id: photoID});
-		insertStmt.sqlConnection = sqlConnection;
-		insertStmt.execute(-1, new Responder(resultHandler, errorHandler));
+		insertStmt.sqlConnection = photoDBConnection;
+		insertStmt.execute(-1, new Responder(resultHandler, executeError));
 	}
 
 	private function resultHandler(result:SQLResult):void {
@@ -64,10 +63,6 @@ public class SelectPhotoSQLOperation extends AsyncCommand {
 
 	private function convertFailed(event:ErrorEvent):void {
 		dispatchError(event.toString());
-	}
-
-	private function errorHandler(error:SQLError):void {
-		dispatchError(error.details);
 	}
 
 	override public function destroy():void {

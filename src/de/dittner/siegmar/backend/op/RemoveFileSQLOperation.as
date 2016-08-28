@@ -1,11 +1,9 @@
 package de.dittner.siegmar.backend.op {
-import de.dittner.async.AsyncCommand;
 import de.dittner.async.CompositeCommand;
+import de.dittner.async.IAsyncCommand;
 import de.dittner.async.IAsyncOperation;
-import de.dittner.siegmar.backend.op.RemoveFileHeadersAndBodiesPhaseOperation;
-import de.dittner.siegmar.backend.op.SelectHeaderIDsToRemoveOperation;
 
-public class RemoveFileSQLOperation extends AsyncCommand {
+public class RemoveFileSQLOperation extends StorageOperation implements IAsyncCommand {
 
 	public function RemoveFileSQLOperation(fileWrapper:FileSQLWrapper) {
 		this.headerWrapper = fileWrapper;
@@ -13,7 +11,7 @@ public class RemoveFileSQLOperation extends AsyncCommand {
 
 	private var headerWrapper:FileSQLWrapper;
 
-	override public function execute():void {
+	public function execute():void {
 		var compositeOp:CompositeCommand = new CompositeCommand();
 		compositeOp.addCompleteCallback(compositeOpHandler);
 

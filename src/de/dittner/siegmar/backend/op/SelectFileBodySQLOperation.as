@@ -1,16 +1,15 @@
 package de.dittner.siegmar.backend.op {
-import de.dittner.async.AsyncCommand;
+import de.dittner.async.IAsyncCommand;
 import de.dittner.siegmar.backend.SQLLib;
 import de.dittner.siegmar.model.domain.fileSystem.SiegmarFileSystem;
 import de.dittner.siegmar.model.domain.fileSystem.body.FileBody;
 
 import flash.data.SQLResult;
 import flash.data.SQLStatement;
-import flash.errors.SQLError;
 import flash.net.Responder;
 import flash.utils.ByteArray;
 
-public class SelectFileBodySQLOperation extends AsyncCommand {
+public class SelectFileBodySQLOperation extends StorageOperation implements IAsyncCommand {
 
 	public function SelectFileBodySQLOperation(fileWrapper:FileSQLWrapper, system:SiegmarFileSystem) {
 		this.headerWrapper = fileWrapper;
@@ -20,10 +19,10 @@ public class SelectFileBodySQLOperation extends AsyncCommand {
 	private var headerWrapper:FileSQLWrapper;
 	private var system:SiegmarFileSystem;
 
-	override public function execute():void {
+	public function execute():void {
 		var insertStmt:SQLStatement = SQLUtils.createSQLStatement(SQLLib.SELECT_FILE_BODY, {fileID: headerWrapper.header.fileID});
-		insertStmt.sqlConnection = headerWrapper.sqlConnection;
-		insertStmt.execute(-1, new Responder(resultHandler, errorHandler));
+		insertStmt.sqlConnection = headerWrapper.textDBConnection;
+		insertStmt.execute(-1, new Responder(resultHandler, executeError));
 	}
 
 	private function resultHandler(result:SQLResult):void {
@@ -43,8 +42,5 @@ public class SelectFileBodySQLOperation extends AsyncCommand {
 		return headerWrapper.encryptionService.decrypt(ba);
 	}
 
-	private function errorHandler(error:SQLError):void {
-		dispatchError(error.details);
-	}
 }
 }

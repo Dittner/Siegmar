@@ -4,7 +4,8 @@ import flash.filesystem.File;
 public class AppInfo {
 
 	public static const APP_NAME:String = "Siegmar";
-	public static const DB_NAME:String = "SiegmarStorage.db";
+	public static const TEXT_DB_NAME:String = "SiegmarText.db";
+	public static const PHOTO_DB_NAME:String = "SiegmarPhoto.db";
 	public static const MIN_PWD_LEN:uint = 2;
 
 	public static function get dbRootPath():String {

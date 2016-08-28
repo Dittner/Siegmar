@@ -1,11 +1,9 @@
 package de.dittner.siegmar.backend.op {
-import de.dittner.async.AsyncCommand;
 import de.dittner.async.CompositeCommand;
+import de.dittner.async.IAsyncCommand;
 import de.dittner.async.IAsyncOperation;
-import de.dittner.siegmar.backend.op.FileSQLWrapper;
-import de.dittner.siegmar.backend.op.RemovePhotoByFileIDSQLOperation;
 
-public class RemoveFileHeadersAndBodiesPhaseOperation extends AsyncCommand {
+public class RemoveFileHeadersAndBodiesPhaseOperation extends StorageOperation implements IAsyncCommand {
 
 	public function RemoveFileHeadersAndBodiesPhaseOperation(headerWrapper:FileSQLWrapper) {
 		this.headerWrapper = headerWrapper;
@@ -13,7 +11,7 @@ public class RemoveFileHeadersAndBodiesPhaseOperation extends AsyncCommand {
 
 	private var headerWrapper:FileSQLWrapper;
 
-	override public function execute():void {
+	public function execute():void {
 		var compositeOp:CompositeCommand = new CompositeCommand();
 		compositeOp.addCompleteCallback(compositeOpHandler);
 
@@ -24,7 +22,7 @@ public class RemoveFileHeadersAndBodiesPhaseOperation extends AsyncCommand {
 			for each(var fileID:int in headerWrapper.removingFileIDs) {
 				compositeOp.addOperation(RemoveFileHeaderByFileIDPhaseOperation, headerWrapper, fileID);
 				compositeOp.addOperation(RemoveFileBodyByFileIDPhaseOperation, headerWrapper, fileID);
-				compositeOp.addOperation(RemovePhotoByFileIDSQLOperation, headerWrapper.sqlConnection, fileID);
+				compositeOp.addOperation(RemovePhotoByFileIDSQLOperation, headerWrapper.photoDBConnection, fileID);
 			}
 			compositeOp.execute();
 		}

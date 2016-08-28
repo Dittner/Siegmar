@@ -1,24 +1,23 @@
 package de.dittner.siegmar.backend.op {
-import de.dittner.async.AsyncCommand;
+import de.dittner.async.IAsyncCommand;
 import de.dittner.siegmar.backend.SQLLib;
 
 import flash.data.SQLConnection;
 import flash.data.SQLResult;
 import flash.data.SQLStatement;
-import flash.errors.SQLError;
 import flash.net.Responder;
 
-public class RemovePhotoSQLOperation extends AsyncCommand {
+public class RemovePhotoSQLOperation extends StorageOperation implements IAsyncCommand {
 
-	public function RemovePhotoSQLOperation(sqlConnection:SQLConnection, photoID:int) {
-		this.sqlConnection = sqlConnection;
+	public function RemovePhotoSQLOperation(photoDBConnection:SQLConnection, photoID:int) {
+		this.photoDBConnection = photoDBConnection;
 		this.photoID = photoID;
 	}
 
-	private var sqlConnection:SQLConnection;
+	private var photoDBConnection:SQLConnection;
 	private var photoID:int;
 
-	override public function execute():void {
+	public function execute():void {
 		if (!photoID) {
 			dispatchError("No photoID!");
 			return;
@@ -29,16 +28,12 @@ public class RemovePhotoSQLOperation extends AsyncCommand {
 		sqlParams.id = photoID;
 
 		var insertStmt:SQLStatement = SQLUtils.createSQLStatement(sqlText, sqlParams);
-		insertStmt.sqlConnection = sqlConnection;
-		insertStmt.execute(-1, new Responder(resultHandler, errorHandler));
+		insertStmt.sqlConnection = photoDBConnection;
+		insertStmt.execute(-1, new Responder(resultHandler, executeError));
 	}
 
 	private function resultHandler(result:SQLResult):void {
 		dispatchSuccess(result.lastInsertRowID);
-	}
-
-	private function errorHandler(error:SQLError):void {
-		dispatchError(error.details);
 	}
 
 }

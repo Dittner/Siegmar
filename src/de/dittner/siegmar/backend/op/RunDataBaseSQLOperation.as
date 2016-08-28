@@ -1,7 +1,7 @@
 package de.dittner.siegmar.backend.op {
 import com.adobe.crypto.MD5;
 
-import de.dittner.async.AsyncCommand;
+import de.dittner.async.IAsyncCommand;
 import de.dittner.siegmar.utils.AppInfo;
 
 import flash.data.SQLConnection;
@@ -12,35 +12,30 @@ import flash.events.SQLEvent;
 import flash.filesystem.File;
 import flash.utils.ByteArray;
 
-public class RunDataBaseSQLOperation extends AsyncCommand {
+public class RunDataBaseSQLOperation extends StorageOperation implements IAsyncCommand {
 
-	public function RunDataBaseSQLOperation(dbPwd:String, createTableStatements:Array) {
+	public function RunDataBaseSQLOperation(dbPwd:String, dbName:String, createTableStatements:Array) {
 		super();
 		this.password = dbPwd;
+		this.dbName = dbName;
 		this.createTableStatements = createTableStatements;
 	}
 
 	private var password:String;
+	private var dbName:String;
 	private var createTableStatements:Array;
 	private var conn:SQLConnection = new SQLConnection();
 
-	override public function execute():void {
+	public function execute():void {
 		var dbRootFile:File = File.documentsDirectory.resolvePath(AppInfo.dbRootPath);
 		if (!dbRootFile.exists) {
-			var appDBDir:File = File.applicationDirectory.resolvePath(AppInfo.applicationDBPath);
-			if (appDBDir.exists) {
-				var destDir:File = File.documentsDirectory.resolvePath(AppInfo.APP_NAME);
-				appDBDir.copyTo(destDir);
-			}
-			else {
-				dbRootFile.createDirectory();
-			}
+			dbRootFile.createDirectory();
 		}
 
-		var dbFile:File = File.documentsDirectory.resolvePath(AppInfo.dbRootPath + AppInfo.DB_NAME);
+		var dbFile:File = File.documentsDirectory.resolvePath(AppInfo.dbRootPath + dbName);
 
 		conn.addEventListener(SQLEvent.OPEN, openHandler);
-		conn.addEventListener(SQLErrorEvent.ERROR, errorHandler);
+		conn.addEventListener(SQLErrorEvent.ERROR, executeError);
 		if (password) {
 			var encryptionKey:ByteArray = new ByteArray();
 			var encryptedPwd:String = MD5.hash(MD5.hash(MD5.hash(password))).substr(0, 16);
@@ -75,7 +70,7 @@ public class RunDataBaseSQLOperation extends AsyncCommand {
 			createStmt.text = statement;
 			if (i == createTableStatements.length - 1) {
 				createStmt.addEventListener(SQLEvent.RESULT, createResult);
-				createStmt.addEventListener(SQLErrorEvent.ERROR, errorHandler);
+				createStmt.addEventListener(SQLErrorEvent.ERROR, executeError);
 			}
 			createStmt.execute();
 		}
@@ -83,11 +78,6 @@ public class RunDataBaseSQLOperation extends AsyncCommand {
 
 	private function createResult(event:SQLEvent):void {
 		dispatchSuccess(conn);
-	}
-
-	private function errorHandler(event:SQLErrorEvent):void {
-		var errDetails:String = event.error.details;
-		dispatchError(errDetails);
 	}
 
 }

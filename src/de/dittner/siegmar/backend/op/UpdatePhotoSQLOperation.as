@@ -1,5 +1,5 @@
 package de.dittner.siegmar.backend.op {
-import de.dittner.async.AsyncCommand;
+import de.dittner.async.IAsyncCommand;
 import de.dittner.siegmar.backend.SQLLib;
 import de.dittner.siegmar.utils.BitmapUtils;
 
@@ -8,14 +8,13 @@ import flash.data.SQLResult;
 import flash.data.SQLStatement;
 import flash.display.BitmapData;
 import flash.display.JPEGEncoderOptions;
-import flash.errors.SQLError;
 import flash.net.Responder;
 import flash.utils.ByteArray;
 
-public class UpdatePhotoSQLOperation extends AsyncCommand {
+public class UpdatePhotoSQLOperation extends StorageOperation implements IAsyncCommand {
 
-	public function UpdatePhotoSQLOperation(sqlConnection:SQLConnection, photoID:int, bitmap:BitmapData, title:String, fileID:int) {
-		this.sqlConnection = sqlConnection;
+	public function UpdatePhotoSQLOperation(photoDBConnection:SQLConnection, photoID:int, bitmap:BitmapData, title:String, fileID:int) {
+		this.photoDBConnection = photoDBConnection;
 		this.bitmap = bitmap;
 		this.title = title;
 		this.fileID = fileID;
@@ -23,7 +22,7 @@ public class UpdatePhotoSQLOperation extends AsyncCommand {
 		this.preview = BitmapUtils.scaleToSize(bitmap, 150);
 	}
 
-	private var sqlConnection:SQLConnection;
+	private var photoDBConnection:SQLConnection;
 	private var bitmap:BitmapData;
 	private var title:String;
 	private var fileID:int;
@@ -32,7 +31,7 @@ public class UpdatePhotoSQLOperation extends AsyncCommand {
 	private var preview:BitmapData;
 	private var previewBytes:ByteArray;
 
-	override public function execute():void {
+	public function execute():void {
 		var error:String = "";
 		if (!bitmap) error = "No bitmap!";
 		if (!title) error = "No title!";
@@ -55,16 +54,12 @@ public class UpdatePhotoSQLOperation extends AsyncCommand {
 		sqlParams.preview = previewBytes;
 
 		var insertStmt:SQLStatement = SQLUtils.createSQLStatement(sqlText, sqlParams);
-		insertStmt.sqlConnection = sqlConnection;
-		insertStmt.execute(-1, new Responder(resultHandler, errorHandler));
+		insertStmt.sqlConnection = photoDBConnection;
+		insertStmt.execute(-1, new Responder(resultHandler, executeError));
 	}
 
 	private function resultHandler(result:SQLResult):void {
 		dispatchSuccess(result.lastInsertRowID);
-	}
-
-	private function errorHandler(error:SQLError):void {
-		dispatchError(error.details);
 	}
 
 	override public function destroy():void {

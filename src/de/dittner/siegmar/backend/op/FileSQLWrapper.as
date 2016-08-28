@@ -9,7 +9,8 @@ public class FileSQLWrapper {
 	public var header:FileHeader;
 	public var body:FileBody;
 	public var encryptionService:EncryptionService;
-	public var sqlConnection:SQLConnection;
+	public var textDBConnection:SQLConnection;
+	public var photoDBConnection:SQLConnection;
 	public var removingFileIDs:Array = [];
 
 	public function headerToSQLObj():Object {

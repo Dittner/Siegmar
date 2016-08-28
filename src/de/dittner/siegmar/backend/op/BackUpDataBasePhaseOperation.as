@@ -1,13 +1,12 @@
 package de.dittner.siegmar.backend.op {
-import de.dittner.async.AsyncCommand;
+import de.dittner.async.IAsyncCommand;
 import de.dittner.siegmar.utils.AppInfo;
 
-import flash.errors.SQLError;
 import flash.filesystem.File;
 
 import mx.formatters.DateFormatter;
 
-public class BackUpDataBasePhaseOperation extends AsyncCommand {
+public class BackUpDataBasePhaseOperation extends StorageOperation implements IAsyncCommand {
 	private static var dateFormatter:DateFormatter;
 
 	public function BackUpDataBasePhaseOperation() {
@@ -17,7 +16,7 @@ public class BackUpDataBasePhaseOperation extends AsyncCommand {
 		}
 	}
 
-	override public function execute():void {
+	public function execute():void {
 		var dbRootFile:File = File.documentsDirectory.resolvePath(AppInfo.dbRootPath);
 		if (!dbRootFile.exists) {
 			var appDBDir:File = File.applicationDirectory.resolvePath(AppInfo.applicationDBPath);
@@ -30,14 +29,11 @@ public class BackUpDataBasePhaseOperation extends AsyncCommand {
 			}
 		}
 
-		var dbFile:File = File.documentsDirectory.resolvePath(AppInfo.dbRootPath + AppInfo.DB_NAME);
+		var dbFile:File = File.documentsDirectory.resolvePath(AppInfo.dbRootPath + AppInfo.TEXT_DB_NAME);
 		var backUpFileName:String = "Kopie-" + dateFormatter.format(new Date) + ".db";
 		dbFile.copyTo(File.documentsDirectory.resolvePath(AppInfo.dbRootPath + backUpFileName), true);
 		dispatchSuccess();
 	}
 
-	private function executeError(error:SQLError):void {
-		dispatchError(error.message);
-	}
 }
 }

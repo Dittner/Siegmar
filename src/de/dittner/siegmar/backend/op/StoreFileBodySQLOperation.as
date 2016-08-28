@@ -1,14 +1,13 @@
 package de.dittner.siegmar.backend.op {
-import de.dittner.async.AsyncCommand;
+import de.dittner.async.IAsyncCommand;
 import de.dittner.siegmar.backend.SQLLib;
 
 import flash.data.SQLResult;
 import flash.data.SQLStatement;
-import flash.errors.SQLError;
 import flash.net.Responder;
 import flash.utils.ByteArray;
 
-public class StoreFileBodySQLOperation extends AsyncCommand {
+public class StoreFileBodySQLOperation extends StorageOperation implements IAsyncCommand {
 
 	public function StoreFileBodySQLOperation(fileWrapper:FileSQLWrapper) {
 		this.bodyWrapper = fileWrapper;
@@ -16,7 +15,7 @@ public class StoreFileBodySQLOperation extends AsyncCommand {
 
 	private var bodyWrapper:FileSQLWrapper;
 
-	override public function execute():void {
+	public function execute():void {
 		try {
 			var bytes:ByteArray = bodyWrapper.body.serialize();
 			var sqlParams:Object = {};
@@ -25,8 +24,8 @@ public class StoreFileBodySQLOperation extends AsyncCommand {
 			var sqlText:String = isNewFile ? SQLLib.INSERT_FILE_BODY : SQLLib.UPDATE_FILE_BODY;
 
 			var insertStmt:SQLStatement = SQLUtils.createSQLStatement(sqlText, sqlParams);
-			insertStmt.sqlConnection = bodyWrapper.sqlConnection;
-			insertStmt.execute(-1, new Responder(resultHandler, errorHandler));
+			insertStmt.sqlConnection = bodyWrapper.textDBConnection;
+			insertStmt.execute(-1, new Responder(resultHandler, executeError));
 		}
 		catch (exc:Error) {
 			dispatchError(exc.message);
@@ -41,10 +40,6 @@ public class StoreFileBodySQLOperation extends AsyncCommand {
 		if (isNewFile)
 			if (result.rowsAffected > 0) bodyWrapper.body.id = result.lastInsertRowID;
 		dispatchSuccess();
-	}
-
-	private function errorHandler(error:SQLError):void {
-		dispatchError(error.details);
 	}
 
 }

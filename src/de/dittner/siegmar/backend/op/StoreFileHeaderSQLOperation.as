@@ -1,13 +1,12 @@
 package de.dittner.siegmar.backend.op {
-import de.dittner.async.AsyncCommand;
+import de.dittner.async.IAsyncCommand;
 import de.dittner.siegmar.backend.SQLLib;
 
 import flash.data.SQLResult;
 import flash.data.SQLStatement;
-import flash.errors.SQLError;
 import flash.net.Responder;
 
-public class StoreFileHeaderSQLOperation extends AsyncCommand {
+public class StoreFileHeaderSQLOperation extends StorageOperation implements IAsyncCommand {
 
 	public function StoreFileHeaderSQLOperation(fileWrapper:FileSQLWrapper) {
 		this.headerWrapper = fileWrapper;
@@ -15,7 +14,7 @@ public class StoreFileHeaderSQLOperation extends AsyncCommand {
 
 	private var headerWrapper:FileSQLWrapper;
 
-	override public function execute():void {
+	public function execute():void {
 		try {
 			var sqlParams:Object = headerWrapper.headerToSQLObj();
 			var sqlText:String;
@@ -28,8 +27,8 @@ public class StoreFileHeaderSQLOperation extends AsyncCommand {
 			}
 
 			var insertStmt:SQLStatement = SQLUtils.createSQLStatement(sqlText, sqlParams);
-			insertStmt.sqlConnection = headerWrapper.sqlConnection;
-			insertStmt.execute(-1, new Responder(resultHandler, errorHandler));
+			insertStmt.sqlConnection = headerWrapper.textDBConnection;
+			insertStmt.execute(-1, new Responder(resultHandler, executeError));
 		}
 		catch (exc:Error) {
 			dispatchError(exc.message);
@@ -42,8 +41,5 @@ public class StoreFileHeaderSQLOperation extends AsyncCommand {
 		dispatchSuccess();
 	}
 
-	private function errorHandler(error:SQLError):void {
-		dispatchError(error.details);
-	}
 }
 }

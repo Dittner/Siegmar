@@ -20,6 +20,7 @@ import de.dittner.siegmar.backend.op.UpdatePhotoSQLOperation;
 import de.dittner.siegmar.model.domain.fileSystem.SiegmarFileSystem;
 import de.dittner.siegmar.model.domain.fileSystem.body.FileBody;
 import de.dittner.siegmar.model.domain.fileSystem.header.FileHeader;
+import de.dittner.siegmar.utils.AppInfo;
 import de.dittner.walter.WalterProxy;
 
 import flash.data.SQLConnection;
@@ -41,8 +42,11 @@ public class FileStorage extends WalterProxy {
 	[Inject]
 	public var deferredCommandManager:DeferredCommandManager;
 
-	private var _sqlConnection:SQLConnection;
-	public function get sqlConnection():SQLConnection {return _sqlConnection;}
+	private var _textDBConnection:SQLConnection;
+	public function get textDBConnection():SQLConnection {return _textDBConnection;}
+
+	private var _photoDBConnection:SQLConnection;
+	public function get photoDBConnection():SQLConnection {return _photoDBConnection;}
 
 	private var _isEmpty:Boolean = true;
 	public function get isEmpty():Boolean {return _isEmpty;}
@@ -67,8 +71,12 @@ public class FileStorage extends WalterProxy {
 		var cmd:IAsyncCommand;
 		deferredCommandManager.start();
 
-		cmd = new RunDataBaseSQLOperation(dataBasePwd, [SQLLib.CREATE_FILE_HEADER_TBL, SQLLib.CREATE_FILE_BODY_TBL, SQLLib.CREATE_PHOTO_TBL]);
-		cmd.addCompleteCallback(dataBaseOpened);
+		cmd = new RunDataBaseSQLOperation(dataBasePwd, AppInfo.TEXT_DB_NAME, [SQLLib.CREATE_FILE_HEADER_TBL, SQLLib.CREATE_FILE_BODY_TBL]);
+		cmd.addCompleteCallback(textDBOpened);
+		deferredCommandManager.add(cmd);
+
+		cmd = new RunDataBaseSQLOperation(dataBasePwd, AppInfo.PHOTO_DB_NAME, [SQLLib.CREATE_PHOTO_TBL]);
+		cmd.addCompleteCallback(photoDBOpened);
 		deferredCommandManager.add(cmd);
 
 		cmd = new CalcFilesAndPhotosSQLOperation(this);
@@ -77,8 +85,12 @@ public class FileStorage extends WalterProxy {
 		return cmd;
 	}
 
-	private function dataBaseOpened(opEvent:*):void {
-		_sqlConnection = opEvent.result as SQLConnection;
+	private function textDBOpened(opEvent:*):void {
+		_textDBConnection = opEvent.result as SQLConnection;
+	}
+
+	private function photoDBOpened(opEvent:*):void {
+		_photoDBConnection = opEvent.result as SQLConnection;
 	}
 
 	//--------------------------------------
@@ -142,7 +154,7 @@ public class FileStorage extends WalterProxy {
 	private function wrapFileHeader(header:FileHeader):FileSQLWrapper {
 		var wrapper:FileSQLWrapper = new FileSQLWrapper();
 		wrapper.header = header;
-		wrapper.sqlConnection = sqlConnection;
+		wrapper.textDBConnection = textDBConnection;
 		wrapper.encryptionService = encryptionService;
 		return wrapper;
 	}
@@ -150,7 +162,8 @@ public class FileStorage extends WalterProxy {
 	private function wrapFileBody(body:FileBody):FileSQLWrapper {
 		var wrapper:FileSQLWrapper = new FileSQLWrapper();
 		wrapper.body = body;
-		wrapper.sqlConnection = sqlConnection;
+		wrapper.textDBConnection = textDBConnection;
+		wrapper.photoDBConnection = photoDBConnection;
 		wrapper.encryptionService = encryptionService;
 		return wrapper;
 	}
@@ -169,37 +182,37 @@ public class FileStorage extends WalterProxy {
 	public function storePhoto(bitmap:BitmapData, title:String, fileID:int):IAsyncOperation {
 		if (isEmpty) _isEmpty = false;
 
-		var cmd:IAsyncCommand = new StorePhotoSQLOperation(sqlConnection, bitmap, title, fileID);
+		var cmd:IAsyncCommand = new StorePhotoSQLOperation(photoDBConnection, bitmap, title, fileID);
 		deferredCommandManager.add(cmd);
 		return cmd;
 	}
 
 	public function updatePhoto(photoId:int, bitmap:BitmapData, title:String, fileID:int):IAsyncOperation {
-		var cmd:IAsyncCommand = new UpdatePhotoSQLOperation(sqlConnection, photoId, bitmap, title, fileID);
+		var cmd:IAsyncCommand = new UpdatePhotoSQLOperation(photoDBConnection, photoId, bitmap, title, fileID);
 		deferredCommandManager.add(cmd);
 		return cmd;
 	}
 
 	public function removePhoto(photoId:int):IAsyncOperation {
-		var cmd:IAsyncCommand = new RemovePhotoSQLOperation(sqlConnection, photoId);
+		var cmd:IAsyncCommand = new RemovePhotoSQLOperation(photoDBConnection, photoId);
 		deferredCommandManager.add(cmd);
 		return cmd;
 	}
 
 	public function loadPhotosInfo(fileID:int):IAsyncOperation {
-		var cmd:IAsyncCommand = new SelectPhotosInfoSQLOperation(sqlConnection, fileID);
+		var cmd:IAsyncCommand = new SelectPhotosInfoSQLOperation(photoDBConnection, fileID);
 		deferredCommandManager.add(cmd);
 		return cmd;
 	}
 
 	public function loadPhotoBitmap(photoID:int):IAsyncOperation {
-		var cmd:IAsyncCommand = new SelectPhotoSQLOperation(sqlConnection, photoID);
+		var cmd:IAsyncCommand = new SelectPhotoSQLOperation(photoDBConnection, photoID);
 		deferredCommandManager.add(cmd);
 		return cmd;
 	}
 
 	public function loadPhotoPreview(photoID:int):IAsyncOperation {
-		var cmd:IAsyncCommand = new SelectPhotoSQLOperation(sqlConnection, photoID, true);
+		var cmd:IAsyncCommand = new SelectPhotoSQLOperation(photoDBConnection, photoID, true);
 		deferredCommandManager.add(cmd);
 		return cmd;
 	}
