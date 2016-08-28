@@ -6,7 +6,7 @@
          xmlns:common="cosmoLib.components.styleComponents.*"
          xmlns:actionform="de.dittner.siegmar.view.painting.components.actionForm.*">
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.domain.fileSystem.body.picture.action.PaintingAction;
+        import de.dittner.siegmar.model.domain.fileSystem.body.picture.action.PaintingAction;
         import de.dittner.siegmar.view.common.colorChooser.SelectColorEvent;
         import de.dittner.siegmar.view.common.list.SelectableDataGroupEvent;
         import de.dittner.siegmar.view.common.popup.SimplePopup;

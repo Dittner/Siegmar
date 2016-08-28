@@ -7,7 +7,7 @@
         [Event(name="actionSelected", type="de.dittner.siegmar.view.fileList.toolbar.ToolbarActionEvent")]
     </fx:Metadata>
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.domain.fileSystem.body.links.BookLink;
+        import de.dittner.siegmar.model.domain.fileSystem.body.links.BookLink;
         import de.dittner.siegmar.view.common.button.ToolButton;
         import de.dittner.siegmar.view.common.utils.AppColors;
 

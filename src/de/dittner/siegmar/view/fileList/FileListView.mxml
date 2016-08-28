@@ -8,7 +8,7 @@
                 xmlns:common="cosmoLib.components.styleComponents.*"
                 xmlns:favorites="de.dittner.siegmar.view.fileList.favorites.*">
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.domain.fileSystem.header.FileHeader;
+        import de.dittner.siegmar.model.domain.fileSystem.header.FileHeader;
         import de.dittner.siegmar.view.common.view.ViewModelFactory;
 
         import mx.collections.ArrayCollection;

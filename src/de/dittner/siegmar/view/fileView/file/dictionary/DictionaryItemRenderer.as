@@ -1,5 +1,5 @@
 package de.dittner.siegmar.view.fileView.file.dictionary {
-import de.dittner.siegmar.domain.fileSystem.body.note.TitledNote;
+import de.dittner.siegmar.model.domain.fileSystem.body.note.TitledNote;
 import de.dittner.siegmar.view.common.utils.AppColors;
 import de.dittner.siegmar.view.common.utils.FontName;
 import de.dittner.siegmar.view.fileView.file.DraggableNoteItemRenderer;

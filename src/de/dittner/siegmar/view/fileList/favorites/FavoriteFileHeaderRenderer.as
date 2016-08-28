@@ -1,5 +1,5 @@
 package de.dittner.siegmar.view.fileList.favorites {
-import de.dittner.siegmar.domain.fileSystem.header.FileHeader;
+import de.dittner.siegmar.model.domain.fileSystem.header.FileHeader;
 import de.dittner.siegmar.view.common.list.SelectableDataGroupEvent;
 import de.dittner.siegmar.view.fileList.list.FileHeaderRenderer;
 

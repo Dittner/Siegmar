@@ -2,8 +2,8 @@ package de.dittner.siegmar.model {
 import de.dittner.siegmar.backend.DeferredCommandManager;
 import de.dittner.siegmar.backend.EncryptionService;
 import de.dittner.siegmar.backend.FileStorage;
-import de.dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
-import de.dittner.siegmar.domain.user.User;
+import de.dittner.siegmar.model.domain.fileSystem.SiegmarFileSystem;
+import de.dittner.siegmar.model.domain.user.User;
 import de.dittner.siegmar.logging.CLog;
 import de.dittner.siegmar.logging.LogCategory;
 import de.dittner.siegmar.view.common.view.ViewFactory;

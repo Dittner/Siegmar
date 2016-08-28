@@ -5,7 +5,7 @@
          xmlns:button="de.dittner.siegmar.view.common.button.*"
          xmlns:list="de.dittner.siegmar.view.common.list.*">
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.domain.fileSystem.body.links.BookLink;
+        import de.dittner.siegmar.model.domain.fileSystem.body.links.BookLink;
         import de.dittner.siegmar.view.common.list.SelectableDataGroupEvent;
         import de.dittner.siegmar.view.common.popup.SimplePopup;
 

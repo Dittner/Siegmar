@@ -1,9 +1,9 @@
 package de.dittner.siegmar.view.fileView {
 import de.dittner.async.IAsyncOperation;
-import de.dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
-import de.dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
-import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
-import de.dittner.siegmar.domain.user.User;
+import de.dittner.siegmar.model.domain.fileSystem.SiegmarFileSystem;
+import de.dittner.siegmar.model.domain.fileSystem.body.links.BookLinksBody;
+import de.dittner.siegmar.model.domain.fileSystem.file.SiegmarFile;
+import de.dittner.siegmar.model.domain.user.User;
 import de.dittner.siegmar.view.common.view.ViewID;
 import de.dittner.siegmar.view.common.view.ViewModel;
 import de.dittner.siegmar.view.common.view.ViewNavigator;

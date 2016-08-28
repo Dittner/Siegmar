@@ -2,9 +2,9 @@ package de.dittner.siegmar.view.settings {
 import de.dittner.async.IAsyncOperation;
 import de.dittner.async.ProgressCommand;
 import de.dittner.ftpClient.FtpClient;
-import de.dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
-import de.dittner.siegmar.domain.fileSystem.body.settings.Settings;
-import de.dittner.siegmar.domain.fileSystem.body.settings.SettingsBody;
+import de.dittner.siegmar.model.domain.fileSystem.SiegmarFileSystem;
+import de.dittner.siegmar.model.domain.fileSystem.body.settings.Settings;
+import de.dittner.siegmar.model.domain.fileSystem.body.settings.SettingsBody;
 import de.dittner.siegmar.model.Device;
 import de.dittner.siegmar.utils.AppInfo;
 import de.dittner.siegmar.view.common.view.ViewID;

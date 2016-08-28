@@ -3,7 +3,7 @@
          xmlns:s="library://ns.adobe.com/flex/spark"
          xmlns:list="de.dittner.siegmar.view.common.list.*">
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.domain.fileSystem.header.FileHeader;
+        import de.dittner.siegmar.model.domain.fileSystem.header.FileHeader;
         import de.dittner.siegmar.view.common.list.SelectableDataGroupEvent;
         import de.dittner.siegmar.view.fileList.FileListVM;
 

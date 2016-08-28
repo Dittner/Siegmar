@@ -12,9 +12,9 @@
         import de.dittner.async.AsyncOperation;
         import de.dittner.async.IAsyncOperation;
         import de.dittner.async.utils.invalidateOf;
-        import de.dittner.siegmar.domain.fileSystem.body.links.BookLink;
-        import de.dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
-        import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
+        import de.dittner.siegmar.model.domain.fileSystem.body.links.BookLink;
+        import de.dittner.siegmar.model.domain.fileSystem.body.links.BookLinksBody;
+        import de.dittner.siegmar.model.domain.fileSystem.file.SiegmarFile;
         import de.dittner.siegmar.view.common.utils.AppColors;
         import de.dittner.siegmar.view.common.utils.FontName;
 

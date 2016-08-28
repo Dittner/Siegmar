@@ -1,8 +1,8 @@
 package de.dittner.siegmar.view.login {
 import de.dittner.async.IAsyncOperation;
 import de.dittner.siegmar.backend.FileStorage;
-import de.dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
-import de.dittner.siegmar.domain.user.User;
+import de.dittner.siegmar.model.domain.fileSystem.SiegmarFileSystem;
+import de.dittner.siegmar.model.domain.user.User;
 import de.dittner.siegmar.utils.AppInfo;
 import de.dittner.siegmar.view.common.view.ViewID;
 import de.dittner.siegmar.view.common.view.ViewModel;

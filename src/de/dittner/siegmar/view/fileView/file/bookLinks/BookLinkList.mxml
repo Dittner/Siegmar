@@ -5,9 +5,9 @@
          implements="de.dittner.siegmar.view.fileView.file.IFileContent">
 
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.domain.fileSystem.body.links.BookLink;
-        import de.dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
-        import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
+        import de.dittner.siegmar.model.domain.fileSystem.body.links.BookLink;
+        import de.dittner.siegmar.model.domain.fileSystem.body.links.BookLinksBody;
+        import de.dittner.siegmar.model.domain.fileSystem.file.SiegmarFile;
         import de.dittner.siegmar.view.common.list.FileBodyList;
 
         import mx.collections.ArrayCollection;

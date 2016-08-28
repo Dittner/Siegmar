@@ -1,5 +1,5 @@
 package de.dittner.siegmar.view.painting.renderer {
-import de.dittner.siegmar.domain.fileSystem.body.picture.action.*;
+import de.dittner.siegmar.model.domain.fileSystem.body.picture.action.*;
 import de.dittner.siegmar.view.common.renderer.*;
 import de.dittner.siegmar.view.common.utils.AppColors;
 import de.dittner.siegmar.view.common.utils.FontName;

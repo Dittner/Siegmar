@@ -3,7 +3,7 @@ import de.dittner.async.AsyncCommand;
 import de.dittner.siegmar.backend.op.FileSQLWrapper;
 import de.dittner.siegmar.backend.SQLLib;
 import de.dittner.siegmar.backend.op.SQLUtils;
-import de.dittner.siegmar.domain.fileSystem.file.FileType;
+import de.dittner.siegmar.model.domain.fileSystem.file.FileType;
 
 import flash.data.SQLResult;
 import flash.data.SQLStatement;

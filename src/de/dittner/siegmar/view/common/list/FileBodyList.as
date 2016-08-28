@@ -1,5 +1,5 @@
 package de.dittner.siegmar.view.common.list {
-import de.dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
+import de.dittner.siegmar.model.domain.fileSystem.body.links.BookLinksBody;
 import de.dittner.siegmar.model.Device;
 import de.dittner.siegmar.view.common.utils.TapEventKit;
 

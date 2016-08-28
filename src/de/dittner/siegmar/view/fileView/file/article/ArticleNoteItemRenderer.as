@@ -1,6 +1,6 @@
 package de.dittner.siegmar.view.fileView.file.article {
-import de.dittner.siegmar.domain.fileSystem.body.note.ArticleNote;
-import de.dittner.siegmar.domain.fileSystem.body.note.NoteType;
+import de.dittner.siegmar.model.domain.fileSystem.body.note.ArticleNote;
+import de.dittner.siegmar.model.domain.fileSystem.body.note.NoteType;
 import de.dittner.siegmar.view.common.utils.AppColors;
 import de.dittner.siegmar.view.common.utils.FontName;
 import de.dittner.siegmar.view.fileView.file.DraggableNoteItemRenderer;

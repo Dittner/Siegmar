@@ -10,9 +10,9 @@
         [Event(name="storeChanges", type="flash.events.Event")]
     </fx:Metadata>
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.domain.fileSystem.body.picture.action.DrawLinesAction;
-        import de.dittner.siegmar.domain.fileSystem.body.picture.action.LinesDisplacementAction;
-        import de.dittner.siegmar.domain.fileSystem.body.picture.action.PaintingAction;
+        import de.dittner.siegmar.model.domain.fileSystem.body.picture.action.DrawLinesAction;
+        import de.dittner.siegmar.model.domain.fileSystem.body.picture.action.LinesDisplacementAction;
+        import de.dittner.siegmar.model.domain.fileSystem.body.picture.action.PaintingAction;
         import de.dittner.siegmar.view.common.colorChooser.SelectColorEvent;
         import de.dittner.siegmar.view.common.popup.SimplePopup;
 

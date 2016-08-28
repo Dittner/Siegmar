@@ -1,7 +1,7 @@
 package de.dittner.siegmar.backend.op {
 import de.dittner.siegmar.backend.EncryptionService;
-import de.dittner.siegmar.domain.fileSystem.header.FileHeader;
-import de.dittner.siegmar.domain.fileSystem.body.FileBody;
+import de.dittner.siegmar.model.domain.fileSystem.header.FileHeader;
+import de.dittner.siegmar.model.domain.fileSystem.body.FileBody;
 
 import flash.data.SQLConnection;
 

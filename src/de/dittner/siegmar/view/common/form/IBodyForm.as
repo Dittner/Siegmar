@@ -1,6 +1,6 @@
 package de.dittner.siegmar.view.common.form {
 import de.dittner.async.IAsyncOperation;
-import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
+import de.dittner.siegmar.model.domain.fileSystem.file.SiegmarFile;
 
 public interface IBodyForm {
 	function createNote(file:SiegmarFile):IAsyncOperation;

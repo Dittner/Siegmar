@@ -14,8 +14,8 @@
 
     <fx:Script><![CDATA[
         import de.dittner.async.IAsyncOperation;
-        import de.dittner.siegmar.domain.fileSystem.file.FileType;
-        import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
+        import de.dittner.siegmar.model.domain.fileSystem.file.FileType;
+        import de.dittner.siegmar.model.domain.fileSystem.file.SiegmarFile;
         import de.dittner.siegmar.view.common.list.SelectableDataGroupEvent;
         import de.dittner.siegmar.view.common.popup.SimplePopup;
         import de.dittner.siegmar.view.common.utils.AppColors;
@@ -49,7 +49,7 @@
         public function set openedFile(value:SiegmarFile):void {
             if (_openedFile != value) {
                 _openedFile = value;
-                if(openedFile) updateState();
+                if (openedFile) updateState();
                 dispatchEvent(new Event("openedFileChanged"));
             }
         }
@@ -107,8 +107,6 @@
             if (vm.openedFile)
                 vm.openedFile.body.store();
         }
-
-
 
         private function filterChanged(event:Event):void {
             filterNotes(docHeader.filterInput.text.toLowerCase());

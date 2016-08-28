@@ -10,8 +10,8 @@
         import de.dittner.async.IAsyncOperation;
         import de.dittner.async.ProgressOperation;
         import de.dittner.async.utils.invalidateOf;
-        import de.dittner.siegmar.domain.fileSystem.body.album.AlbumBody;
-        import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
+        import de.dittner.siegmar.model.domain.fileSystem.body.album.AlbumBody;
+        import de.dittner.siegmar.model.domain.fileSystem.file.SiegmarFile;
         import de.dittner.siegmar.utils.FileChooser;
         import de.dittner.siegmar.utils.FileLoader;
         import de.dittner.siegmar.utils.FolderChooser;

@@ -8,9 +8,9 @@
          visible="{vm.curOperation}">
 
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.domain.fileSystem.file.FileType;
-        import de.dittner.siegmar.domain.fileSystem.file.FileTypeName;
-        import de.dittner.siegmar.domain.fileSystem.header.FileHeader;
+        import de.dittner.siegmar.model.domain.fileSystem.file.FileType;
+        import de.dittner.siegmar.model.domain.fileSystem.file.FileTypeName;
+        import de.dittner.siegmar.model.domain.fileSystem.header.FileHeader;
         import de.dittner.siegmar.view.common.form.FileFormMode;
         import de.dittner.siegmar.view.common.utils.AppColors;
         import de.dittner.siegmar.view.common.utils.FontName;

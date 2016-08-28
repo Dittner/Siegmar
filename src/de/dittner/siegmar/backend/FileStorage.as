@@ -17,9 +17,9 @@ import de.dittner.siegmar.backend.op.StoreFileBodySQLOperation;
 import de.dittner.siegmar.backend.op.StoreFileHeaderSQLOperation;
 import de.dittner.siegmar.backend.op.StorePhotoSQLOperation;
 import de.dittner.siegmar.backend.op.UpdatePhotoSQLOperation;
-import de.dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
-import de.dittner.siegmar.domain.fileSystem.body.FileBody;
-import de.dittner.siegmar.domain.fileSystem.header.FileHeader;
+import de.dittner.siegmar.model.domain.fileSystem.SiegmarFileSystem;
+import de.dittner.siegmar.model.domain.fileSystem.body.FileBody;
+import de.dittner.siegmar.model.domain.fileSystem.header.FileHeader;
 import de.dittner.walter.WalterProxy;
 
 import flash.data.SQLConnection;

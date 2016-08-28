@@ -1,12 +1,12 @@
 package de.dittner.siegmar.view.painting {
 import de.dittner.async.IAsyncOperation;
-import de.dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
-import de.dittner.siegmar.domain.fileSystem.body.picture.PictureBody;
-import de.dittner.siegmar.domain.fileSystem.body.picture.action.DrawLinesAction;
-import de.dittner.siegmar.domain.fileSystem.body.picture.action.LinesDisplacementAction;
-import de.dittner.siegmar.domain.fileSystem.body.picture.action.PaintingAction;
-import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
-import de.dittner.siegmar.domain.user.User;
+import de.dittner.siegmar.model.domain.fileSystem.SiegmarFileSystem;
+import de.dittner.siegmar.model.domain.fileSystem.body.picture.PictureBody;
+import de.dittner.siegmar.model.domain.fileSystem.body.picture.action.DrawLinesAction;
+import de.dittner.siegmar.model.domain.fileSystem.body.picture.action.LinesDisplacementAction;
+import de.dittner.siegmar.model.domain.fileSystem.body.picture.action.PaintingAction;
+import de.dittner.siegmar.model.domain.fileSystem.file.SiegmarFile;
+import de.dittner.siegmar.model.domain.user.User;
 import de.dittner.siegmar.utils.BitmapLocalSaver;
 import de.dittner.siegmar.utils.FileChooser;
 import de.dittner.siegmar.view.common.view.ViewID;

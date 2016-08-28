@@ -5,7 +5,7 @@
                 xmlns:toolbar="de.dittner.siegmar.view.fileList.toolbar.*"
                 xmlns:components="de.dittner.siegmar.view.painting.components.*">
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.domain.fileSystem.body.picture.PictureBody;
+        import de.dittner.siegmar.model.domain.fileSystem.body.picture.PictureBody;
         import de.dittner.siegmar.view.common.view.ViewModelFactory;
         import de.dittner.siegmar.view.fileList.toolbar.ToolAction;
 

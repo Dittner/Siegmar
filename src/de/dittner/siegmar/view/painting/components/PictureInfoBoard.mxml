@@ -7,7 +7,7 @@
         [Event(name="scaleDecreased", type="flash.events.Event")]
     </fx:Metadata>
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.domain.fileSystem.body.picture.PictureBody;
+        import de.dittner.siegmar.model.domain.fileSystem.body.picture.PictureBody;
         import de.dittner.siegmar.view.common.utils.AppColors;
 
         //--------------------------------------

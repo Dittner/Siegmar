@@ -1,5 +1,5 @@
 package de.dittner.siegmar.view.fileList.list {
-import de.dittner.siegmar.domain.fileSystem.header.FileHeader;
+import de.dittner.siegmar.model.domain.fileSystem.header.FileHeader;
 import de.dittner.siegmar.view.common.renderer.ItemRendererBase;
 import de.dittner.siegmar.view.common.utils.AppColors;
 import de.dittner.siegmar.view.common.utils.FontName;

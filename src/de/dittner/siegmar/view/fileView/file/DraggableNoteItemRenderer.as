@@ -1,5 +1,5 @@
 package de.dittner.siegmar.view.fileView.file {
-import de.dittner.siegmar.domain.fileSystem.body.links.BookLinksBody;
+import de.dittner.siegmar.model.domain.fileSystem.body.links.BookLinksBody;
 import de.dittner.siegmar.view.common.list.DragItemInfo;
 import de.dittner.siegmar.view.common.list.FileBodyList;
 import de.dittner.siegmar.view.common.list.IDraggable;

@@ -6,8 +6,8 @@
 
     <fx:Script><![CDATA[
         import de.dittner.async.IAsyncOperation;
-        import de.dittner.siegmar.domain.fileSystem.file.FileType;
-        import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
+        import de.dittner.siegmar.model.domain.fileSystem.file.FileType;
+        import de.dittner.siegmar.model.domain.fileSystem.file.SiegmarFile;
         import de.dittner.siegmar.view.common.form.IBodyForm;
         import de.dittner.siegmar.view.fileList.toolbar.ToolAction;
         import de.dittner.siegmar.view.fileView.FileViewVM;

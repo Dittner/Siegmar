@@ -2,11 +2,11 @@ package de.dittner.siegmar.view.fileList.form {
 import de.dittner.async.AsyncOperation;
 import de.dittner.async.IAsyncOperation;
 import de.dittner.siegmar.backend.FileStorage;
-import de.dittner.siegmar.domain.fileSystem.FileOptionKeys;
-import de.dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
-import de.dittner.siegmar.domain.fileSystem.file.FileType;
-import de.dittner.siegmar.domain.fileSystem.header.FileHeader;
-import de.dittner.siegmar.domain.user.User;
+import de.dittner.siegmar.model.domain.fileSystem.FileOptionKeys;
+import de.dittner.siegmar.model.domain.fileSystem.SiegmarFileSystem;
+import de.dittner.siegmar.model.domain.fileSystem.file.FileType;
+import de.dittner.siegmar.model.domain.fileSystem.header.FileHeader;
+import de.dittner.siegmar.model.domain.user.User;
 import de.dittner.siegmar.logging.CLog;
 import de.dittner.siegmar.logging.LogCategory;
 import de.dittner.siegmar.view.common.form.FileFormMode;

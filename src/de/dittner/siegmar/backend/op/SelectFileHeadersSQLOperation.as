@@ -2,7 +2,7 @@ package de.dittner.siegmar.backend.op {
 import de.dittner.async.AsyncCommand;
 import de.dittner.siegmar.backend.FileStorage;
 import de.dittner.siegmar.backend.SQLLib;
-import de.dittner.siegmar.domain.fileSystem.header.FileHeader;
+import de.dittner.siegmar.model.domain.fileSystem.header.FileHeader;
 
 import flash.data.SQLResult;
 import flash.data.SQLStatement;

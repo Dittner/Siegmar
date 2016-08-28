@@ -1,8 +1,8 @@
 package de.dittner.siegmar.backend.op {
 import de.dittner.async.AsyncCommand;
 import de.dittner.siegmar.backend.SQLLib;
-import de.dittner.siegmar.domain.fileSystem.SiegmarFileSystem;
-import de.dittner.siegmar.domain.fileSystem.body.FileBody;
+import de.dittner.siegmar.model.domain.fileSystem.SiegmarFileSystem;
+import de.dittner.siegmar.model.domain.fileSystem.body.FileBody;
 
 import flash.data.SQLResult;
 import flash.data.SQLStatement;

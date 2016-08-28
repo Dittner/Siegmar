@@ -8,8 +8,8 @@
         [Event(name="filterChange", type="flash.events.Event")]
     </fx:Metadata>
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.domain.fileSystem.FileOptionKeys;
-        import de.dittner.siegmar.domain.fileSystem.file.SiegmarFile;
+        import de.dittner.siegmar.model.domain.fileSystem.FileOptionKeys;
+        import de.dittner.siegmar.model.domain.fileSystem.file.SiegmarFile;
         import de.dittner.siegmar.view.common.utils.FontName;
 
         //--------------------------------------
