@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<view:ViewBase xmlns:fx="http://ns.adobe.com/mxml/2009"
-               xmlns:s="library://ns.adobe.com/flex/spark"
-               xmlns:view="de.dittner.siegmar.view.common.view.*"
-               xmlns:toolbar="de.dittner.siegmar.view.fileList.toolbar.*"
-               xmlns:components="de.dittner.siegmar.view.painting.components.*">
+<view:SmartView xmlns:fx="http://ns.adobe.com/mxml/2009"
+                xmlns:s="library://ns.adobe.com/flex/spark"
+                xmlns:view="de.dittner.siegmar.view.common.view.*"
+                xmlns:toolbar="de.dittner.siegmar.view.fileList.toolbar.*"
+                xmlns:components="de.dittner.siegmar.view.painting.components.*">
     <fx:Script><![CDATA[
         import de.dittner.siegmar.domain.fileSystem.body.picture.PictureBody;
         import de.dittner.siegmar.view.common.view.ViewModelFactory;
@@ -69,4 +69,4 @@
                      showNoteBtns="false"
                      width="40" height="100%"/>
 
-</view:ViewBase>
+</view:SmartView>

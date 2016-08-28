@@ -213,6 +213,12 @@ s|TabBar {
 
 s|CheckBox {
     skinClass: ClassReference("de.dittner.siegmar.view.common.checkBox.CustomCheckBoxSkin");
+    textColor: #4e4f61;
+}
+
+s|CheckBox.whiteCheckBoxStyle {
+    skinClass: ClassReference("de.dittner.siegmar.view.common.checkBox.CustomCheckBoxSkin");
+    textColor: #ffFFff;
 }
 
 s|RadioButton {

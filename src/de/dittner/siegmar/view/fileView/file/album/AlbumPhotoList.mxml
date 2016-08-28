@@ -4,6 +4,7 @@
          xmlns:list="de.dittner.siegmar.view.common.list.*"
          xmlns:stylecomponents="cosmoLib.components.styleComponents.*"
          xmlns:button="de.dittner.siegmar.view.common.button.*"
+         xmlns:album="de.dittner.siegmar.view.fileView.file.album.*"
          addedToStage="addedToStageHandler(event)"
          removedFromStage="removedFromStageHandler(event)"
          implements="de.dittner.siegmar.view.fileView.file.IFileContent">
@@ -19,7 +20,6 @@
         import de.dittner.siegmar.view.common.utils.AppColors;
 
         import mx.collections.ArrayCollection;
-        import mx.events.FlexEvent;
 
         //--------------------------------------
         //  bookLinksBody
@@ -110,7 +110,7 @@
                         if (selectedPhoto) selectedPhoto.dispose();
                         selectedPhoto = op.result;
                         sizeLbl.text = selectedPhoto.width + ":" + selectedPhoto.height;
-                        img.source = selectedPhoto;
+                        photoView.photo = selectedPhoto;
                     }
                 });
             }
@@ -227,31 +227,6 @@
         private function removedFromStageHandler(event:Event):void {
             stage.removeEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
         }
-
-        private var downPoint:Point;
-        private function img_mouseDownHandler(event:MouseEvent):void {
-            downPoint = new Point(event.localX - img.x, event.localY - img.y);
-        }
-
-        private function img_mouseUpHandler(event:MouseEvent):void {
-            downPoint = null;
-            if (img.x > 0) img.x = 0;
-            else if (img.x < width - img.width) img.x = width - img.width;
-
-            if (img.y > 0) img.y = 0;
-            else if (img.y < height - img.height) img.y = height - img.height;
-        }
-
-        private function img_mouseMoveHandler(event:MouseEvent):void {
-            if (downPoint) {
-                img.x = event.localX - downPoint.x;
-                img.y = event.localY - downPoint.y;
-            }
-        }
-
-        private function img_creationCompleteHandler(event:FlexEvent):void {
-            img.x = (width - img.width >> 1) - 100;
-        }
         ]]></fx:Script>
 
     <stylecomponents:Background width="300" height="100%" color="0" fillAlpha=".75"/>
@@ -273,19 +248,22 @@
         </list:FileBodyList>
     </s:Scroller>
 
-    <s:Group left="300" right="0" top="0" bottom="0"
-             clipAndEnableScrolling="true"
-             mouseDown="img_mouseDownHandler(event)"
-             mouseOut="img_mouseUpHandler(event)"
-             mouseUp="img_mouseUpHandler(event)"
-             mouseMove="img_mouseMoveHandler(event)"
-             creationComplete="img_creationCompleteHandler(event)">
-        <s:BitmapImage id="img" scaleX="{photoScale}" scaleY="{photoScale}"/>
-    </s:Group>
+    <album:PhotoView id="photoView"
+                     left="300" right="0" top="0" bottom="0"
+                     photoScale="{photoScale}"
+                     useAutoScale="{autoScaleBox.selected}"/>
 
     <s:HGroup width="100%" gap="10" horizontalAlign="center" paddingTop="-40" paddingRight="5" verticalAlign="middle">
+        <s:CheckBox id="autoScaleBox"
+                    styleName="whiteCheckBoxStyle"
+                    label="Automatische Skalierung"
+                    selected="false"/>
+
+        <s:Spacer width="20"/>
+
         <s:Label id="scaleLbl"
                  text="{photoScale * 100 + '%'}"
+                 enabled="{!autoScaleBox.selected}"
                  fontSize="16"
                  width="100"
                  textAlign="right"
@@ -294,18 +272,23 @@
 
         <button:RoundButton id="incScaleBtn"
                             fontSize="16"
+                            enabled="{!autoScaleBox.selected}"
                             click="incPictureScale(event)"
                             label="+" width="25" height="25" color="#ffFFff"/>
 
         <button:RoundButton id="decScaleBtn"
                             fontSize="16"
+                            enabled="{!autoScaleBox.selected}"
                             click="decPictureScale(event)"
                             label="–" width="25" height="25" color="#ffFFff"/>
 
         <s:Label id="sizeLbl"
+                 enabled="{!autoScaleBox.selected}"
                  fontSize="16"
                  mouseChildren="false" mouseEnabled="false"
                  color="{AppColors.HELL_TÜRKIS}"/>
+
+        <s:Spacer width="20"/>
 
         <button:StrokeButton id="savePhotoBtn"
                              click="savePhotoBtnClickHandler(event)"

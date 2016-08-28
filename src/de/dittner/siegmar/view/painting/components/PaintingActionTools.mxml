@@ -8,6 +8,7 @@
     <fx:Script><![CDATA[
         import de.dittner.siegmar.domain.fileSystem.body.picture.action.PaintingAction;
         import de.dittner.siegmar.view.common.colorChooser.SelectColorEvent;
+        import de.dittner.siegmar.view.common.list.SelectableDataGroupEvent;
         import de.dittner.siegmar.view.common.popup.SimplePopup;
         import de.dittner.siegmar.view.painting.*;
 
@@ -27,14 +28,10 @@
         }
 
         private function showAvailableActionList():void {
-            SimplePopup.show(availableActionListCont, true, availableActionListCloseHandler);
+            SimplePopup.show(availableActionListCont, true);
         }
 
-        private function availableActionListCloseHandler():void {
-            availableActionList.selectedItem = false;
-        }
-
-        private function availableActionListItemSelectedHandler(event:Event):void {
+        private function availableActionListItemSelectedHandler(event:SelectableDataGroupEvent):void {
             SimplePopup.close();
             vm.addAction(availableActionList.selectedItem);
             availableActionList.selectedItem = null;

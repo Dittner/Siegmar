@@ -1,5 +1,134 @@
 <?xml version="1.0"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
-         xmlns:s="library://ns.adobe.com/flex/spark">
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         clipAndEnableScrolling="true"
+         mouseDown="img_mouseDownHandler(event)"
+         mouseOut="img_mouseUpHandler(event)"
+         mouseUp="img_mouseUpHandler(event)"
+         mouseMove="img_mouseMoveHandler(event)">
+
+    <fx:Script><![CDATA[
+        private var photoChanged:Boolean = false;
+
+        //--------------------------------------
+        //  photoScale
+        //--------------------------------------
+        private var _photoScale:Number = 1;
+        [Bindable("photoScaleChanged")]
+        public function get photoScale():Number {return _photoScale;}
+        public function set photoScale(value:Number):void {
+            if (_photoScale != value) {
+                _photoScale = value;
+                photoChanged = true;
+                invalidateProperties();
+                dispatchEvent(new Event("photoScaleChanged"));
+            }
+        }
+
+        //--------------------------------------
+        //  useAutoScale
+        //--------------------------------------
+        private var _useAutoScale:Boolean = false;
+        [Bindable("useAutoScaleChanged")]
+        public function get useAutoScale():Boolean {return _useAutoScale;}
+        public function set useAutoScale(value:Boolean):void {
+            if (_useAutoScale != value) {
+                _useAutoScale = value;
+                photoChanged = true;
+                invalidateProperties();
+                dispatchEvent(new Event("useAutoScaleChanged"));
+            }
+        }
+
+        //--------------------------------------
+        //  photo
+        //--------------------------------------
+
+        private var _photo:BitmapData;
+        [Bindable("photoChanged")]
+        public function get photo():BitmapData {return _photo;}
+        public function set photo(value:BitmapData):void {
+            if (_photo != value) {
+                _photo = value;
+                photoChanged = true;
+                invalidateProperties();
+                dispatchEvent(new Event("photoChanged"));
+            }
+        }
+
+        override protected function commitProperties():void {
+            super.commitProperties();
+            if (photoChanged && photo) {
+                photoChanged = false;
+                if (useAutoScale) {
+                    img.scaleX = img.scaleY = 1 / Math.max(1, photo.width / width, photo.height / height);
+                }
+                else {
+                    img.scaleX = img.scaleY = photoScale;
+                }
+
+                if (photo) adjustImagePos();
+            }
+        }
+
+        private var downPoint:Point;
+        private function img_mouseDownHandler(event:MouseEvent):void {
+            downPoint = new Point(event.localX - img.x, event.localY - img.y);
+        }
+
+        private function img_mouseUpHandler(event:MouseEvent):void {
+            if (downPoint) {
+                downPoint = null;
+                adjustImagePos();
+            }
+        }
+
+        private function adjustImagePos():void {
+            if (horScrollEnabled) {
+                if (img.x > 0) img.x = 0;
+                else if (img.x < width - imgWidth) img.x = width - imgWidth;
+            }
+            else {
+                img.x = width - imgWidth >> 1;
+            }
+
+            if (verScrollEnabled) {
+                if (img.y > 0) img.y = 0;
+                else if (img.y < height - imgHeight) img.y = height - imgHeight;
+            }
+            else {
+                img.y = height - imgHeight >> 1;
+            }
+        }
+
+        private function img_mouseMoveHandler(event:MouseEvent):void {
+            if (downPoint) {
+                if (horScrollEnabled) img.x = event.localX - downPoint.x;
+                else img.x = width - imgWidth >> 1;
+
+                if (verScrollEnabled) img.y = event.localY - downPoint.y;
+                else img.y = height - imgHeight >> 1;
+            }
+        }
+
+        private function get horScrollEnabled():Boolean {
+            return !useAutoScale && imgWidth > width;
+        }
+
+        private function get verScrollEnabled():Boolean {
+            return !useAutoScale && imgHeight > height;
+        }
+
+        private function get imgWidth():Number {
+            return photo.width * img.scaleX;
+        }
+
+        private function get imgHeight():Number {
+            return photo.height * img.scaleY;
+        }
+        ]]></fx:Script>
+
+    <s:BitmapImage id="img"
+                   source="{photo}"/>
 
 </s:Group>

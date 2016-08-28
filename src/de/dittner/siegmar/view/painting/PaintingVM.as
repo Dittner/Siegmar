@@ -137,6 +137,7 @@ public class PaintingVM extends ViewModel {
 	private function fileLoaded(op:IAsyncOperation):void {
 		if (op.isSuccess) {
 			setOpenedFile(op.result);
+			updatePicture();
 			if (openedFile)
 				setActionColl(new ArrayCollection(picture.actions));
 		}
@@ -266,6 +267,7 @@ public class PaintingVM extends ViewModel {
 	public function addAction(actionKey:String):void {
 		if (actionKey) {
 			picture.actions.push(createActionByKey(actionKey));
+			actionColl.refresh();
 			picture.store();
 			updatePicture();
 		}

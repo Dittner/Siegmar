@@ -14,9 +14,6 @@
         import de.dittner.siegmar.view.common.utils.AppColors;
         import de.dittner.siegmar.view.common.utils.FontName;
 
-        import de.dittner.siegmar.view.common.utils.AppColors;
-        import de.dittner.siegmar.view.common.utils.FontName;
-
         private static const focusExclusions:Array = ["labelDisplay"];
         override public function get focusSkinExclusions():Array { return focusExclusions;}
         ]]>
@@ -59,7 +56,7 @@
              left="28" right="0" verticalCenter="1"
              fontFamily="{FontName.MYRIAD}"
              fontSize="18"
-             color="{AppColors.TEXT_DARK}"
+             color="{getStyle('textColor')}"
              maxDisplayedLines="1"/>
 
 </s:SparkSkin>
