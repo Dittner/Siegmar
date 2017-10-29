@@ -182,19 +182,10 @@ public class ReordableList extends SelectableDataGroup {
 			coll.filterFunction = filterFunc;
 			coll.refresh();
 			dataProvider = coll;
-			doLaterInMSec(scrollToDroppedItem, 500);
-
 			dispatchEvent(new Event('orderChanged', true));
 		}
 
 		destroyDragProxy();
-	}
-
-	private function scrollToDroppedItem():void {
-		if (droppedItemIndex >= 0) {
-			var spDelta:Point = layout.getScrollPositionDeltaToElement(droppedItemIndex);
-			if (spDelta) verticalScrollPosition += spDelta.y;
-		}
 	}
 
 	private function destroyDragProxy():void {

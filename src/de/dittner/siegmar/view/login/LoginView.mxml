@@ -5,7 +5,7 @@
                 xmlns:button="de.dittner.siegmar.view.common.button.*">
 
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.utils.AppInfo;
+        import de.dittner.siegmar.model.Device;
         import de.dittner.siegmar.utils.InputUtils;
         import de.dittner.siegmar.view.common.utils.AppColors;
         import de.dittner.siegmar.view.common.utils.FontName;
@@ -47,7 +47,7 @@
         }
 
         private function validateRegistrationData(userNameField:String, passwordField:String):Boolean {
-            return userNameField && passwordField && passwordField.length > AppInfo.MIN_PWD_LEN;
+            return userNameField && passwordField && passwordField.length > Device.MIN_PWD_LEN;
         }
 
         public function clear():void {

@@ -1,6 +1,6 @@
 package de.dittner.siegmar.backend.op {
 import de.dittner.async.IAsyncCommand;
-import de.dittner.siegmar.utils.AppInfo;
+import de.dittner.siegmar.model.Device;
 
 import flash.filesystem.File;
 
@@ -17,11 +17,11 @@ public class BackUpDataBasePhaseOperation extends StorageOperation implements IA
 	}
 
 	public function execute():void {
-		var dbRootFile:File = File.documentsDirectory.resolvePath(AppInfo.dbRootPath);
+		var dbRootFile:File = File.documentsDirectory.resolvePath(Device.dbRootPath);
 		if (!dbRootFile.exists) {
-			var appDBDir:File = File.applicationDirectory.resolvePath(AppInfo.applicationDBPath);
+			var appDBDir:File = File.applicationDirectory.resolvePath(Device.applicationDBPath);
 			if (appDBDir.exists) {
-				var destDir:File = File.documentsDirectory.resolvePath(AppInfo.APP_NAME);
+				var destDir:File = File.documentsDirectory.resolvePath(Device.APP_NAME);
 				appDBDir.copyTo(destDir);
 			}
 			else {
@@ -29,9 +29,9 @@ public class BackUpDataBasePhaseOperation extends StorageOperation implements IA
 			}
 		}
 
-		var dbFile:File = File.documentsDirectory.resolvePath(AppInfo.dbRootPath + AppInfo.TEXT_DB_NAME);
+		var dbFile:File = File.documentsDirectory.resolvePath(Device.dbRootPath + Device.TEXT_DB_NAME);
 		var backUpFileName:String = "Kopie-" + dateFormatter.format(new Date) + ".db";
-		dbFile.copyTo(File.documentsDirectory.resolvePath(AppInfo.dbRootPath + backUpFileName), true);
+		dbFile.copyTo(File.documentsDirectory.resolvePath(Device.dbRootPath + backUpFileName), true);
 		dispatchSuccess();
 	}
 

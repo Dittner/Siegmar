@@ -2,7 +2,7 @@ package de.dittner.siegmar.backend.op {
 import com.adobe.crypto.MD5;
 
 import de.dittner.async.IAsyncCommand;
-import de.dittner.siegmar.utils.AppInfo;
+import de.dittner.siegmar.model.Device;
 
 import flash.data.SQLConnection;
 import flash.data.SQLMode;
@@ -27,12 +27,12 @@ public class RunDataBaseSQLOperation extends StorageOperation implements IAsyncC
 	private var conn:SQLConnection = new SQLConnection();
 
 	public function execute():void {
-		var dbRootFile:File = File.documentsDirectory.resolvePath(AppInfo.dbRootPath);
+		var dbRootFile:File = File.documentsDirectory.resolvePath(Device.dbRootPath);
 		if (!dbRootFile.exists) {
 			dbRootFile.createDirectory();
 		}
 
-		var dbFile:File = File.documentsDirectory.resolvePath(AppInfo.dbRootPath + dbName);
+		var dbFile:File = File.documentsDirectory.resolvePath(Device.dbRootPath + dbName);
 
 		conn.addEventListener(SQLEvent.OPEN, openHandler);
 		conn.addEventListener(SQLErrorEvent.ERROR, executeError);
@@ -53,7 +53,7 @@ public class RunDataBaseSQLOperation extends StorageOperation implements IAsyncC
 	}
 
 	public static function existsDataBaseFile():Boolean {
-		return File.documentsDirectory.resolvePath(AppInfo.dbRootPath).exists;
+		return File.documentsDirectory.resolvePath(Device.dbRootPath).exists;
 	}
 
 	private function openHandler(event:SQLEvent):void {

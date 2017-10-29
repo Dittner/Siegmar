@@ -120,11 +120,11 @@
         }
 
         private function get imgWidth():Number {
-            return photo.width * img.scaleX;
+            return photo ? photo.width * img.scaleX : 0;
         }
 
         private function get imgHeight():Number {
-            return photo.height * img.scaleY;
+            return photo ? photo.height * img.scaleY : 0;
         }
         ]]></fx:Script>
 

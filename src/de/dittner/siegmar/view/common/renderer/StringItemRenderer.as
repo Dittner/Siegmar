@@ -1,5 +1,4 @@
 package de.dittner.siegmar.view.common.renderer {
-import de.dittner.siegmar.view.common.renderer.*;
 import de.dittner.siegmar.view.common.utils.AppColors;
 import de.dittner.siegmar.view.common.utils.FontName;
 

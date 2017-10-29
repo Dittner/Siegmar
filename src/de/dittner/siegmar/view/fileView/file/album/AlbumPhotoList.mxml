@@ -199,9 +199,15 @@
                 photoScale = updatedScale;
             }
         }
+
         private function savePhotoBtnClickHandler(event:MouseEvent):void {
             if (selectedPhoto)
                 BitmapLocalSaver.save(selectedPhoto, list.selectedItem.title + ".jpg", false);
+        }
+
+        private function saveFolderBtnClickHandler(event:MouseEvent):void {
+            if (file.body is AlbumBody)
+                file.body.fileStorage.storeAlbumOnDisk(file);
         }
 
         override protected function keyUpHandler(event:KeyboardEvent):void {
@@ -292,7 +298,11 @@
 
         <button:StrokeButton id="savePhotoBtn"
                              click="savePhotoBtnClickHandler(event)"
-                             label="Als JPG speichern" color="#ffFFff"/>
+                             label="Foto speichern" color="#ffFFff"/>
+
+        <button:StrokeButton id="saveFolderBtn"
+                             click="saveFolderBtnClickHandler(event)"
+                             label="Folder speichern" color="#ffFFff"/>
     </s:HGroup>
 
 </s:Group>

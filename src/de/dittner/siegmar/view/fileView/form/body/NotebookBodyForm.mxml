@@ -6,8 +6,6 @@
          implements="de.dittner.siegmar.view.common.form.IBodyForm">
 
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.view.common.utils.AppColors;
-
         import de.dittner.async.AsyncOperation;
         import de.dittner.async.IAsyncOperation;
         import de.dittner.async.utils.invalidateOf;
@@ -15,6 +13,7 @@
         import de.dittner.siegmar.model.domain.fileSystem.body.note.Note;
         import de.dittner.siegmar.model.domain.fileSystem.file.SiegmarFile;
         import de.dittner.siegmar.view.common.utils.AppColors;
+        import de.dittner.siegmar.view.common.utils.NoteFormUtils;
 
         //----------------------------------------------------------------------------------------------
         //
@@ -97,6 +96,10 @@
             res.text = textInput.text;
             return res;
         }
+
+        private function formatText():void {
+            textInput.text = NoteFormUtils.formatText(textInput.text, wordWrapRemoveCheckBox.selected);
+        }
         ]]></fx:Script>
 
     <s:states>
@@ -109,13 +112,28 @@
         <s:VerticalLayout gap="10"/>
     </s:layout>
 
-    <s:Label text.add="NEUE NOTIZ"
-             text.edit="AUFBEREITUNG"
-             text.remove="ENTFERNUNG"
-             width="100%"
-             fontSize="16"
-             mouseChildren="false" mouseEnabled="false" paddingBottom="30"
-             color="{AppColors.HELL_TÜRKIS}"/>
+    <s:HGroup width="100%" verticalAlign="middle">
+        <s:Label text.add="NEUE NOTIZ"
+                 text.edit="AUFBEREITUNG"
+                 text.remove="ENTFERNUNG"
+                 width="100%"
+                 fontSize="16"
+                 mouseChildren="false" mouseEnabled="false" paddingBottom="30"
+                 color="{AppColors.HELL_TÜRKIS}"/>
+
+        <s:Spacer width="100%"/>
+
+        <s:CheckBox id="wordWrapRemoveCheckBox" selected="false"/>
+        <s:Label color="#ffFFff" text="die Zeilenumbrüch löschen"/>
+
+        <s:Spacer width="20"/>
+
+        <button:StrokeButton id="formatBtn"
+                             width="200"
+                             color="{AppColors.HELL_TÜRKIS}"
+                             label="Formatieren"
+                             click="formatText()"/>
+    </s:HGroup>
 
     <input:TextAreaForm id="textInput"
                         visible.remove="false" includeInLayout.remove="false"

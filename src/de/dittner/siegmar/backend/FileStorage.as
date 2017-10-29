@@ -13,14 +13,16 @@ import de.dittner.siegmar.backend.op.SelectFileHeadersByTypeSQLOperation;
 import de.dittner.siegmar.backend.op.SelectFileHeadersSQLOperation;
 import de.dittner.siegmar.backend.op.SelectPhotoSQLOperation;
 import de.dittner.siegmar.backend.op.SelectPhotosInfoSQLOperation;
+import de.dittner.siegmar.backend.op.StoreAlbumOnDiskCmd;
 import de.dittner.siegmar.backend.op.StoreFileBodySQLOperation;
 import de.dittner.siegmar.backend.op.StoreFileHeaderSQLOperation;
 import de.dittner.siegmar.backend.op.StorePhotoSQLOperation;
 import de.dittner.siegmar.backend.op.UpdatePhotoSQLOperation;
+import de.dittner.siegmar.model.Device;
 import de.dittner.siegmar.model.domain.fileSystem.SiegmarFileSystem;
 import de.dittner.siegmar.model.domain.fileSystem.body.FileBody;
+import de.dittner.siegmar.model.domain.fileSystem.file.SiegmarFile;
 import de.dittner.siegmar.model.domain.fileSystem.header.FileHeader;
-import de.dittner.siegmar.utils.AppInfo;
 import de.dittner.walter.WalterProxy;
 
 import flash.data.SQLConnection;
@@ -71,11 +73,11 @@ public class FileStorage extends WalterProxy {
 		var cmd:IAsyncCommand;
 		deferredCommandManager.start();
 
-		cmd = new RunDataBaseSQLOperation(dataBasePwd, AppInfo.TEXT_DB_NAME, [SQLLib.CREATE_FILE_HEADER_TBL, SQLLib.CREATE_FILE_BODY_TBL]);
+		cmd = new RunDataBaseSQLOperation(dataBasePwd, Device.TEXT_DB_NAME, [SQLLib.CREATE_FILE_HEADER_TBL, SQLLib.CREATE_FILE_BODY_TBL]);
 		cmd.addCompleteCallback(textDBOpened);
 		deferredCommandManager.add(cmd);
 
-		cmd = new RunDataBaseSQLOperation(dataBasePwd, AppInfo.PHOTO_DB_NAME, [SQLLib.CREATE_PHOTO_TBL]);
+		cmd = new RunDataBaseSQLOperation(dataBasePwd, Device.PHOTO_DB_NAME, [SQLLib.CREATE_PHOTO_TBL]);
 		cmd.addCompleteCallback(photoDBOpened);
 		deferredCommandManager.add(cmd);
 
@@ -183,6 +185,12 @@ public class FileStorage extends WalterProxy {
 		if (isEmpty) _isEmpty = false;
 
 		var cmd:IAsyncCommand = new StorePhotoSQLOperation(photoDBConnection, bitmap, title, fileID);
+		deferredCommandManager.add(cmd);
+		return cmd;
+	}
+
+	public function storeAlbumOnDisk(file:SiegmarFile):IAsyncOperation {
+		var cmd:IAsyncCommand = new StoreAlbumOnDiskCmd(photoDBConnection, file);
 		deferredCommandManager.add(cmd);
 		return cmd;
 	}

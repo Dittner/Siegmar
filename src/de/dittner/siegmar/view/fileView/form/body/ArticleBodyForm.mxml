@@ -7,9 +7,6 @@
          implements="de.dittner.siegmar.view.common.form.IBodyForm">
 
     <fx:Script><![CDATA[
-        import de.dittner.siegmar.view.common.utils.AppColors;
-        import de.dittner.siegmar.view.common.utils.FontName;
-
         import de.dittner.async.AsyncOperation;
         import de.dittner.async.IAsyncOperation;
         import de.dittner.async.utils.invalidateOf;
@@ -21,6 +18,7 @@
         import de.dittner.siegmar.model.domain.fileSystem.file.SiegmarFile;
         import de.dittner.siegmar.view.common.utils.AppColors;
         import de.dittner.siegmar.view.common.utils.FontName;
+        import de.dittner.siegmar.view.common.utils.NoteFormUtils;
 
         import mx.collections.ArrayCollection;
 
@@ -171,6 +169,10 @@
             if (currentState == "remove") return true;
             else return docContent;
         }
+
+        private function formatText():void {
+            textInput.text = NoteFormUtils.formatText(textInput.text, wordWrapRemoveCheckBox.selected);
+        }
         ]]></fx:Script>
 
     <s:states>
@@ -223,6 +225,19 @@
                        groupName="radioBar"
                        width="150"
                        label="Zitat"/>
+
+        <s:HGroup width="100%" horizontalAlign="right" verticalAlign="middle">
+            <s:CheckBox id="wordWrapRemoveCheckBox" selected="false"/>
+            <s:Label color="#ffFFff" text="die Zeilenumbrüch löschen"/>
+
+            <s:Spacer width="20"/>
+
+            <button:StrokeButton id="formatBtn"
+                                 width="200"
+                                 color="{AppColors.HELL_TÜRKIS}"
+                                 label="Formatieren"
+                                 click="formatText()"/>
+        </s:HGroup>
 
         <s:HGroup width="100%" visible="{citationBtn.selected}" includeInLayout="{citationBtn.selected}">
             <s:VGroup gap="10" height="50%">

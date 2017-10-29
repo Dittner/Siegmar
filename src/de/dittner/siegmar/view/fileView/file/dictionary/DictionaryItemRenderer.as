@@ -16,6 +16,7 @@ public class DictionaryItemRenderer extends DraggableNoteItemRenderer {
 	private static const PAD:uint = 20;
 	private static const GAP:uint = 10;
 	private static const SEP_COLOR:uint = 0;
+	private static const MAX_WIDTH:uint = 1000;
 
 	public function DictionaryItemRenderer() {
 		super();
@@ -69,11 +70,11 @@ public class DictionaryItemRenderer extends DraggableNoteItemRenderer {
 		measuredWidth = unscaledWidth;
 
 		if (selected) {
-			titleTf.width = descriptionTf.width = measuredWidth - 2 * PAD - INDEX_COLUMN_WID;
+			titleTf.width = descriptionTf.width = Math.min(measuredWidth, MAX_WIDTH) - 2 * PAD - INDEX_COLUMN_WID + TEXT_DEFAULT_OFFSET;
 			measuredMinHeight = measuredHeight = titleTf.textHeight + descriptionTf.textHeight + 2 * PAD + GAP;
 		}
 		else {
-			titleTf.width = measuredWidth - 2 * PAD - INDEX_COLUMN_WID;
+			titleTf.width = Math.min(measuredWidth, MAX_WIDTH) - 2 * PAD - INDEX_COLUMN_WID + TEXT_DEFAULT_OFFSET;
 			measuredMinHeight = measuredHeight = titleTf.textHeight + 2 * PAD;
 		}
 	}
@@ -87,14 +88,14 @@ public class DictionaryItemRenderer extends DraggableNoteItemRenderer {
 
 		descriptionTf.visible = selected;
 
-		titleTf.x = PAD - TEXT_DEFAULT_OFFSET + INDEX_COLUMN_WID;
+		titleTf.x = (w - titleTf.width >> 1) + INDEX_COLUMN_WID;
 		titleTf.y = PAD - TEXT_DEFAULT_OFFSET;
-		adjustSize(titleTf, w - titleTf.x - PAD);
+		titleTf.height = titleTf.textHeight + 5;
 
 		if (descriptionTf.visible) {
-			descriptionTf.x = PAD - TEXT_DEFAULT_OFFSET + INDEX_COLUMN_WID;
+			descriptionTf.x = (w - descriptionTf.width >> 1) + INDEX_COLUMN_WID;
 			descriptionTf.y = PAD + titleTf.textHeight + GAP - TEXT_DEFAULT_OFFSET;
-			adjustSize(descriptionTf, w - descriptionTf.x - PAD);
+			descriptionTf.height = descriptionTf.textHeight + 5;
 		}
 	}
 

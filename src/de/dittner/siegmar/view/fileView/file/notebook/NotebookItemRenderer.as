@@ -15,6 +15,7 @@ public class NotebookItemRenderer extends DraggableNoteItemRenderer {
 	private static const HPAD:uint = 20;
 	private static const VPAD:uint = 30;
 	private static const SEP_COLOR:uint = 0;
+	private static const MAX_WIDTH:uint = 1000;
 
 	public function NotebookItemRenderer() {
 		super();
@@ -54,7 +55,7 @@ public class NotebookItemRenderer extends DraggableNoteItemRenderer {
 
 		measuredWidth = unscaledWidth;
 
-		textTf.width = measuredWidth - 2 * HPAD - INDEX_COLUMN_WID + TEXT_DEFAULT_OFFSET;
+		textTf.width = Math.min(measuredWidth, MAX_WIDTH) - 2 * HPAD - INDEX_COLUMN_WID + TEXT_DEFAULT_OFFSET;
 		measuredMinHeight = measuredHeight = textTf.textHeight + 2 * VPAD + TEXT_DEFAULT_OFFSET;
 	}
 
@@ -65,9 +66,9 @@ public class NotebookItemRenderer extends DraggableNoteItemRenderer {
 		g.moveTo(INDEX_COLUMN_WID, h - 1);
 		g.lineTo(w, h - 1);
 
-		textTf.x = HPAD - TEXT_DEFAULT_OFFSET + INDEX_COLUMN_WID;
+		textTf.x = (w - textTf.width >> 1) + INDEX_COLUMN_WID;
 		textTf.y = VPAD - TEXT_DEFAULT_OFFSET;
-		adjustSize(textTf, w - textTf.x - HPAD);
+		textTf.height = textTf.textHeight + 5;
 	}
 
 }

@@ -5,13 +5,18 @@ import flash.system.Capabilities;
 
 public class Device {
 
-	public static const APP_NAME:String = "TestMyself";
-	public static const TEMP_APP_NAME:String = "TestMyself_temp";
-	public static const DB_NAME:String = "vocabularies.db";
+	public static const APP_NAME:String = "Siegmar";
+	public static const TEXT_DB_NAME:String = "SiegmarText.db";
+	public static const PHOTO_DB_NAME:String = "SiegmarPhoto.db";
+	public static const MIN_PWD_LEN:uint = 2;
 
-	public static const MAX_TEXT_LENGTH:uint = 5000;
-	public static const MAX_THEME_NAME_LENGTH:uint = 100;
-	public static const MAX_WORD_LENGTH:uint = 100;
+	public static function get dbRootPath():String {
+		return APP_NAME + File.separator;
+	}
+
+	public static function get applicationDBPath():String {
+		return "dataBase" + File.separator + APP_NAME + File.separator;
+	}
 
 	private static var _stage:Stage;
 	public static function get stage():Stage {
@@ -28,16 +33,9 @@ public class Device {
 		return _factor;
 	}
 
-	public static function get dbRootPath():String {
-		return APP_NAME + File.separator;
-	}
 
-	public static function get dbPath():String {
-		return APP_NAME + File.separator + DB_NAME;
-	}
-
-	public static function get dbTempPath():String {
-		return TEMP_APP_NAME + File.separator;
+	public static function get dbAlbumFolderPath():String {
+		return APP_NAME + File.separator + "Albums";
 	}
 
 	public static function get isWIN():Boolean {

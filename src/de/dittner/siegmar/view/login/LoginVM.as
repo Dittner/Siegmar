@@ -1,9 +1,9 @@
 package de.dittner.siegmar.view.login {
 import de.dittner.async.IAsyncOperation;
 import de.dittner.siegmar.backend.FileStorage;
+import de.dittner.siegmar.model.Device;
 import de.dittner.siegmar.model.domain.fileSystem.SiegmarFileSystem;
 import de.dittner.siegmar.model.domain.user.User;
-import de.dittner.siegmar.utils.AppInfo;
 import de.dittner.siegmar.view.common.view.ViewID;
 import de.dittner.siegmar.view.common.view.ViewModel;
 import de.dittner.siegmar.view.common.view.ViewNavigator;
@@ -36,7 +36,7 @@ public class LoginVM extends ViewModel {
 
 	public function login(userName:String, pwd:String, privacyLevel:String, dbPwd:String):void {
 		if (isLoginSuccess) return;
-		if (pwd.length <= AppInfo.MIN_PWD_LEN) return;
+		if (pwd.length <= Device.MIN_PWD_LEN) return;
 		var op:IAsyncOperation;
 		if (user.isRegistered)
 			op = user.login(pwd, uint(privacyLevel), dbPwd);

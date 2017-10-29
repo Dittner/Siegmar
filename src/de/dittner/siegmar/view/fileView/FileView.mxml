@@ -14,6 +14,7 @@
 
     <fx:Script><![CDATA[
         import de.dittner.async.IAsyncOperation;
+        import de.dittner.async.utils.invalidateOf;
         import de.dittner.siegmar.model.domain.fileSystem.file.FileType;
         import de.dittner.siegmar.model.domain.fileSystem.file.SiegmarFile;
         import de.dittner.siegmar.view.common.list.SelectableDataGroupEvent;
@@ -113,14 +114,20 @@
         }
 
         private function handleToolbarAction(toolAction:String):void {
+            var vsp:Number = activeFile ? activeFile.fileBodyList.verticalScrollPosition : 0;
             switch (toolAction) {
                 case ToolAction.CREATE:
                 case ToolAction.EDIT:
                 case ToolAction.REMOVE:
                     var completeOp:IAsyncOperation = showForm(vm.openedFile, toolAction);
                     completeOp.addCompleteCallback(function (op:IAsyncOperation):void {
-                        if (vm.openedFile)
+                        if (vm.openedFile) {
+                            if (activeFile) {
+                                activeFile.fileBodyList.refresh();
+                                scrollTo(vsp);
+                            }
                             closeForm();
+                        }
                     });
                     break;
                 case ToolAction.CLOSE:
@@ -130,6 +137,12 @@
                     vm.logout();
                     break;
             }
+        }
+
+        private function scrollTo(value:Number):void {
+            invalidateOf(function ():void {
+                activeFile.fileBodyList.verticalScrollPosition = value;
+            });
         }
 
         private function showForm(file:SiegmarFile, toolAction:String):IAsyncOperation {
