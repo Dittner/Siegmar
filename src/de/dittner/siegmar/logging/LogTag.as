@@ -1,6 +1,6 @@
 package de.dittner.siegmar.logging {
-public class LogCategory {
-	public function LogCategory() {}
+public class LogTag {
+	public function LogTag() {}
 
 	public static const STORAGE:String = "Storage";
 	public static const LOAD:String = "Load";

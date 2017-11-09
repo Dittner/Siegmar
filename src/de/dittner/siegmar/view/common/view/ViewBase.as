@@ -1,7 +1,7 @@
 package de.dittner.siegmar.view.common.view {
 import de.dittner.async.utils.doLaterInFrames;
 import de.dittner.siegmar.logging.CLog;
-import de.dittner.siegmar.logging.LogCategory;
+import de.dittner.siegmar.logging.LogTag;
 
 import flash.events.Event;
 import flash.utils.getQualifiedClassName;
@@ -90,7 +90,7 @@ public class ViewBase extends SkinnableContainer {
 			case NavigationPhase.VIEW_REMOVE:
 				_isActive = false;
 				isActivateWaiting = false;
-				CLog.info(LogCategory.UI, "View: " + fullName + " is deactivated");
+				CLog.info(LogTag.UI, "View: " + fullName + " is deactivated");
 				dispatchEvent(new Event("isActiveChange"));
 				deactivate();
 				break;
@@ -105,7 +105,7 @@ public class ViewBase extends SkinnableContainer {
 		if (isActivateWaiting) {
 			isActivateWaiting = false;
 			_isActive = true;
-			CLog.info(LogCategory.UI, "View: " + fullName + " is activated");
+			CLog.info(LogTag.UI, "View: " + fullName + " is activated");
 			dispatchEvent(new Event("isActiveChange"));
 			activate();
 		}

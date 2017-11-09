@@ -1,11 +1,10 @@
 package de.dittner.siegmar.view.common.preloader {
 import de.dittner.async.AsyncCallbacksLib;
 import de.dittner.siegmar.logging.CLog;
-import de.dittner.siegmar.logging.LogCategory;
+import de.dittner.siegmar.logging.LogTag;
 import de.dittner.siegmar.model.Device;
 import de.dittner.siegmar.view.common.utils.AppColors;
 
-import flash.desktop.NativeApplication;
 import flash.display.Bitmap;
 import flash.display.Graphics;
 import flash.events.Event;
@@ -50,7 +49,7 @@ public final class AppPreloader extends SparkDownloadProgressBar {
 		AsyncCallbacksLib.fps = 30;
 		AsyncCallbacksLib.stage = stage;
 		CLog.run();
-		CLog.info(LogCategory.SYSTEM, "Device mode: " + (Device.stage.wmodeGPU ? "gpu" : "cpu"));
+		CLog.info(LogTag.SYSTEM, "Device mode: " + (Device.stage.wmodeGPU ? "gpu" : "cpu"));
 		CLog.logMemoryAndFPS(true);
 
 		var bg:Bitmap = new BgClass();

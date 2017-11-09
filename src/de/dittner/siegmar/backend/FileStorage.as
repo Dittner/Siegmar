@@ -18,6 +18,8 @@ import de.dittner.siegmar.backend.op.StoreFileBodySQLOperation;
 import de.dittner.siegmar.backend.op.StoreFileHeaderSQLOperation;
 import de.dittner.siegmar.backend.op.StorePhotoSQLOperation;
 import de.dittner.siegmar.backend.op.UpdatePhotoSQLOperation;
+import de.dittner.siegmar.logging.CLog;
+import de.dittner.siegmar.logging.LogTag;
 import de.dittner.siegmar.model.Device;
 import de.dittner.siegmar.model.domain.fileSystem.SiegmarFileSystem;
 import de.dittner.siegmar.model.domain.fileSystem.body.FileBody;
@@ -27,6 +29,9 @@ import de.dittner.walter.WalterProxy;
 
 import flash.data.SQLConnection;
 import flash.display.BitmapData;
+import flash.events.SQLErrorEvent;
+import flash.events.SQLEvent;
+import flash.net.Responder;
 
 public class FileStorage extends WalterProxy {
 
@@ -93,6 +98,7 @@ public class FileStorage extends WalterProxy {
 
 	private function photoDBOpened(opEvent:*):void {
 		_photoDBConnection = opEvent.result as SQLConnection;
+		//compactPhotoDB();
 	}
 
 	//--------------------------------------
@@ -157,6 +163,7 @@ public class FileStorage extends WalterProxy {
 		var wrapper:FileSQLWrapper = new FileSQLWrapper();
 		wrapper.header = header;
 		wrapper.textDBConnection = textDBConnection;
+		wrapper.photoDBConnection = photoDBConnection;
 		wrapper.encryptionService = encryptionService;
 		return wrapper;
 	}
@@ -223,6 +230,18 @@ public class FileStorage extends WalterProxy {
 		var cmd:IAsyncCommand = new SelectPhotoSQLOperation(photoDBConnection, photoID, true);
 		deferredCommandManager.add(cmd);
 		return cmd;
+	}
+
+	private function compactPhotoDB():void {
+		photoDBConnection.compact(new Responder(compactComplete, executeError));
+	}
+
+	private function compactComplete(event:SQLEvent):void {
+		CLog.info(LogTag.STORAGE, "DB was successfully compacted");
+	}
+
+	private function executeError(event:SQLErrorEvent):void {
+		CLog.err(LogTag.STORAGE, "DB was compacted with Error" + event.toString());
 	}
 
 }

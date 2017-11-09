@@ -8,7 +8,7 @@ import de.dittner.siegmar.model.domain.fileSystem.file.FileType;
 import de.dittner.siegmar.model.domain.fileSystem.header.FileHeader;
 import de.dittner.siegmar.model.domain.user.User;
 import de.dittner.siegmar.logging.CLog;
-import de.dittner.siegmar.logging.LogCategory;
+import de.dittner.siegmar.logging.LogTag;
 import de.dittner.siegmar.view.common.form.FileFormMode;
 import de.dittner.siegmar.view.common.form.FormOperationResult;
 import de.dittner.siegmar.view.common.view.ViewModel;
@@ -347,7 +347,7 @@ public class FileHeaderFormVM extends ViewModel {
 				fileHeader = system.createFileHeader(FileType.PICTURE);
 				break;
 			default :
-				CLog.err(LogCategory.UI, "VM, unknown file type: " + selectedFileType);
+				CLog.err(LogTag.UI, "VM, unknown file type: " + selectedFileType);
 				throw new Error("VM, unknown file type: " + selectedFileType);
 		}
 		return fileHeader;

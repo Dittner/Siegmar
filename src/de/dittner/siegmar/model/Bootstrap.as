@@ -5,7 +5,7 @@ import de.dittner.siegmar.backend.FileStorage;
 import de.dittner.siegmar.model.domain.fileSystem.SiegmarFileSystem;
 import de.dittner.siegmar.model.domain.user.User;
 import de.dittner.siegmar.logging.CLog;
-import de.dittner.siegmar.logging.LogCategory;
+import de.dittner.siegmar.logging.LogTag;
 import de.dittner.siegmar.view.common.view.ViewFactory;
 import de.dittner.siegmar.view.common.view.ViewModelFactory;
 import de.dittner.siegmar.view.common.view.ViewNavigator;
@@ -56,7 +56,7 @@ public class Bootstrap extends Walter {
 		registerProxy("settingsVM", new SettingsVM());
 
 		if (pendingInjectProxies.length > 0)
-			CLog.err(LogCategory.SYSTEM, "Invalid proxies keys or names! Please check it!");
+			CLog.err(LogTag.SYSTEM, "Invalid proxies keys or names! Please check it!");
 		showFirstView();
 	}
 

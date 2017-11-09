@@ -3,6 +3,8 @@ import de.dittner.async.IAsyncCommand;
 import de.dittner.async.IAsyncOperation;
 import de.dittner.async.utils.clearDelay;
 import de.dittner.async.utils.doLaterInMSec;
+import de.dittner.siegmar.logging.CLog;
+import de.dittner.siegmar.logging.LogTag;
 import de.dittner.siegmar.view.main.MainVM;
 import de.dittner.walter.WalterProxy;
 
@@ -78,7 +80,7 @@ public class DeferredCommandManager extends WalterProxy {
 	}
 
 	private function timeOutHandler():void {
-		trace("time out");
+		CLog.info(LogTag.SYSTEM, "DeferredCommandManager: Time out");
 		commandCompleteHandler(processingCmd);
 	}
 }
