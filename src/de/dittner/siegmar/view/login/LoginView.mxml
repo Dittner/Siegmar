@@ -68,7 +68,7 @@
 
         private function login():void {
             if (validateRegistrationData(userNameInput.text, passwordInput.text))
-                vm.login(vm.user.userName, passwordInput.text, privacyLevelInput.text, dataBasePasswordInput.text);
+                vm.login(userNameInput.text, passwordInput.text, privacyLevelInput.text, dataBasePasswordInput.text);
         }
         ]]></fx:Script>
 

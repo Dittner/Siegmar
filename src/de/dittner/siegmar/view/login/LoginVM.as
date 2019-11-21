@@ -41,7 +41,7 @@ public class LoginVM extends ViewModel {
 		if (user.isRegistered)
 			op = user.login(pwd, uint(privacyLevel), dbPwd);
 		else
-			op = user.register(userName, pwd, privacyLevel as uint, dbPwd);
+			op = user.register(userName, pwd, uint(privacyLevel), dbPwd);
 		op.addCompleteCallback(loginHandler);
 		lockView();
 	}
